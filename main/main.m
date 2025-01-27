@@ -45,7 +45,7 @@ else
 end
 
 % Draw and save all textures
-if const.genStimuli; makeTextures(scr, const, expDes); end
+if const.genStimuli; makeTextures(scr, const); end
 
 % Trial runner
 const = runExp(scr, const, expDes, my_key, eyetrack);
