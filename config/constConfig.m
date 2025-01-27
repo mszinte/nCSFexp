@@ -71,14 +71,28 @@ const.probe_drawf = round(const.probe_duration / const.patch_dur);          % pr
 const.bef_probe_drawf = (const.bar_step_drawf_ver - const.probe_drawf) / 2; % time before probe per bar step in screen frames drawn
 
 % Stim parameters
+% Spatial frequency parameters
+minFreq = 0.35; maxFreq = 20; numPoints = 13;
+logFrequencies_1_2 = logspace(log10(minFreq), log10(maxFreq), numPoints);
+logFrequencies_1_2 = logFrequencies_1_2(1:2:end);
+const.sp_intervals = arrayfun(@(i) round([logFrequencies_1_2(i), logFrequencies_1_2(i+1)], 1), 1:length(logFrequencies_1_2)-1, 'UniformOutput', false);
+
+% Contrast intervals
+minCont = 0.025; maxCont = 0.8; numPoints = 12;
+const.contrast_intervals = logspace(log10(minCont), log10(maxCont), numPoints);
+
+
+const.preferred_orientation_deg = 45;
 % Noise patches
 const.noise_num = 3;                                                        % number of generated patches per kappa
-const.stim_size = [scr.scr_sizeY / 2, scr.scr_sizeY / 2];                   % full screen stimuli size in pixels
+const.stim_size = [scr.scr_sizeY , scr.scr_sizeY];                          % full screen stimuli size in pixels
+const.noise_size = const.stim_size(1);                                      % size of the patch to allow 45deg rotation
+const.stim_rect = [scr.x_mid - const.noise_size/2;...                       % rect of the actual stimulus
+    scr.y_mid - const.noise_size/2;...
+    scr.x_mid + const.noise_size/2;...
+    scr.y_mid + const.noise_size/2];
 
-const.stim_rect = [ scr.x_mid - const.stim_size(1); ...                     % rect of the actual stimulus
-    scr.y_mid - const.stim_size(2);...
-    scr.x_mid + const.stim_size(1);...
-    scr.y_mid + const.stim_size(2)];
+
 
 const.num_steps_kappa = 15;                                                 % number of kappa steps
 const.noise_kappa = [0, 10.^(linspace(-1, 1.5, const.num_steps_kappa - 1))];% von misses filter kappa parameter (1st = noise, last = less noisy)
@@ -88,11 +102,14 @@ const.stim_stair_val = round(const.num_steps_kappa * 0.6);                  % st
 if const.mkVideo
     const.stim_stair_val = input(sprintf('\n\tSTAIRCASE (0->14): '));       % starting value of the stimulus staircase kappa value
 end
-const.noise_size = sqrt((const.stim_size(1) * 2)^2 + ...                    % size of the patch to allow 45deg rotation
-    (const.stim_size(1) * 2)^2);
+                                    
+    
 const.noise_angle = [45, -45, NaN];                                         % noise rotation angles
-const.noise_pixelVal = 0.1;                                                 % stimulus noise pixel size in degrees
-const.noise_pixel = vaDeg2pix(const.noise_pixelVal, scr);                   % stimulus noise pixel size in pixels
+% const.noise_pixelVal = 100;                                                 % stimulus noise pixel size in degrees
+vaDeg = pix2vaDeg(1, scr);  
+const.noise_pixelVal = vaDeg(1);  
+
+const.noise_pixel = 1;                                                      % stimulus noise pixel size in pixels
 const.native_noise_dim = round([const.noise_size / const.noise_pixel,...
     const.noise_size / const.noise_pixel]);                                 % starting size of the patch
 const.noise_color = 'pink';                                                 % stimuli noise color ('white','pink','brownian')
@@ -103,7 +120,10 @@ elseif const.comp == 2
     const.apt_rad_val = 5;                                                  % aperture stimuli radius in dva
 elseif const.comp == 3
     const.apt_rad_val =  30;                                                % aperture stimuli radius for large field of view (projetor)
+elseif const.comp == 4
+    const.apt_rad_val =  30;
 end
+
 const.apt_rad           =   vaDeg2pix(const.apt_rad_val,scr);               % aperture stimuli radius in pixels
 
 % compute random image order

@@ -55,6 +55,14 @@ elseif const.comp == 3
     scr.dist = 14;
     scr.distTop = 140;
     scr.distBot = 140;
+
+elseif const.comp == 4
+    % samsung Uriel / sina
+    scr.disp_sizeX = 596.736 ;
+    scr.disp_sizeY = 335.664;
+    scr.dist = 120;
+    scr.distTop = 1210;
+    scr.distBot = 1210;
     
 end
 scr.disp_sizeLeft = round(-scr.disp_sizeX/2);

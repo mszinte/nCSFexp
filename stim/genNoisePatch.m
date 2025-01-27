@@ -1,53 +1,75 @@
-function [noiseMatFiltNorm] = genNoisePatch(const,kappa)
+function [noiseMatFiltNorm] = genNoisePatch(const, cutoff, kappa, mc_contrast)
 % ----------------------------------------------------------------------
-% [noiseMatFiltNorm] = genNoisePatch(const,kappa)
+% [noiseMatFiltNorm] = genNoisePatch(const, cutoff, kappa, mc_contrast)
 % ----------------------------------------------------------------------
 % Goal of the function :
-% Create noise patches
+% Create noise patches with orientation and spatial frequency filtering
 % ----------------------------------------------------------------------
 % Input(s) :
 % const : struct containing constant configurations
-% kappa : dispersion parameter of the von misses filter
+% kappa : dispersion parameter of the von Mises filter
+% mc_contrast : Michelson contrast
+% cutoff : low and high cutoffs for bandpass filter (in cycles/DVA)
 % ----------------------------------------------------------------------
 % Output(s):
-% noiseMatFiltNorm: patch
+% noiseMatFiltNorm : filtered noise patch
 % ----------------------------------------------------------------------
 % Function created by Martin SZINTE (martin.szinte@gmail.com)
-% Last update : 09 / 02 / 2021
-% Project :     pRFexp7T
-% Version :     1.0
+% Last update : 22 / 01 / 2024
+% Project : nCSFexp
+% Version : 1.0
 % ----------------------------------------------------------------------
 
-% define original noise patch size
-noiseDim                =  const.native_noise_dim;                                                                  % starting size of the patch
+% Constants
+noiseDim = const.native_noise_dim;
+preferred_orientation_deg = const.preferred_orientation_deg;
+degree_per_pixels = const.noise_pixelVal; % DVA per pixel
+low_cutoff = cutoff(1); % Low cutoff frequency in cycles/DVA
+high_cutoff = cutoff(2); % High cutoff frequency in cycles/DVA
 
-% create pink noise stimuli
-if strcmp(const.noise_color,'pink')
-    colVal                  =   1;                                                                                  % pink 1/f noise
-elseif strcmp(const.noise_color,'brownian')
-    colVal                  =   2;                                                                                  % brownian 2/f noise
-elseif strcmp(const.noise_color,'white')
-    colVal                  =   0;                                                                                  % white 0/f nosie
+% Generate white noise
+whiteNoise = randn(noiseDim(1), noiseDim(2));
+
+% Precompute filters
+[Y, X] = meshgrid(1:noiseDim(2), 1:noiseDim(1));
+radius = sqrt((X - noiseDim(2) / 2).^2 + (Y - noiseDim(1) / 2).^2);
+% Prevent division by zero at the center
+radius(radius == 0) = eps;
+
+% Pink noise filter
+pink_filter = 1 ./ radius;
+
+% Bandpass filter
+low_cutoff_pix = low_cutoff / degree_per_pixels; % Convert cycles/DVA to pixels
+high_cutoff_pix = high_cutoff / degree_per_pixels; % Convert cycles/DVA to pixels
+
+bandpass_filter = (radius >= low_cutoff_pix) & (radius < high_cutoff_pix);
+
+% Von Mises filter parameters
+preferred_orientation = deg2rad(preferred_orientation_deg);
+angles = atan2(Y - noiseDim(1) / 2, X - noiseDim(2) / 2) - preferred_orientation;
+vonMisesFilter = exp(kappa * cos(angles));
+
+% Combine filters
+combined_filter = pink_filter .* bandpass_filter .* vonMisesFilter;
+% Normalize combined filter to avoid excessive amplification/attenuation
+combined_filter = combined_filter / max(combined_filter(:));
+
+% Apply the combined filter in the frequency domain
+whiteNoiseFFT = fftshift(fft2(whiteNoise));
+filteredNoiseFFT = whiteNoiseFFT .* combined_filter;
+filteredNoise = real(ifft2(ifftshift(filteredNoiseFFT)));
+
+% Normalize to [0, 1]
+filteredNoise = (filteredNoise - min(filteredNoise(:))) / (max(filteredNoise(:)) - min(filteredNoise(:)));
+
+% Define Michelson contrast
+mean_value = mean(filteredNoise(:));
+Lmax = mean_value + (mc_contrast / 2);
+Lmin = mean_value - (mc_contrast / 2);
+contrast_patch = (filteredNoise - mean_value) * (Lmax - Lmin) + mean_value;
+
+% Output the normalized filtered noise matrix
+noiseMatFiltNorm = contrast_patch;
 end
 
-freqD1                  =   repmat([(0:floor(noiseDim(1)/2)) -(ceil(noiseDim(1)/2)-1:-1:1)]'/...
-                                                                        noiseDim(1),1,noiseDim(2));                 % set of frequencies along the first dimension
-freqD2                  =   repmat([(0:floor(noiseDim(2)/2)) -(ceil(noiseDim(2)/2)-1:-1:1)]/...
-                                                                        noiseDim(2),noiseDim(1),1);                 % set of frequencies along the second dimension.
-pSpect                  =   (freqD1.^2 + freqD2.^2).^(-colVal/2);                                                   % power spectrum
-pSpect(pSpect==inf)     =   0;                                                                                      % set any infinities to zero
-phi                     =   rand(noiseDim);                                                                         % generate a grid of random phase shifts
-noiseMat                =   real(ifft2(pSpect.^0.5 .* (cos(2*pi*phi)+1i*sin(2*pi*phi))));                           % real component of inverse Fourier transform to obtain the the spatial pattern
-fftNoiseMat             =   fftshift(fft2(noiseMat-mean(noiseMat(:)), noiseDim(1), noiseDim(2)));                   % fast fourier transform
-
-% Generate von misses distribution
-alphaVonMisses          =   linspace(0, 2*pi, size(fftNoiseMat,1))';                                                % alpha angle of von misses
-vonMisses               =   (1/(2*pi*besseli(0,kappa))) * exp((kappa)*cos(alphaVonMisses+pi));                      % von misses formula
-vonMisses               =   repmat(vonMisses,1,size(fftNoiseMat,2));                                                % repeat the matrix over the other dimension
-
-% Convolve both and normalize
-noiseMatFilt            =   real(ifft2(ifftshift(fftNoiseMat.*vonMisses)));                                         % convolution
-noiseMatFiltNorm        =   (noiseMatFilt- min(noiseMatFilt(:)))/(max(noiseMatFilt(:)) - min(noiseMatFilt(:)));     % normalization
-
-
-end
