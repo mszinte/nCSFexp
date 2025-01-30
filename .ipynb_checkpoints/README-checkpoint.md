@@ -8,8 +8,9 @@ Version:  1.0<br/>
 Experiment in which we use filtered pink noise at different spatial frequency ranges and different contrast levels to determine the neural Contrast Sensitivity Function (nCSF). The experiment is adapted for the 7T CRMBM scanner. A cross is displayed across the entire screen to help the patient maintain correct fixation.
 
 ## TO DO 
-- Create stimulus (function and maketexture)
-- Create constConfig
-- Create designConfig 
-- Create runExp
-- Create overDone
+- [ ] function gennoisepatch
+- [ ] maketexture
+- [ ] Create constConfig
+- [ ] Create designConfig 
+- [ ] Create runExp
+- [x] Create overDone
