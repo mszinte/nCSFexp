@@ -54,7 +54,7 @@ if const.expStart
 
     % Experimental condition
     const.cond1 = const.cond_run_order(const.runNum,1);
-    const.cond1_txt = 'pRF';
+    const.cond1_txt = 'nCSF';
     const.recEye = 1;
 
 else

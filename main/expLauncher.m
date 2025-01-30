@@ -75,6 +75,6 @@ addpath('config','main','conversion','instructions','trials','stim','stats');
 % ---------------------
 [const]                 =   sbjConfig(const);
                         
-% % Main run
-% % --------
-% main(const);
+% Main run
+% --------
+main(const);
