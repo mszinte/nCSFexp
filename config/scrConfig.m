@@ -99,6 +99,6 @@ elseif const.room == 2
     scr.y_mid               =   (scr.scr_sizeY/2.0);
     scr.mid                 =   [scr.x_mid,scr.y_mid];
 
-scr.screen_dpp              =   pix2vaDeg(1, scr);                         % Size of one screen pixel in DVA
 end
+scr.screen_dpp              =   pix2vaDeg(1, scr);                         % Size of one screen pixel in DVA
 end

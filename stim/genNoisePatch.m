@@ -28,7 +28,7 @@ sigma = gauss_sigma;
 
 % Orientation filter parameters
 kappa = kappa;
-preferred_orientation_deg = const.preferred_orientation_deg;
+preferred_orientation_deg = const.native_noise_orientation;
 
 % Generate pink noise patterns
 % Create a grid of spatial frequencies
