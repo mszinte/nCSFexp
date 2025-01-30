@@ -136,6 +136,4 @@ const.line_fix_down_right = [const.rect_center(1) + const.fix_out_rim_rad,...   
                              const.rect_center(2) + const.fix_out_rim_rad,...   % down right part of fix cross y start
                              const.rect_center(2) + const.apt_rad;];            % down right part of fix cross y end
 
-
-
 end
