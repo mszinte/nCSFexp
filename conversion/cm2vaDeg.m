@@ -1,29 +1,22 @@
-function [expDes]=designConfig(const)
+function [vaDeg] =cm2vaDeg (cm,scr)
 % ----------------------------------------------------------------------
-% [expDes]=designConfig(const)
+% [vaDeg] = cm2vaDeg(cm,scr)
 % ----------------------------------------------------------------------
 % Goal of the function :
-% Define experimental design
+% Convert cm in visual angle (degree)
 % ----------------------------------------------------------------------
 % Input(s) :
-% const : struct containing constant configurations
+% cm = size in cm                                   ex : cm = 2.0
+% scr  = screen configuration : scr.dist(cm)        ex : scr.dist = 60
 % ----------------------------------------------------------------------
 % Output(s):
-% expDes : struct containg experimental design
+% vaDeg = size in visual angle (degree)             ex : vaDeg = 2.5
 % ----------------------------------------------------------------------
 % Function created by Martin SZINTE (martin.szinte@gmail.com)
-% Project : nCSFexp
+% Last edit : 30 / 10 / 2008
+% Project : All
 % Version : 1.0
 % ----------------------------------------------------------------------
 
-%% Experimental random variables
-
-% Rand 1: stim orientation (2 modalities)
-% =======
-expDes.oneR             =   [1;2];
-expDes.txt_rand1        =   {'cw','ccw','none'};
-% 01 = tilt cw
-% 02 = tilt ccw
-% 03 = none
-
+vaDeg = cm./(2*scr.dist*tan(0.5*pi/180));
 end
