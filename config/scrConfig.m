@@ -79,7 +79,7 @@ if const.room == 1
     % --------------------
     
     % Screen distance 
-    scr.dist = 102;                           % general screen distance in cm
+    scr.dist = 102;                                                        % general screen distance in cm
 
     % Center of the screen :
     scr.x_mid               =   (scr.scr_sizeX/2.0);
@@ -92,12 +92,13 @@ elseif const.room == 2
     % ---------------------
     
     % Screen distance 
-    scr.dist                =   108;                           % general screen distance in cm (value to mimic screen scaner)
+    scr.dist                =   108;                                       % general screen distance in cm (value to mimic screen scaner)
 
     % Center of the screen :
     scr.x_mid               =   (scr.scr_sizeX/2.0);
     scr.y_mid               =   (scr.scr_sizeY/2.0);
     scr.mid                 =   [scr.x_mid,scr.y_mid];
 
+scr.screen_dpp              =   pix2vaDeg(1, scr);                         % Size of one screen pixel in DVA
 end
 end

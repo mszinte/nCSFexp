@@ -50,12 +50,12 @@ if const.genStimuli
     makeTextures(scr,const,expDes);
 end
 
-% Trial runner
-% ------------
-[const] = runExp(scr,const,expDes,my_key);
-
-% End
-% ---
-overDone(const,my_key);
+% % Trial runner
+% % ------------
+% [const] = runExp(scr,const,expDes,my_key);
+% 
+% % End
+% % ---
+% overDone(const,my_key);
 
 end
