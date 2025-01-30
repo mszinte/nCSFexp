@@ -1,0 +1,79 @@
+function [noiseMatFiltNorm] = genNoisePatch(const,kappa)
+% ----------------------------------------------------------------------
+% [noiseMatFiltNorm] = genNoisePatch(const,kappa)
+% ----------------------------------------------------------------------
+% Goal of the function :
+% Create noise patches with SP, orientation filtering and contrast
+% definition
+% ----------------------------------------------------------------------
+% Input(s) :
+% const : struct containing constant configurations
+% kappa : dispersion parameter of the von misses filter
+% ----------------------------------------------------------------------
+% Output(s):
+% noiseMatFiltNorm: patch
+% ----------------------------------------------------------------------
+% Function created by Martin SZINTE (martin.szinte@gmail.com)
+% Project :     nCSFexp
+% Version :     1.0
+% ----------------------------------------------------------------------
+
+% Main parameters
+imageSize = const.native_noise_dim;
+pixelSize = const.noise_pixelVal; % degree per pixel
+
+% Spatial frequency filter paramaters
+center = gauss_mu;
+sigma = gauss_sigma;
+
+% Orientation filter parameters
+kappa = kappa;
+preferred_orientation_deg = const.preferred_orientation_deg;
+
+% Contrast filter
+C = mc_contrast; % Michelson contrast
+
+% Generate pink noise patterns
+% Create a grid of spatial frequencies
+[x, y] = meshgrid(-imageSize/2:imageSize/2-1, -imageSize/2:imageSize/2-1);
+x = x / (imageSize * pixelSize); % Convert to cycles per degree
+y = y / (imageSize * pixelSize); % Convert to cycles per degree
+r = sqrt(x.^2 + y.^2); % Radial frequency
+
+% Generate pink noise in frequency domain
+pinkNoise = randn(imageSize); % White noise
+pinkNoise = pinkNoise - mean(pinkNoise(:)); % Zero-mean
+pinkNoise = pinkNoise / std(pinkNoise(:)); % Unit variance
+pinkNoise_fft = fftshift(fft2(pinkNoise)); % Fourier transform
+pinkNoise_fft = pinkNoise_fft ./ (r + 1e-5); % Apply 1/f filter (pink noise)
+
+% Filter the pink noise with Gaussian and von Mises filters
+filteredNoise = zeros(imageSize, imageSize);
+preferred_orientation = deg2rad(preferred_orientation_deg); % Convert to radians
+angles = atan2(y, x) - preferred_orientation; % Angular differences
+vonMisesFilter = exp(kappa * cos(angles)); % Von Mises filter
+
+% Create Gaussian filter in frequency domain
+gaussianFilter = exp(-((log10(r) - log10(center)).^2) / (2 * sigma^2));
+gaussianFilter = gaussianFilter / max(gaussianFilter(:)); % Normalize
+
+% Apply Gaussian and von Mises filters to pink noise
+filteredNoise_fft = pinkNoise_fft .* gaussianFilter .* vonMisesFilter;
+filteredNoise(:,:) = real(ifft2(ifftshift(filteredNoise_fft)));
+
+% Normalize to [0, 1]
+filteredNoise = (filteredNoise - min(filteredNoise(:))) / (max(filteredNoise(:)) - min(filteredNoise(:)));
+
+% Apply Michelson contrast to each filtered noise pattern
+
+% Compute mean value
+mean_value = mean(filteredNoise(:));
+
+% Compute Lmax and Lmin
+Lmax = mean_value + (C / 2);
+Lmin = mean_value - (C / 2);
+
+% Apply Michelson contrast
+filtered_contrastedNoise = (filteredNoise - mean_value) * (Lmax - Lmin) + mean_value;
+
+end
