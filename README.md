@@ -12,7 +12,7 @@ to fixate and report an orientation of the noise pattern presented on every TR.
 
 ## TO DO 
 - [x] function gennoisepatch
-- [ ] maketexture
+- [ ] uptdate maketexture 
 - [ ] update constConfig
 - [ ] update designConfig 
 - [ ] update runExp
