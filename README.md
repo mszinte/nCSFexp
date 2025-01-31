@@ -1,7 +1,7 @@
 # pRFexp7T
-By :      Martin SZINTE & Uriel Lascombes<br/>
+By :      Uriel Lascombes<br/>
 Projet :  nCSFexp<br/>
-With :    Sina Kling<br/>
+With :    Guillaume MASSON, Jan-Patrick STELLMANN, Martin SZINTE<br/>
 Version:  1.0<br/>
 
 ## Version description
