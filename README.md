@@ -1,11 +1,14 @@
 # pRFexp7T
-By :      Martin SZINTE & Uriel Lascombes<br/>
+By :      Uriel LASCOMBES<br/>
 Projet :  nCSFexp<br/>
-With :    Sina Kling<br/>
+With :    Guillaume MASSON, Jan-Patrick STELLMANN & Martin SZINTE<br/>
 Version:  1.0<br/>
 
 ## Version description
-Experiment in which we use filtered pink noise at different spatial frequency ranges and different contrast levels to determine the neural Contrast Sensitivity Function (nCSF). The experiment is adapted for the 7T CRMBM scanner. A cross is displayed across the entire screen to help the patient maintain correct fixation.
+Experiment in which we use pink noise different filtered to display specific <br/>
+range of spatial frequency and contrast levels to determine the neural Contrast <br/>
+Sensitivity Function (nCSF) of visual cortical areas. Participants are instructed<br/>
+to fixate and report an orientation of the noise pattern presented on every TR.
 
 ## TO DO 
 - [x] function gennoisepatch
