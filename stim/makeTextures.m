@@ -86,8 +86,7 @@ rect_noise              =   const.rect_noise;
 
 % compute total amount of picture to print
 total_amount            =   ((kappa_val_num-1) * noise_rand_num * stim_ori_num * sp_cut_num * mc_cut_num) + ...
-    (noise_rand_num * stim_ori_num * sp_cut_num * mc_cut_num)
-                            1;
+    (noise_rand_num * stim_ori_num * sp_cut_num * mc_cut_num) + 1;
 
 textprogressbar('Progress: ');
 

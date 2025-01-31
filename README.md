@@ -1,5 +1,5 @@
-# pRFexp7T
-By :      Uriel LASCOMBES<br/>
+# nCSFexp
+By :      Martin SZINTE & Uriel Lascombes<br/>
 Projet :  nCSFexp<br/>
 With :    Guillaume MASSON, Jan-Patrick STELLMANN & Martin SZINTE<br/>
 Version:  1.0<br/>
