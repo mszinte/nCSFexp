@@ -1,7 +1,7 @@
 # nCSFexp
 By :      Martin SZINTE & Uriel Lascombes<br/>
 Projet :  nCSFexp<br/>
-With :    Guillaume MASSON, Jan-Patrick STELLMANN & Martin SZINTE<br/>
+With :    Sina Kling<br/>
 Version:  1.0<br/>
 
 ## Version description
