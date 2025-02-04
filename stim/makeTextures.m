@@ -77,7 +77,6 @@ tex_fix_dot_probe       =   Screen('MakeTexture',scr.main,fix_dot_probe);
 % Make noise and combine all
 kappa_val_num           =   const.num_steps_kappa;
 noise_rand_num          =   const.noise_num;
-stim_ori_num            =   size(expDes.oneR,1);
 sp_cut_num              =   const.sp_stepCut;
 mc_cut_num              =   const.mc_stepCont;
 
@@ -85,8 +84,8 @@ numPrint                =   0;
 rect_noise              =   const.rect_noise;
 
 % compute total amount of picture to print
-total_amount            =   ((kappa_val_num-1) * noise_rand_num * stim_ori_num * sp_cut_num * mc_cut_num) + ...
-    (noise_rand_num * stim_ori_num * sp_cut_num * mc_cut_num) + 1;
+total_amount            =   ((kappa_val_num-1) * noise_rand_num * sp_cut_num * mc_cut_num) + ...
+    (noise_rand_num * sp_cut_num * mc_cut_num) + 1;
 
 textprogressbar('Progress: ');
 
@@ -97,7 +96,7 @@ for sp_val_stim = 1:sp_cut_num
                 % make stim texture full screen
                 sp_sigma_val            =   const.sp_cutSigma;
                 sp_center_val           =   const.sp_cutCenters(sp_val_stim);
-                contrast_val            =   const.mc_intervals(contrast_val_stim);
+                contrast_val            =   const.mc_values(contrast_val_stim);
                 kappa_val               =   const.noise_kappa(kappa_val_stim);
 
                 mat_noise               =   genNoisePatch(const, sp_center_val, sp_sigma_val, kappa_val, contrast_val);
@@ -110,51 +109,49 @@ for sp_val_stim = 1:sp_cut_num
                 tex_stim                =   Screen('MakeTexture',scr.main,noise_patch);
                 clear noise_patch
 
-                for stim_ori = 1:stim_ori_num
-                    % define all texture parameters
-                    rects                   =   [   rect_noise,...                                                  % stim noise
-                                                    rect_noise,...                                                  % fix annulus
-                                                    rect_noise,...                                                  % empty center
-                                                    rect_noise];                                                    % fixation dot
+                % define all texture parameters
+                rects                   =   [   rect_noise,...                                                  % stim noise
+                                                rect_noise,...                                                  % fix annulus
+                                                rect_noise,...                                                  % empty center
+                                                rect_noise];                                                    % fixation dot
 
-                    texs                    =   [   tex_stim,...                                                    % stim noise
-                                                    tex_fix_ann_probe,...                                           % fix anulus
-                                                    tex_black_fix_noise,...                                         % empty center
-                                                    tex_fix_dot_probe];                                             % fixation dot
+                texs                    =   [   tex_stim,...                                                    % stim noise
+                                                tex_fix_ann_probe,...                                           % fix anulus
+                                                tex_black_fix_noise,...                                         % empty center
+                                                tex_fix_dot_probe];                                             % fixation dot
 
-                    angles                  =   [   const.noise_angle(stim_ori),...                                 % stim noise
-                                                    0,...                                                           % fix anulus
-                                                    0,...                                                           % empty center
-                                                    0];                                                             % fixation dot
+                angles                  =   [   0,...                                                           % stim noise
+                                                0,...                                                           % fix anulus
+                                                0,...                                                           % empty center
+                                                0];                                                             % fixation dot
 
-                    % draw all textures
-                    Screen('FillRect',scr.main,const.background_color);
-                    Screen('DrawTextures',scr.main,texs,[],rects,angles)
-                    % Screen('FillRect',scr.main,const.background_color,const.left_propixx_hide)
-                    % Screen('FillRect',scr.main,const.background_color,const.right_propixx_hide)
-                    Screen('DrawLines',scr.main, const.line_fix_up_left, const.line_width, const.white, [], 1);
-                    Screen('DrawLines',scr.main, const.line_fix_up_right, const.line_width, const.white, [], 1);
-                    Screen('DrawLines',scr.main, const.line_fix_down_left, const.line_width, const.white, [], 1);
-                    Screen('DrawLines',scr.main, const.line_fix_down_right, const.line_width, const.white, [], 1);
-                    Screen('DrawingFinished',scr.main,[],1);
+                % draw all textures
+                Screen('FillRect',scr.main,const.background_color);
+                Screen('DrawTextures',scr.main,texs,[],rects,angles)
+                % Screen('FillRect',scr.main,const.background_color,const.left_propixx_hide)
+                % Screen('FillRect',scr.main,const.background_color,const.right_propixx_hide)
+                Screen('DrawLines',scr.main, const.line_fix_up_left, const.line_width, const.white, [], 1);
+                Screen('DrawLines',scr.main, const.line_fix_up_right, const.line_width, const.white, [], 1);
+                Screen('DrawLines',scr.main, const.line_fix_down_left, const.line_width, const.white, [], 1);
+                Screen('DrawLines',scr.main, const.line_fix_down_right, const.line_width, const.white, [], 1);
+                Screen('DrawingFinished',scr.main,[],1);
 
-                    if const.drawStimuli
-                        % plot and save the sreenshot
-                        Screen('Flip',scr.main);
-                        screen_stim             =   Screen('GetImage', scr.main,const.stim_rect,[],0,1);
-                    else
-                        % save the sreenshot
-                        screen_stim             =   Screen('GetImage', scr.main,const.stim_rect,'backBuffer',[],1);
-                    end
-                    screen_filename         =   sprintf('%s/%sprobe_spStim%i_contStim%i_kappaStim%i_stimOri-%i_noiseRand%i.mat',...
-                        const.stim_folder, sp_val_stim, contrast_val_stim, kappa_val_stim, stim_ori, noise_rand);
-                    save(screen_filename,'screen_stim')
-                    clear screen_stim
+                if const.drawStimuli
+                    % plot and save the sreenshot
+                    Screen('Flip',scr.main);
+                    screen_stim             =   Screen('GetImage', scr.main,const.stim_rect,[],0,1);
+                else
+                    % save the sreenshot
+                    screen_stim             =   Screen('GetImage', scr.main,const.stim_rect,'backBuffer',[],1);
+                end
+                screen_filename         =   sprintf('%s/%sprobe_spStim%i_contStim%i_kappaStim%i_noiseRand%i.mat',...
+                    const.stim_folder, sp_val_stim, contrast_val_stim, kappa_val_stim, noise_rand);
+                save(screen_filename,'screen_stim')
+                clear screen_stim
 
-                    numPrint                =   numPrint+1;
-                    textprogressbar(numPrint*100/total_amount);
+                numPrint                =   numPrint+1;
+                textprogressbar(numPrint*100/total_amount);
 
-            end
             % close opened texture
             Screen('Close',tex_stim);
 
@@ -169,7 +166,7 @@ for sp_val_stim = 1:sp_cut_num
             % make stim texture
             sp_sigma_val            =   const.sp_cutSigma;
             sp_center_val           =   const.sp_cutCenters(sp_val_stim);
-            contrast_val            =   const.mc_intervals(contrast_val_stim);
+            contrast_val            =   const.mc_values(contrast_val_stim);
             kappa_val               =   const.noise_kappa(1);
 
             mat_noise               =   genNoisePatch(const, sp_center_val, sp_sigma_val, kappa_val, contrast_val);

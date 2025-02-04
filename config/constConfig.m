@@ -32,6 +32,11 @@ const.ann_probe_color   =   const.white;                                        
 const.dot_color         =   const.white;                                                        % define fixation dot color
 const.dot_probe_color   =   const.black;                                                        % define fixation dot color when probe
 
+%% Time parameters
+const.TR_dur            =   1.6;                                                                % repetition time
+const.TR_num            =   (floor(const.TR_dur/scr.frame_duration));                           % repetition time in screen frames
+const.period_num       =   13;                                                                  % number of bar passes and break
+
 %% Stim parameters
 const.noise_num         =   10;                                                                 % number of generated patches 
 % Noise patches size 
@@ -61,8 +66,6 @@ const.rect_noise        =  [const.rect_center(1) - const.noise_size/2;...       
                             const.rect_center(1) + const.noise_size/2;...
                             const.rect_center(2) + const.noise_size/2];
 
-const.noise_angle = [45, -45, NaN];                                                             % noise rotation angles
-
 % Kappa and staircase
 const.native_noise_orientation = 90;                                                            % von misses original orientation
 const.num_steps_kappa   =   15;                                                                 % number of kappa steps
@@ -74,18 +77,18 @@ const.sp_maxFreq        =   20;                                                 
 const.sp_stepCut        =   6;                                                                  % number of spatial frequency cutoff 
 const.sp_overlapCut     =   0.6;                                                                % proportion of overlaping for the gaussian spatial frequency cutoff
 
-const.sp_cutCenters     = logspace(log10(const.sp_minFreq), ...                                 % centers (mu) of the gaussians spatial frequency cutoffs
-    log10(const.sp_maxFreq), const.sp_stepCut); 
+const.sp_cutCenters     = round(logspace(log10(const.sp_minFreq), ...                                 % centers (mu) of the gaussians spatial frequency cutoffs
+    log10(const.sp_maxFreq), const.sp_stepCut),2); 
 
 
 const.sp_logDiff        =   log10(const.sp_cutCenters(2)) - log10(const.sp_cutCenters(1));
 const.sp_cutSigma       =   sqrt(-const.sp_logDiff^2 / (4 * log(const.sp_overlapCut)));         % sigma (std) of the gaussians spatial frequency cutoffs
 
 % Michelson contrast
-const.mc_minCont = 0.025;                                                                       % minimal michelson contrast value     
+const.mc_minCont = 0.0025;                                                                      % minimal michelson contrast value     
 const.mc_maxCont = 0.8;                                                                         % maximal michelson contrast value
-const.mc_stepCont = 12;                                                                         % number of michelson contrast value
-const.mc_intervals = logspace(log10(const.mc_minCont), ...                                      % michelson contrast values
+const.mc_stepCont = 6;                                                                          % number of michelson contrast value
+const.mc_values = logspace(log10(const.mc_minCont), ...                                         % michelson contrast values
     log10(const.mc_maxCont), const.mc_stepCont);
 
 % Apertures
