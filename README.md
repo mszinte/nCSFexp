@@ -11,9 +11,8 @@ Sensitivity Function (nCSF) of visual cortical areas. Participants are instructe
 to fixate and report an orientation of the noise pattern presented on every TR.
 
 ## TO DO 
-- [x] function gennoisepatch
-- [ ] uptdate maketexture 
-- [ ] update constConfig
-- [ ] update designConfig 
-- [ ] update runExp
-- [x] Create overDone
+- [ ] update designConfig : take care of staircase
+- [ ] recheack dirSaveFile
+- [ ] create runTrial 
+- [ ] create runExp 
+
