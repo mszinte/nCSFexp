@@ -68,6 +68,8 @@ expDes.txt_rand1        =   {'cw','ccw','none'};
 
 % Staircase
 % ---------
+% To be done 
+
 
 % seq order
 % ---------
@@ -79,16 +81,17 @@ if const.runNum == 1
     end
 
     % create ascending or descending starting
-    expDes.first_contrast_gradient = expDes.threeV(randperm(length(expDes.threeV), 1));
+    expDes.gradient_sequence_order = expDes.threeV(randperm(length(expDes.threeV)));
  
     % Export sequence_order_file
     sp_sequence_order       =   expDes.sp_sequence_order;
-    first_contrast_gradient =   expDes.first_contrast_gradient
-    save(const.sequence_order_file, 'sp_sequence_order', 'first_contrast_gradient');
+    gradient_sequence_order =   expDes.gradient_sequence_order;
+
+    save(const.sequence_order_file, 'sp_sequence_order', 'gradient_sequence_order');
 else
     load(const.sequence_order_file);
     expDes.sp_sequence_order       =   sp_sequence_order;
-    expDes.first_contrast_gradient =   first_contrast_gradient;
+    expDes.gradient_sequence_order =   gradient_sequence_order;
 end
 
 
@@ -103,55 +106,55 @@ runT                    =   const.runNum;
 
 % Make sequence with brakes
 expDes.sp_brake_val = max(expDes.sp_sequence_order) + 1; 
-expDes.sp_sequence_order = [expDes.sp_brake_val; reshape([expDes.sp_sequence_order, expDes.sp_brake_val * ones(length(expDes.sp_sequence_order), 1)]', [], 1)];
+expDes.sp_sequence_order = [expDes.sp_brake_val;...
+    reshape([expDes.sp_sequence_order, expDes.sp_brake_val * ones(length(expDes.sp_sequence_order).. ...
+    , 1)]', [], 1)];
 
-
-
-
-% defind first contrast gradient
-if expDes.first_contrast_gradient == 1
-    gradient             =   expDes.twoV;
-    gradient_order_list  =   expDes.threeV;
+% Define the first contrast gradient
+if expDes.gradient_sequence_order(1) == 1
+    gradient             = expDes.twoV;
 else
-    gradient             =   flipud(expDes.twoV);
-    gradient_order_list  =   flipud(expDes.threeV);
+    gradient             = flipud(expDes.twoV);
 end
 
 t_trial = 0;
-for i = length(expDes.sp_sequence_order)
+
+loop_gradient_sequence_order = expDes.gradient_sequence_order;
+% Loop through the spatial sequence order
+for i = 1:length(expDes.sp_sequence_order)
     t_sp = expDes.sp_sequence_order(i);
-    spatial_frequency = expDes.sp_sequence_order(t_sp);
+    
+    % If spatial frequency is 7, apply a break condition
+    if t_sp == 7
+        t_cont          = 7;
+        t_ori           = 3;
+        t_cont_gradien  = 3;
+        t_trial        = t_trial + 1;
 
-    % brakes 
-    if spatial_frequency == 7;
-        contrast            =   7;
-        orientation         =   3;
-        sp_gradient         =   3;
-        gradient_order      =   3;
-        t_trial           =    t_trial + 1;
+        % Update expMat
+        expDes.expMat(t_trial, :) = [runT, t_trial, expDes.oneC(1), ...
+            t_sp, t_cont_gradien, t_cont, t_ori, ...
+            NaN, NaN, NaN, NaN, NaN, NaN];
 
-    % stim
+    % Otherwise, generate the stimulus
     else
         for ii = 1:length(expDes.twoV)
-            t_cont = expDes.twoV(ii);
-            gradient_order    =    gradient_order_list(1);
-            contrast          =    gradient(t_cont);
-            orientation       =    expDes.oneR(randperm(length(expDes.oneR), 1));
+            t_cont_gradien  = loop_gradient_sequence_order(1);
+            t_cont        = gradient(ii);
+            t_ori     = expDes.oneR(randperm(length(expDes.oneR), 1));
+            t_trial = t_trial + 1;
 
-            t_trial           =    t_trial + 1;
+            % Update expMat
+            expDes.expMat(t_trial, :) = [runT, t_trial, expDes.oneC(1), ...
+                t_sp, t_cont_gradien, t_cont, t_ori, ...
+                NaN, NaN, NaN, NaN, NaN, NaN];
 
         end
-
+        % Flip the gradient after each spatial frequency iteration
+        gradient = flipud(gradient);
+        loop_gradient_sequence_order = flipud(loop_gradient_sequence_order);
     end
-    expDes.expMat(t_trial,:) =   [runT, t_trial, expDes.oneC(1), ...
-    spatial_frequency, gradient_order, contrast, orientation, ...
-    NaN, NaN, NaN, NaN, NaN, NaN];
-    gradient = flipud(gradient);
 end
-
-
-
-
 % col 01:   Run number
 % col 02:   Trial number
 % col 03:   Task
@@ -166,4 +169,4 @@ end
 % col 12:   Probe time
 % col 13:   Response time
 
-end
+end 
