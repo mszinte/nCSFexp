@@ -107,7 +107,7 @@ runT                    =   const.runNum;
 % Make sequence with brakes
 expDes.sp_brake_val = max(expDes.sp_sequence_order) + 1; 
 expDes.sp_sequence_order = [expDes.sp_brake_val;...
-    reshape([expDes.sp_sequence_order, expDes.sp_brake_val * ones(length(expDes.sp_sequence_order).. ...
+    reshape([expDes.sp_sequence_order, expDes.sp_brake_val * ones(length(expDes.sp_sequence_order)...
     , 1)]', [], 1)];
 
 % Define the first contrast gradient
@@ -121,38 +121,46 @@ t_trial = 0;
 
 loop_gradient_sequence_order = expDes.gradient_sequence_order;
 % Loop through the spatial sequence order
-for i = 1:length(expDes.sp_sequence_order)
-    t_sp = expDes.sp_sequence_order(i);
+
+for i = 1:length(expDes.threeV)
+    if i ~= 1
+        gradient = flipud(gradient);
+        loop_gradient_sequence_order = flipud(loop_gradient_sequence_order);
+    end
+
+    for ii = 1:length(expDes.sp_sequence_order)
+        t_sp = expDes.sp_sequence_order(ii);
+        
+        % If spatial frequency is 7, apply a break condition
+        if t_sp == 7
+            t_cont          = 7;
+            t_ori           = 3;
+            t_cont_gradien  = 3;
+            t_trial        = t_trial + 1;
     
-    % If spatial frequency is 7, apply a break condition
-    if t_sp == 7
-        t_cont          = 7;
-        t_ori           = 3;
-        t_cont_gradien  = 3;
-        t_trial        = t_trial + 1;
-
-        % Update expMat
-        expDes.expMat(t_trial, :) = [runT, t_trial, expDes.oneC(1), ...
-            t_sp, t_cont_gradien, t_cont, t_ori, ...
-            NaN, NaN, NaN, NaN, NaN, NaN];
-
-    % Otherwise, generate the stimulus
-    else
-        for ii = 1:length(expDes.twoV)
-            t_cont_gradien  = loop_gradient_sequence_order(1);
-            t_cont        = gradient(ii);
-            t_ori     = expDes.oneR(randperm(length(expDes.oneR), 1));
-            t_trial = t_trial + 1;
-
             % Update expMat
             expDes.expMat(t_trial, :) = [runT, t_trial, expDes.oneC(1), ...
                 t_sp, t_cont_gradien, t_cont, t_ori, ...
                 NaN, NaN, NaN, NaN, NaN, NaN];
-
+    
+        % Otherwise, generate the stimulus
+        else
+            for iii = 1:length(expDes.twoV)
+                t_cont_gradien  = loop_gradient_sequence_order(1);
+                t_cont        = gradient(iii);
+                t_ori     = expDes.oneR(randperm(length(expDes.oneR), 1));
+                t_trial = t_trial + 1;
+    
+                % Update expMat
+                expDes.expMat(t_trial, :) = [runT, t_trial, expDes.oneC(1), ...
+                    t_sp, t_cont_gradien, t_cont, t_ori, ...
+                    NaN, NaN, NaN, NaN, NaN, NaN];
+    
+            end
+            % Flip the gradient after each spatial frequency iteration
+            gradient = flipud(gradient);
+            loop_gradient_sequence_order = flipud(loop_gradient_sequence_order);
         end
-        % Flip the gradient after each spatial frequency iteration
-        gradient = flipud(gradient);
-        loop_gradient_sequence_order = flipud(loop_gradient_sequence_order);
     end
 end
 % col 01:   Run number
