@@ -19,10 +19,12 @@ function [expDes]=designConfig(const)
 rng('default');rng('shuffle');
 
 %% Experimental random variables
+
 % Cond 1 : task (1 modality)
 % =======
 expDes.oneC             =   [1];
 expDes.txt_cond1        =   {'noise_patch'};
+% 01 = task on noise patch
 
 % Var 1 : Spatial Frequency (7 modalities)
 % ======
@@ -94,7 +96,6 @@ else
     expDes.gradient_sequence_order =   gradient_sequence_order;
 end
 
-
 %% Experimental configuration :
 expDes.nb_cond          =   1;
 expDes.nb_var           =   3;
@@ -117,12 +118,12 @@ else
     gradient             = flipud(expDes.twoV);
 end
 
-t_trial = 0;
-
-loop_gradient_sequence_order = expDes.gradient_sequence_order;
 % Loop through the spatial sequence order
+t_trial = 0;
+loop_gradient_sequence_order = expDes.gradient_sequence_order;
 
 for i = 1:length(expDes.threeV)
+    % flip the gradient after first sp serie 
     if i ~= 1
         gradient = flipud(gradient);
         loop_gradient_sequence_order = flipud(loop_gradient_sequence_order);
@@ -130,7 +131,6 @@ for i = 1:length(expDes.threeV)
 
     for ii = 1:length(expDes.sp_sequence_order)
         t_sp = expDes.sp_sequence_order(ii);
-        
         % If spatial frequency is 7, apply a break condition
         if t_sp == 7
             for j = 1:const.lenght_break
@@ -157,6 +157,20 @@ for i = 1:length(expDes.threeV)
                 expDes.expMat(t_trial, :) = [runT, t_trial, expDes.oneC(1), ...
                     t_sp, t_cont_gradien, t_cont, t_ori, ...
                     NaN, NaN, NaN, NaN, NaN, NaN];
+
+                % col 01:   Run number
+                % col 02:   Trial number
+                % col 03:   Task
+                % col 04:   Spatial frequency
+                % col 05:   Ascending or descending contrast
+                % col 06:   contrast
+                % col 07:   Stimulus noise orientation
+                % col 08:   Trial onset time
+                % col 09:   Trial offset time
+                % col 10:   Stimulus noise staircase value
+                % col 11:   Stimulus noise staircase value
+                % col 12:   Probe time
+                % col 13:   Response time
     
             end
             % Flip the gradient after each spatial frequency iteration
@@ -165,18 +179,7 @@ for i = 1:length(expDes.threeV)
         end
     end
 end
-% col 01:   Run number
-% col 02:   Trial number
-% col 03:   Task
-% col 04:   Spatial frequency
-% col 05:   Ascending or descending contrast
-% col 06:   contrast
-% col 07:   Stimulus noise orientation
-% col 08:   Trial onset time
-% col 09:   Trial offset time
-% col 10:   Stimulus noise staircase value
-% col 11:   Stimulus noise staircase value
-% col 12:   Probe time
-% col 13:   Response time
+
+expDes.nb_trials = size(expDes.expMat,1);
 
 end 
