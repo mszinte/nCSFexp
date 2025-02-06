@@ -133,15 +133,17 @@ for i = 1:length(expDes.threeV)
         
         % If spatial frequency is 7, apply a break condition
         if t_sp == 7
-            t_cont          = 7;
-            t_ori           = 3;
-            t_cont_gradien  = 3;
-            t_trial        = t_trial + 1;
-    
-            % Update expMat
-            expDes.expMat(t_trial, :) = [runT, t_trial, expDes.oneC(1), ...
-                t_sp, t_cont_gradien, t_cont, t_ori, ...
-                NaN, NaN, NaN, NaN, NaN, NaN];
+            for j = 1:const.lenght_break
+                t_cont          = 7;
+                t_ori           = 3;
+                t_cont_gradien  = 3;
+                t_trial        = t_trial + 1;
+        
+                % Update expMat
+                expDes.expMat(t_trial, :) = [runT, t_trial, expDes.oneC(1), ...
+                    t_sp, t_cont_gradien, t_cont, t_ori, ...
+                    NaN, NaN, NaN, NaN, NaN, NaN];
+            end
     
         % Otherwise, generate the stimulus
         else

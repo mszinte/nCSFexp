@@ -35,7 +35,7 @@ const.dot_probe_color   =   const.black;                                        
 %% Time parameters
 const.TR_dur            =   1.6;                                                                % repetition time
 const.TR_num            =   (floor(const.TR_dur/scr.frame_duration));                           % repetition time in screen frames
-const.period_num       =   13;                                                                  % number of bar passes and break
+const.lenght_break      =   2;                                                                  % duration of the break (in TR)
 
 %% Stim parameters
 const.noise_num         =   10;                                                                 % number of generated patches 
