@@ -31,7 +31,7 @@
 % First settings
 % --------------
 Screen('CloseAll');clear all;clear mex;clear functions;close all;home;AssertOpenGL;
-
+Screen('Preference', 'SkipSyncTests', 1);
 % General settings
 % ----------------
 const.expStart          =   0;              % Start of a recording exp                          0 = NO  , 1 = YES

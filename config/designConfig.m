@@ -20,12 +20,6 @@ rng('default');rng('shuffle');
 
 %% Experimental random variables
 
-% Cond 1 : task (1 modality)
-% =======
-expDes.oneC             =   [1];
-expDes.txt_cond1        =   {'noise_patch'};
-% 01 = task on noise patch
-
 % Var 1 : Spatial Frequency (7 modalities)
 % ======
 expDes.oneV             =   [1;2;3;4;5;6];
@@ -97,7 +91,7 @@ else
 end
 
 %% Experimental configuration :
-expDes.nb_cond          =   1;
+expDes.nb_cond          =   0;
 expDes.nb_var           =   3;
 expDes.nb_rand          =   1;
 expDes.nb_list          =   0;
@@ -140,7 +134,7 @@ for i = 1:length(expDes.threeV)
                 t_trial        = t_trial + 1;
         
                 % Update expMat
-                expDes.expMat(t_trial, :) = [runT, t_trial, expDes.oneC(1), ...
+                expDes.expMat(t_trial, :) = [runT, t_trial, ...
                     t_sp, t_cont_gradien, t_cont, t_ori, ...
                     NaN, NaN, NaN, NaN, NaN, NaN];
             end
@@ -154,13 +148,12 @@ for i = 1:length(expDes.threeV)
                 t_trial = t_trial + 1;
     
                 % Update expMat
-                expDes.expMat(t_trial, :) = [runT, t_trial, expDes.oneC(1), ...
+                expDes.expMat(t_trial, :) = [runT, t_trial, ...
                     t_sp, t_cont_gradien, t_cont, t_ori, ...
                     NaN, NaN, NaN, NaN, NaN, NaN];
 
                 % col 01:   Run number
                 % col 02:   Trial number
-                % col 03:   Task
                 % col 04:   Spatial frequency
                 % col 05:   Ascending or descending contrast
                 % col 06:   contrast
@@ -181,5 +174,10 @@ for i = 1:length(expDes.threeV)
 end
 
 expDes.nb_trials = size(expDes.expMat,1);
+
+% Define all drawing frames
+% -------------------------
+% const.nb_frames = expDes.nb_trials * scr.hz;
+
 
 end 
