@@ -50,7 +50,7 @@ const.add_output_file   =   sprintf('data/%s/%s/add/%s_%s_task-%s_%s',const.sjct
 % Define .mat saving file
 const.mat_file          =   sprintf('%s_matFile.mat',const.add_output_file);
 
-% Amplitude sequence file
+% Spatial frequency sequence file
 const.sequence_order_file    =   sprintf('data/%s/%s/add/%s_%s_task-%s%s_spSequence_matFile.mat',const.sjct,const.session,const.sjct,const.session,const.cond1_txt);
 
 % Staircase file

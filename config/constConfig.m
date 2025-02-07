@@ -35,7 +35,10 @@ const.dot_probe_color   =   const.black;                                        
 %% Time parameters
 const.TR_dur            =   1.6;                                                                % repetition time
 const.TR_num            =   (floor(const.TR_dur/scr.frame_duration));                           % repetition time in screen frames
-const.lenght_break      =   2;                                                                  % duration of the break (in TR)
+const.lenght_break      =   2;                                                                  % duration of breaks (in TR)
+
+const.noise_freq        =   10;                                                                 % compute noise frequency in hertz
+
 
 %% Stim parameters
 const.noise_num         =   10;                                                                 % number of generated patches 
@@ -119,9 +122,9 @@ const.fix_dot_probe     =   const.fix_dot;
 % Fixation lines
 const.line_width = const.fix_rad;                                               % fixation line width
 const.line_color = const.white;                                                 % fixation line color
-const.line_fix_up_left = [const.rect_center(1) - const.apt_rad,...                               % up left part of fix cross x start
+const.line_fix_up_left = [const.rect_center(1) - const.apt_rad,...              % up left part of fix cross x start
                           const.rect_center(1) - const.fix_out_rim_rad;....     % up left part of fix cross x end
-                          const.rect_center(2) - const.apt_rad,...                               % up left part of fix cross y start
+                          const.rect_center(2) - const.apt_rad,...              % up left part of fix cross y start
                           const.rect_center(2) - const.fix_out_rim_rad];        % up left part of fix cross y end
 
 const.line_fix_up_right = [const.rect_center(1) + const.fix_out_rim_rad,...     % up right part of fix cross x start
@@ -138,5 +141,6 @@ const.line_fix_down_right = [const.rect_center(1) + const.fix_out_rim_rad,...   
                              const.rect_center(1) + const.apt_rad;....          % down right part of fix cross x end
                              const.rect_center(2) + const.fix_out_rim_rad,...   % down right part of fix cross y start
                              const.rect_center(2) + const.apt_rad;];            % down right part of fix cross y end
+
 
 end
