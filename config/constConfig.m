@@ -18,7 +18,8 @@ function [const]=constConfig(scr,const)
 % ----------------------------------------------------------------------
  
 % Fix randomization
-rng(100);
+[const.seed, const.whichGen] = ClockRandSeed;
+rng(const.seed);
 
 %% Colors
 const.white             =   [255,255,255];                                                      % white color
