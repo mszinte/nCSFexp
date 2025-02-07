@@ -16,7 +16,8 @@ function [expDes]=designConfig(const)
 % Version : 1.0
 % ----------------------------------------------------------------------
 
-rng('default');rng('shuffle');
+% Fix randomization
+rng(const.seed);
 
 %% Experimental random variables
 
