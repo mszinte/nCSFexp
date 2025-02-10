@@ -117,7 +117,7 @@ end
 t_trial = 0;
 loop_gradient_sequence_order = expDes.gradient_sequence_order;
 
-for i = 1:length(expDes.threeV)
+for i = 1:const.repetition_sp_sequence
     % flip the gradient after first sp serie 
     if i ~= 1
         gradient = flipud(gradient);
@@ -128,7 +128,7 @@ for i = 1:length(expDes.threeV)
         t_sp = expDes.sp_sequence_order(ii);
         % If spatial frequency is 7, apply a break condition
         if t_sp == 7
-            for j = 1:const.lenght_break
+            for j = 1:const.length_break
                 t_cont          = 7;
                 t_ori           = 3;
                 t_cont_gradien  = 3;
@@ -175,10 +175,6 @@ for i = 1:length(expDes.threeV)
 end
 
 expDes.nb_trials = size(expDes.expMat,1);
-
-% Define all drawing frames
-% -------------------------
-% const.nb_frames = expDes.nb_trials * scr.hz;
 
 
 end 

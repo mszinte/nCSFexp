@@ -11,6 +11,9 @@ Sensitivity Function (nCSF) of visual cortical areas. Participants are instructe
 to fixate and report an orientation of the noise pattern presented on every TR.
 
 ## TO DO 
+- [ ] Correction on designConfig for pause 
+- [ ] Take care of random process 
+
 - [ ] update designConfig : take care of staircase
 - [ ] recheack dirSaveFile
 - [ ] create runTrial 
