@@ -36,13 +36,13 @@ const.dot_probe_color   =   const.black;                                        
 %% Time parameters
 const.TR_dur            =   1.6;                                                                % repetition time
 const.TR_num            =   (floor(const.TR_dur/scr.frame_duration));                           % repetition time in screen frames
-const.lenght_break      =   2;                                                                  % duration of breaks (in TR)
 
 const.noise_freq        =   10;                                                                 % compute noise frequency in hertz
-
+const.patch_dur         =   1/const.noise_freq;                                                 % compute single patch duration in seconds
+const.TR_num_noise      =   (floor(const.TR_dur/const.patch_dur));                              % repetition time in noise frames
 
 %% Stim parameters
-const.noise_num         =   10;                                                                 % number of generated patches 
+% const.noise_num         =   10;                                                                 % number of generated patches 
 % Noise patches size 
 const.noise_pixel       =   1;                                                                  % stimulus noise pixel size in pixels
 const.stim_size         =   [scr.scr_sizeY,scr.scr_sizeY];                                      % full screen stimuli size in pixels
@@ -53,7 +53,7 @@ const.native_noise_dim  =   round([const.noise_size/const.noise_pixel,...       
 const.noise_dpp         =   scr.screen_dpp(1) * const.noise_pixel;                              % stimulus noise pixel size in degrees                                                                
 
 % Noise patches position
-const.stim_rect = [scr.x_mid - const.noise_size/2;...                       % rect of the actual stimulus
+const.stim_rect = [scr.x_mid - const.noise_size/2;...                                           % rect of the actual stimulus
     scr.y_mid - const.noise_size/2;...
     scr.x_mid + const.noise_size/2;...
     scr.y_mid + const.noise_size/2];
@@ -80,8 +80,9 @@ const.sp_minFreq        =   0.5;                                                
 const.sp_maxFreq        =   20;                                                                 % maximal spatial frequency cutoff in cycle/DVA
 const.sp_stepCut        =   6;                                                                  % number of spatial frequency cutoff 
 const.sp_overlapCut     =   0.6;                                                                % proportion of overlaping for the gaussian spatial frequency cutoff
+const.repetition_sp_sequence = 2;                                                               % number of repetition of de spatial frequency sequence (for ascending and descending contrast gradient)
 
-const.sp_cutCenters     = round(logspace(log10(const.sp_minFreq), ...                                 % centers (mu) of the gaussians spatial frequency cutoffs
+const.sp_cutCenters     = round(logspace(log10(const.sp_minFreq), ...                           % centers (mu) of the gaussians spatial frequency cutoffs
     log10(const.sp_maxFreq), const.sp_stepCut),2); 
 
 
@@ -90,10 +91,14 @@ const.sp_cutSigma       =   sqrt(-const.sp_logDiff^2 / (4 * log(const.sp_overlap
 
 % Michelson contrast
 const.mc_minCont = 0.0025;                                                                      % minimal michelson contrast value     
-const.mc_maxCont = 0.8;                                                                         % maximal michelson contrast value
-const.mc_stepCont = 6;                                                                          % number of michelson contrast value
+    const.mc_maxCont = 0.8;                                                                         % maximal michelson contrast value
+    const.mc_stepCont = 6;                                                                          % number of michelson contrast value
 const.mc_values = logspace(log10(const.mc_minCont), ...                                         % michelson contrast values
     log10(const.mc_maxCont), const.mc_stepCont);
+
+% Brakes 
+const.num_break         =   const.sp_stepCut + 1;                                               % number of brakes 
+const.length_break      =   2;                                                                  % duration of breaks (in TR)
 
 % Apertures
 const.apt_rad_val       =   6.5;                                                                % aperture stimuli radius in dva
@@ -121,27 +126,45 @@ const.fix_dot           =   compFixDot(const);
 const.fix_dot_probe     =   const.fix_dot;
 
 % Fixation lines
-const.line_width = const.fix_rad;                                               % fixation line width
-const.line_color = const.white;                                                 % fixation line color
-const.line_fix_up_left = [const.rect_center(1) - const.apt_rad,...              % up left part of fix cross x start
-                          const.rect_center(1) - const.fix_out_rim_rad;....     % up left part of fix cross x end
-                          const.rect_center(2) - const.apt_rad,...              % up left part of fix cross y start
-                          const.rect_center(2) - const.fix_out_rim_rad];        % up left part of fix cross y end
+const.line_width = const.fix_rad;                                                               % fixation line width
+const.line_color = const.white;                                                                 % fixation line color
+const.line_fix_up_left = [const.rect_center(1) - const.apt_rad,...                              % up left part of fix cross x start
+                          const.rect_center(1) - const.fix_out_rim_rad;....                     % up left part of fix cross x end
+                          const.rect_center(2) - const.apt_rad,...                              % up left part of fix cross y start
+                          const.rect_center(2) - const.fix_out_rim_rad];                        % up left part of fix cross y end
 
-const.line_fix_up_right = [const.rect_center(1) + const.fix_out_rim_rad,...     % up right part of fix cross x start
-                           const.rect_center(1) + const.apt_rad;....            % up right part of fix cross x end
-                           const.rect_center(2) - const.fix_out_rim_rad,...     % up right part of fix cross y start
-                           const.rect_center(2) - const.apt_rad];               % up right part of fix cross y end
+const.line_fix_up_right = [const.rect_center(1) + const.fix_out_rim_rad,...                     % up right part of fix cross x start
+                           const.rect_center(1) + const.apt_rad;....                            % up right part of fix cross x end
+                           const.rect_center(2) - const.fix_out_rim_rad,...                     % up right part of fix cross y start
+                           const.rect_center(2) - const.apt_rad];                               % up right part of fix cross y end
                        
-const.line_fix_down_left = [const.rect_center(1) - const.apt_rad,...            % down left part of fix cross x start
-                            const.rect_center(1) - const.fix_out_rim_rad;....   % down left part of fix cross x end
-                            const.rect_center(2) + const.apt_rad,...            % down left part of fix cross y start
-                            const.rect_center(2) + const.fix_out_rim_rad];      % down left part of fix cross y end
+const.line_fix_down_left = [const.rect_center(1) - const.apt_rad,...                            % down left part of fix cross x start
+                            const.rect_center(1) - const.fix_out_rim_rad;....                   % down left part of fix cross x end
+                            const.rect_center(2) + const.apt_rad,...                            % down left part of fix cross y start
+                            const.rect_center(2) + const.fix_out_rim_rad];                      % down left part of fix cross y end
 
-const.line_fix_down_right = [const.rect_center(1) + const.fix_out_rim_rad,...   % down right part of fix cross x start
-                             const.rect_center(1) + const.apt_rad;....          % down right part of fix cross x end
-                             const.rect_center(2) + const.fix_out_rim_rad,...   % down right part of fix cross y start
-                             const.rect_center(2) + const.apt_rad;];            % down right part of fix cross y end
+const.line_fix_down_right = [const.rect_center(1) + const.fix_out_rim_rad,...                   % down right part of fix cross x start
+                             const.rect_center(1) + const.apt_rad;....                          % down right part of fix cross x end
+                             const.rect_center(2) + const.fix_out_rim_rad,...                   % down right part of fix cross y start
+                             const.rect_center(2) + const.apt_rad;];                            % down right part of fix cross y end
 
+% Define all drawing frames
+% -------------------------
+% Calculate the total number of stimulation periods
+const.num_stim_periods = const.sp_stepCut * const.repetition_sp_sequence;
+
+% Create a pause block and a stimulation block
+pause_block = zeros(const.length_break, 1);
+stim_block = ones(const.mc_stepCont, 1);
+
+% Preallocate the final sequence vector
+single_cycle = [pause_block; stim_block];
+const.stim_sequence_tr_freq = repmat(single_cycle, const.num_stim_periods, 1);
+
+% Add the final pause
+const.stim_sequence_tr_freq = [const.stim_sequence_tr_freq; pause_block];
+
+% Expand the final vector using repelem
+const.stim_sequence_noise_freq = repelem(const.stim_sequence_tr_freq, const.TR_num_noise);
 
 end
