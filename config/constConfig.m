@@ -150,21 +150,61 @@ const.line_fix_down_right = [const.rect_center(1) + const.fix_out_rim_rad,...   
 
 % Define all drawing frames
 % -------------------------
+const.nb_trials_noise_freq = ((const.sp_stepCut * const.mc_stepCont + ...
+    const.length_break * const.num_break) * 2 - const.length_break) * const.TR_num_noise;
+
 % Calculate the total number of stimulation periods
 const.num_stim_periods = const.sp_stepCut * const.repetition_sp_sequence;
 
 % Create a pause block and a stimulation block
-pause_block = zeros(const.length_break, 1);
-stim_block = ones(const.mc_stepCont, 1);
+break_trial_TR_freq = zeros(const.length_break, 1);
+stim_block_TR_freq = ones(const.mc_stepCont, 1);
 
 % Preallocate the final sequence vector
-single_cycle = [pause_block; stim_block];
+single_cycle = [break_trial_TR_freq; stim_block_TR_freq];
 const.stim_sequence_tr_freq = repmat(single_cycle, const.num_stim_periods, 1);
 
 % Add the final pause
-const.stim_sequence_tr_freq = [const.stim_sequence_tr_freq; pause_block];
+const.stim_sequence_tr_freq = [const.stim_sequence_tr_freq; break_trial_TR_freq];
 
-% Expand the final vector using repelem
+% Convert in noise frequence 
 const.stim_sequence_noise_freq = repelem(const.stim_sequence_tr_freq, const.TR_num_noise);
+  
+% Trial vecteur
+const.trial_start = zeros(const.nb_trials_noise_freq, 1);
+const.trial_start(mod(1:const.nb_trials_noise_freq, const.TR_num_noise) == 0) = 1;
+
+
+% make probe time
+const.prob_length = const.TR_num_noise / 2;
+const.no_prob_length = (const.TR_num_noise - const.prob_length) / 2;
+const.resp_length = const.prob_length + const.no_prob_length;
+
+const.prob_trial = [zeros(1, const.no_prob_length), ones(1, const.prob_length), zeros(1, const.no_prob_length)];
+const.prob_onset_trial = [zeros(1, const.no_prob_length), ones(1, 1), zeros(1, const.prob_length - 1 + const.no_prob_length)];
+const.resp_trial = [zeros(1, const.no_prob_length), ones(1, const.resp_length)];
+
+const.break_trial_noise_freq = zeros(const.TR_num_noise, 1);
+
+const.resp_reset_trial = [zeros(const.TR_num_noise-1, 1); 1];
+
+const.time2prob = []; 
+const.probe_onset = [];
+const.time2resp = [];
+const.resp_reset = [];
+for i = 1:length(const.stim_sequence_tr_freq)
+    if const.stim_sequence_tr_freq(i) == 0
+        const.time2prob = [const.time2prob(:); const.break_trial_noise_freq(:)]; 
+        const.probe_onset = [const.probe_onset(:); const.break_trial_noise_freq(:)]; 
+        const.time2resp = [const.time2resp(:); const.break_trial_noise_freq(:)];
+        const.resp_reset = [const.resp_reset(:); const.break_trial_noise_freq(:)];
+    elseif const.stim_sequence_tr_freq(i) == 1
+        const.time2prob = [const.time2prob(:); const.prob_trial(:)]; 
+        const.probe_onset = [const.probe_onset(:); const.prob_onset_trial(:)]; 
+        const.time2resp = [const.time2resp(:); const.resp_trial(:)];
+        const.resp_reset = [const.resp_reset(:); const.resp_reset_trial(:)];
+    end
+end
+
 
 end
