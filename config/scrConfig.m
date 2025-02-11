@@ -34,14 +34,21 @@ if const.room == 1
     scr.disp_sizeX = 773;                       % setting for BOLDScreen32' 7T in mm
     scr.disp_sizeY = 435;                       % setting for BOLDScreen32' 7T in mm
     
-    scr.disp_margin_top = 7.05;                 % top margin where projection screen is not visible in cm (175 px on ruler)
-    scr.disp_margin_bottom = 12.08;             % bottom margin where projection screen is not visible in cm
-
+    % Set marge to 0 for video
+    if const.mkVideo == 1
+        scr.disp_margin_top = 0;                 
+        scr.disp_margin_bottom = 0; 
+    else
+        scr.disp_margin_top = 7.05;                 % top margin where projection screen is not visible in cm (175 px on ruler)
+        scr.disp_margin_bottom = 12.08;             % bottom margin where projection screen is not visible in cm
+    end 
 elseif const.room == 2
     % Settings eyelink room
     % ---------------------
     scr.disp_sizeX = 696;                       % setting for Display ++ INT
     scr.disp_sizeY = 391;                       % setting for Display ++ INT
+    scr.disp_margin_top = 0;                 
+    scr.disp_margin_bottom = 0; 
 end
 
 % Pixels size:
