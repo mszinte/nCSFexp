@@ -148,46 +148,39 @@ const.line_fix_down_right = [const.rect_center(1) + const.fix_out_rim_rad,...   
                              const.rect_center(2) + const.fix_out_rim_rad,...                   % down right part of fix cross y start
                              const.rect_center(2) + const.apt_rad;];                            % down right part of fix cross y end
 
-% Define all drawing frames
-% -------------------------
-const.nb_trials_noise_freq = ((const.sp_stepCut * const.mc_stepCont + ...
+%% Define all drawing frames
+const.nb_trials_noise_freq = ((const.sp_stepCut * const.mc_stepCont + ...                       % total ammount of trials in noise frequence  
     const.length_break * const.num_break) * 2 - const.length_break) * const.TR_num_noise;
+const.num_stim_periods = const.sp_stepCut * const.repetition_sp_sequence;                       % number of stimulation period
 
-% Calculate the total number of stimulation periods
-const.num_stim_periods = const.sp_stepCut * const.repetition_sp_sequence;
-
-% Create a pause block and a stimulation block
-break_trial_TR_freq = zeros(const.length_break, 1);
-stim_block_TR_freq = ones(const.mc_stepCont, 1);
-
-% Preallocate the final sequence vector
-single_cycle = [break_trial_TR_freq; stim_block_TR_freq];
-const.stim_sequence_tr_freq = repmat(single_cycle, const.num_stim_periods, 1);
-
-% Add the final pause
-const.stim_sequence_tr_freq = [const.stim_sequence_tr_freq; break_trial_TR_freq];
-
-% Convert in noise frequence 
-const.stim_sequence_noise_freq = repelem(const.stim_sequence_tr_freq, const.TR_num_noise);
+% stimulation sequence
+const.break_trial_TR_freq = zeros(const.length_break, 1);                                       % break block in TR
+const.stim_block_TR_freq = ones(const.mc_stepCont, 1);                                          % stim block in TR
+const.break_stim_cycle_tr_freq = [const.break_trial_TR_freq; const.stim_block_TR_freq];         % break / stim cycle in TR
+const.stim_sequence_tr_freq = repmat(const.break_stim_cycle_tr_freq,...                         % stimulation sequence in TR
+    const.num_stim_periods, 1);
+const.stim_sequence_tr_freq = [const.stim_sequence_tr_freq; const.break_trial_TR_freq];         % stimulation sequence in TR with final break
+const.stim_sequence_noise_freq = repelem(const.stim_sequence_tr_freq, const.TR_num_noise);      % stimulation sequence in noise frequence
   
 % Trial vecteur
 const.trial_start = zeros(const.nb_trials_noise_freq, 1);
-const.trial_start(mod(1:const.nb_trials_noise_freq, const.TR_num_noise) == 0) = 1;
+const.trial_start(mod(1:const.nb_trials_noise_freq, const.TR_num_noise) == 0) = 1;              % Timing for trial start in noise freq
 
+% Prob and resp timing in one trial
+const.prob_length = const.TR_num_noise / 2;                                                     % length of prob in noise freq
+const.no_prob_length = (const.TR_num_noise - const.prob_length) / 2;                            % length of no prob in noise freq
+const.resp_length = const.prob_length + const.no_prob_length;                                   % length of reponse window in noise freq
 
-% make probe time
-const.prob_length = const.TR_num_noise / 2;
-const.no_prob_length = (const.TR_num_noise - const.prob_length) / 2;
-const.resp_length = const.prob_length + const.no_prob_length;
+const.prob_trial = [zeros(1, const.no_prob_length),...                                          % one trial with prob in noise freq
+    ones(1, const.prob_length), zeros(1, const.no_prob_length)];                                
+const.prob_onset_trial = [zeros(1, const.no_prob_length),...                                    % onset of prob in one trial in noise freq
+    ones(1, 1), zeros(1, const.prob_length - 1 + const.no_prob_length)];                        
+const.resp_trial = [zeros(1, const.no_prob_length),...                                          % repons window in one trial in noise freq
+    ones(1, const.resp_length)];
+const.break_trial_noise_freq = zeros(const.TR_num_noise, 1);                                    % one break trial in noise freq
+const.resp_reset_trial = [zeros(const.TR_num_noise-1, 1); 1];                                   % timing for reset answer window in one trial in noise freq
 
-const.prob_trial = [zeros(1, const.no_prob_length), ones(1, const.prob_length), zeros(1, const.no_prob_length)];
-const.prob_onset_trial = [zeros(1, const.no_prob_length), ones(1, 1), zeros(1, const.prob_length - 1 + const.no_prob_length)];
-const.resp_trial = [zeros(1, const.no_prob_length), ones(1, const.resp_length)];
-
-const.break_trial_noise_freq = zeros(const.TR_num_noise, 1);
-
-const.resp_reset_trial = [zeros(const.TR_num_noise-1, 1); 1];
-
+% Make sequence 
 const.time2prob = []; 
 const.probe_onset = [];
 const.time2resp = [];
@@ -205,6 +198,4 @@ for i = 1:length(const.stim_sequence_tr_freq)
         const.resp_reset = [const.resp_reset(:); const.resp_reset_trial(:)];
     end
 end
-
-
 end

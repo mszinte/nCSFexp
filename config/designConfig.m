@@ -67,17 +67,13 @@ expDes.txt_rand1        =   {'cw','ccw','none'};
 % ---------
 % To be done 
 
-
 % seq order
 % ---------
 if const.runNum == 1
     % create spatial frequency sequence order
-    while true
-        expDes.sp_sequence_order = expDes.oneV(randperm(const.sp_stepCut));
-        if all(abs(diff(expDes.sp_sequence_order)) > 1), break; end
-    end
+    expDes.sp_sequence_order = randDraw(expDes.oneV, const.repetition_sp_sequence);
 
-    % create ascending or descending starting
+    % ascending or descending first contrast gradient
     expDes.gradient_sequence_order = expDes.threeV(randperm(length(expDes.threeV)));
  
     % Export sequence_order_file
@@ -100,9 +96,9 @@ expDes.nb_list          =   0;
 %% Experimental loop
 runT                    =   const.runNum;
 
-% Make sequence with brakes
-expDes.sp_brake_val = max(expDes.sp_sequence_order) + 1; 
-expDes.sp_sequence_order = [expDes.sp_brake_val;...
+% introduce brakes between spatial frequency
+expDes.sp_brake_val = max(expDes.oneV) + 1; 
+expDes.sp_sequence_order_with_brakes = [expDes.sp_brake_val;...
     reshape([expDes.sp_sequence_order, expDes.sp_brake_val * ones(length(expDes.sp_sequence_order)...
     , 1)]', [], 1)];
 
@@ -113,68 +109,58 @@ else
     gradient             = flipud(expDes.twoV);
 end
 
-% Loop through the spatial sequence order
 t_trial = 0;
 loop_gradient_sequence_order = expDes.gradient_sequence_order;
+% Loop through the spatial sequence 
+for ii = 1:length(expDes.sp_sequence_order_with_brakes)
+    t_sp = expDes.sp_sequence_order_with_brakes(ii);
+    % If spatial frequency is 7, apply a break 
+    if t_sp == 7
+        for j = 1:const.length_break
+            t_cont          = 7;
+            t_ori           = 3;
+            t_cont_gradien  = 3;
+            t_trial        = t_trial + 1;
+    
+            % Update expMat
+            expDes.expMat(t_trial, :) = [runT, t_trial, ...
+                t_sp, t_cont_gradien, t_cont, t_ori, ...
+                NaN, NaN, NaN, NaN, NaN, NaN];
+        end
 
-for i = 1:const.repetition_sp_sequence
-    % flip the gradient after first sp serie 
-    if i ~= 1
+    % Otherwise, generate contrast gradient
+    else
+        % loop over the contrast
+        for iii = 1:length(expDes.twoV)
+            t_cont_gradien  = loop_gradient_sequence_order(1);
+            t_cont        = gradient(iii);
+            t_ori     = expDes.oneR(randperm(length(expDes.oneR), 1));
+            t_trial = t_trial + 1;
+
+            % Update expMat
+            expDes.expMat(t_trial, :) = [runT, t_trial, ...
+                t_sp, t_cont_gradien, t_cont, t_ori, ...
+                NaN, NaN, NaN, NaN, NaN, NaN];
+
+            % col 01:   Run number
+            % col 02:   Trial number
+            % col 04:   Spatial frequency
+            % col 05:   Ascending or descending contrast
+            % col 06:   contrast
+            % col 07:   Stimulus noise orientation
+            % col 08:   Trial onset time
+            % col 09:   Trial offset time
+            % col 10:   Stimulus noise staircase value
+            % col 11:   Stimulus noise staircase value
+            % col 12:   Probe time
+            % col 13:   Response time
+
+        end
+        % Flip the gradient after each spatial frequency iteration
         gradient = flipud(gradient);
         loop_gradient_sequence_order = flipud(loop_gradient_sequence_order);
     end
-
-    for ii = 1:length(expDes.sp_sequence_order)
-        t_sp = expDes.sp_sequence_order(ii);
-        % If spatial frequency is 7, apply a break condition
-        if t_sp == 7
-            for j = 1:const.length_break
-                t_cont          = 7;
-                t_ori           = 3;
-                t_cont_gradien  = 3;
-                t_trial        = t_trial + 1;
-        
-                % Update expMat
-                expDes.expMat(t_trial, :) = [runT, t_trial, ...
-                    t_sp, t_cont_gradien, t_cont, t_ori, ...
-                    NaN, NaN, NaN, NaN, NaN, NaN];
-            end
-    
-        % Otherwise, generate the stimulus
-        else
-            for iii = 1:length(expDes.twoV)
-                t_cont_gradien  = loop_gradient_sequence_order(1);
-                t_cont        = gradient(iii);
-                t_ori     = expDes.oneR(randperm(length(expDes.oneR), 1));
-                t_trial = t_trial + 1;
-    
-                % Update expMat
-                expDes.expMat(t_trial, :) = [runT, t_trial, ...
-                    t_sp, t_cont_gradien, t_cont, t_ori, ...
-                    NaN, NaN, NaN, NaN, NaN, NaN];
-
-                % col 01:   Run number
-                % col 02:   Trial number
-                % col 04:   Spatial frequency
-                % col 05:   Ascending or descending contrast
-                % col 06:   contrast
-                % col 07:   Stimulus noise orientation
-                % col 08:   Trial onset time
-                % col 09:   Trial offset time
-                % col 10:   Stimulus noise staircase value
-                % col 11:   Stimulus noise staircase value
-                % col 12:   Probe time
-                % col 13:   Response time
-    
-            end
-            % Flip the gradient after each spatial frequency iteration
-            gradient = flipud(gradient);
-            loop_gradient_sequence_order = flipud(loop_gradient_sequence_order);
-        end
-    end
 end
-
 expDes.nb_trials = size(expDes.expMat,1);
-
-
 end 
+
