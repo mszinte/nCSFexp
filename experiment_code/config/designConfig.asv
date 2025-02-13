@@ -149,17 +149,15 @@ expDes.txt_rand1 = {'cw', 'ccw', 'none'};
 
 expDes.expMat = zeros(const.nb_trials,  12);
 constrast_seqs = [];
-sf_seqs = [];
 sf_ascending = randperm(const.sp_stepCut);
 sf_descending = randperm(const.sp_stepCut);
 
-num_seq_ascending = 0;
 for seq = expDes.sequences
-    
+    num_seq = num_seq + 1;
     if seq == 1 % ascending
-        num_seq_ascending = num_seq_ascending + 1;
+        %trial_seq = linspace(1, const.mc_stepCont, const.mc_stepCont);
         constrast_seq = linspace(1, const.mc_stepCont, const.mc_stepCont);
-        sf_seq = repmat(sf_ascending(num_seq_ascending), 1, const.mc_stepCont);
+        sf_seq = 
     elseif seq == 2 % descending
         constrast_seq = linspace(const.mc_stepCont, 1, const.mc_stepCont);
         
@@ -169,7 +167,6 @@ for seq = expDes.sequences
     end
     
     constrast_seqs = [constrast_seqs; constrast_seq'];
-    sf_seqs = [sf_seqs; sf_seq'];
 end
 
 end

@@ -3,25 +3,22 @@ function [scr] = scrConfig(const)
 % [scr] = scrConfig(const)
 % ----------------------------------------------------------------------
 % Goal of the function :
-% Define configuration relative to the screen.
+%   Define configuration relative to the screen.
 % ----------------------------------------------------------------------
 % Input(s) :
-% const : struct containing constant configurations
+%   const : struct containing constant configurations
 % ----------------------------------------------------------------------
 % Output(s):
-% scr : struct containing screen configurations
+%   scr : struct containing screen configurations
 % ----------------------------------------------------------------------
 % Function created by Martin SZINTE (martin.szinte@gmail.com)
 % Project : nCSFexp
+% Version : 1.0
 % ----------------------------------------------------------------------
 
 % Number of the experimental screen:
 scr.all = Screen('Screens');
-if size(scr.all,2) > 1 
-    scr.scr_num = min(scr.all)+1;
-else
-    scr.scr_num = min(scr.all);
-end
+scr.scr_num = min(scr.all)+1;
 
 % Screen resolution (pixel):
 [scr.scr_sizeX, scr.scr_sizeY] = Screen('WindowSize', scr.scr_num);
@@ -36,27 +33,26 @@ if const.room == 1
     scr.disp_sizeX = 773;                       % projection screen in mm
     scr.disp_sizeY = 435;                       % projection screen in mm
     scr.dist = 102;                             % screen distance in cm
-    scr.x_mid = (scr.scr_sizeX / 2.0);          
-    scr.y_mid = (scr.scr_sizeY / 2.0);
-    scr.mid = [scr.x_mid, scr.y_mid];
-    scr.disp_margin_top = 175;                  % not visible top part in pixel (using others/ruler_ver.png)
-    scr.disp_margin_bottom = 300;               % not visible bottom part in pixel (using others/ruler_ver.png)
-    
-    % Set margin to 0 for demo
-    if const.mkVideo == 1
-        scr.disp_margin_top = 0;
-        scr.disp_margin_bottom = 0;
-    end
-   
-elseif const.room == 2
-    % Settings for INT room
-    % ---------------------
-    scr.disp_sizeX = 696;                       % Display ++ INT
-    scr.disp_sizeY = 391;                       % Display ++ INT
-    scr.dist = 102;                             % screen distance in cm
     scr.x_mid = (scr.scr_sizeX / 2.0);
     scr.y_mid = (scr.scr_sizeY / 2.0);
     scr.mid = [scr.x_mid, scr.y_mid];
+    scr.disp_margin_top = 175;                  % top margin where projection screen is not visible in cm (175 px on ruler)
+    scr.disp_margin_bottom = 300; % bottom margin where projection screen is not visible in cm
+    
+    
+    
+    % Set margin to 0 for video recordings:
+    if const.mkVideo == 1
+        scr.disp_margin_top = 0;
+        scr.disp_margin_bottom = 0;
+    else
+        
+    end 
+elseif const.room == 2
+    % Settings for Eyelink room
+    % --------------------------
+    scr.disp_sizeX = 696; % Display ++ INT
+    scr.disp_sizeY = 391;
     scr.disp_margin_top = 0;
     scr.disp_margin_bottom = 0;
 end
@@ -80,9 +76,9 @@ end
 
 % Screen preferences:
 if ~const.expStart
-    Screen('Preference', 'SkipSyncTests', 1);
     Screen('Preference', 'VisualDebugLevel', 0);
     Screen('Preference', 'SyncTestSettings', 0.01, 50, 0.25);
+    % Screen('Preference', 'SkipSyncTests', 1);
 else
     Screen('Preference', 'VisualDebugLevel', 0);
     Screen('Preference', 'SyncTestSettings', 0.01, 50, 0.25);
@@ -90,4 +86,21 @@ else
     Screen('Preference', 'Verbosity', 0);
 end
 
+% Subject distance & screen center calculation:
+if const.room == 1
+    % Settings for 7T MRI room
+    % --------------------------
+    
+    
+elseif const.room == 2
+    % Settings for Eyelink room
+    % --------------------------
+    scr.dist = 108;  % general screen distance in cm (to mimic screen scanner)
+    scr.x_mid = (scr.scr_sizeX / 2.0);
+    scr.y_mid = (scr.scr_sizeY / 2.0);
+    scr.mid = [scr.x_mid, scr.y_mid];
+end
+
+% Compute size of one screen pixel in degree of visual angle (DVA)
+scr.screen_dpp = pix2vaDeg(1, scr);  
 end

@@ -141,9 +141,14 @@ const.line_fix_down_right = [const.rect_center(1) + const.fix_out_rim_rad,...% d
     const.rect_center(2) + const.apt_rad;];                                 % down right part of fix cross y end
 
 %% Define all drawing frames
-const.nb_trials = const.sp_stepCut * const.mc_stepCont * 2 + ...            % total ammount of trials
-    const.num_break * const.break_trs;
-const.nb_trials_noise_freq = const.nb_trials * const.TR_num_noise;          % total ammount of trials in noise frequence
+const.nb_trials = const.sp_stepCut * const.mc_stepCont * 2 + const.num_break * const.break_trs
+ 
+((* const.mc_stepCont + ...              % total ammount of trials in noise frequence
+    const.break_trs * const.num_break) * 2 - const.break_trs);
+
+const.nb_trials_noise_freq = ((const.sp_stepCut * const.mc_stepCont + ...   % total ammount of trials in noise frequence
+    const.break_trs * const.num_break) * 2 - const.break_trs) ...
+    * const.TR_num_noise;
 const.num_stim_periods = const.sp_stepCut * const.repetition_sp_sequence;   % number of stimulation period
 
 % stimulation sequence
