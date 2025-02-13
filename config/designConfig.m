@@ -47,7 +47,7 @@ expDes.txt_var2         =   {'0.25 %','0.79 %','2.51 %','7.96 %','25.24 %','80.0
 % 06 = 80.00 %
 % 07 = none
 
-% Var 3 : ascending or descending contrast (3 modalities)
+% Var 3 : ascending or descending contrast gradient (3 modalities)
 % ======
 expDes.threeV           =   [1;2];
 expDes.txt_var3         =   {'ascending','descending', 'none'};
