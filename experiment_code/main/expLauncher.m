@@ -27,6 +27,7 @@ AssertOpenGL;
 
 % General settings
 % ----------------
+const.task = 'nCSF';                        % Name of the task
 const.expStart = 0;                         % Start of a recording exp                          0 = NO  , 1 = YES
 const.checkTrial = 0;                       % Print trial conditions (for debugging)            0 = NO  , 1 = YES
 const.genStimuli = 1;                       % Generate the stimuli                              0 = NO  , 1 = YES
@@ -54,8 +55,7 @@ cd(dir(1:end-18));
 
 % Add Matlab path
 % ---------------
-addpath('config', 'main', 'conversion', 'instructions', 'trials', ...
-    'stim', 'stats');
+addpath('config', 'main', 'conversion', 'instructions', 'trials', 'stim');
 
 % Subject configuration
 % ---------------------

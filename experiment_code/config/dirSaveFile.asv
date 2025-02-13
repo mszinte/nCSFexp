@@ -28,6 +28,11 @@ const.dat_output_file = sprintf('data/%s/%s/%s/%s_%s_task-%s_%s',...
     const.sjct, const.session, const.modality, const.sjct, ...
     const.session, const.task, const.run);
 
+% Define eye data filename
+const.eyetrack_temp_file = 'XX.edf';
+const.eyetrack_local_file = sprintf('%s_eyetrack.edf', ...
+    const.dat_output_file);
+
 % Define behavioral data filename
 const.behav_file = sprintf('%s_events.tsv', const.dat_output_file);
 if const.expStart
@@ -48,17 +53,27 @@ const.behav_file_fid = fopen(const.behav_file, 'w');
 const.mat_file = sprintf('%s_matlab.mat', const.dat_output_file);
 
 % Spatial frequency sequence file
-const.sequence_order_file = sprintf('%s_spSequence.mat', ...
+const.sequence_order_file = sprintf('_spSequence_matFile.mat', ...
     const.dat_output_file);
 
 % Staircase file
-const.staircase_file = sprintf('%s_staircases.mat', const.dat_output_file);
+const.staircase_file = sprintf('data/%s/%s/add/%s_staircases.mat', ...
+    const.sjct, const.session, const.sjct);
 
 % Define .mat stimuli file
 const.stim_folder = sprintf('stim/screenshots');
 
 % Log file
-const.log_file = sprintf('%s_logData.txt', const.dat_output_file);
+const.log_file = sprintf('%s_logData.txt', const.add_output_file);
 const.log_file_fid = fopen(const.log_file, 'w');
+
+% Movie file
+if const.mkVideo
+    if ~isfolder(sprintf('others/%s_vid/', const.cond1_txt))
+        mkdir(sprintf('others/%s_vid/', const.cond1_txt))
+    end
+    const.movie_image_file = sprintf('others/%s_vid/%s_vid', const.cond1_txt, const.cond1_txt);
+    const.movie_file = sprintf('others/%s_vid.mp4', const.cond1_txt);
+end
 
 end

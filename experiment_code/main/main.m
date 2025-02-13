@@ -12,8 +12,7 @@ function main(const)
 % none
 % ----------------------------------------------------------------------
 % Function created by Martin SZINTE (martin.szinte@gmail.com)
-% Project :     nCSFexp
-% Version :     1.0
+% Project : nCSFexp
 % ----------------------------------------------------------------------
 
 tic;
@@ -50,12 +49,12 @@ if const.genStimuli
     makeTextures(scr,const,expDes);
 end
 
-% % Trial runner
-% % ------------
-% [const] = runExp(scr,const,expDes,my_key);
-% 
-% % End
-% % ---
-% overDone(const,my_key);
+% Trial runner
+% ------------
+[const] = runExp(scr,const,expDes,my_key);
+
+% End
+% ---
+overDone(const,my_key);
 
 end
