@@ -103,7 +103,7 @@ if const.runNum == 1
     nan_vector = nan(const.trialsNum, 1);
     
     expDes.expMat = [runNum, trialNum, grad_seqs, sf_seqs, ...
-        constrast_seqs, ori_seqs, nan_vector, nan_vector, ...
+        constrast_seqs, ori_seqs, nan_vector, nan_vector, nan_vector, ...
         nan_vector, nan_vector, nan_vector, nan_vector];
 
     % Export expMat for next run 
@@ -133,9 +133,10 @@ end
 % col 06:   Probe orientation
 % col 07:   staicaise number
 % col 08:   staicaise value
-% col 09:   Trial onset time
-% col 10:   Trial offset time
-% col 11:   Probe time
-% col 12:   Response time
+% col 09:   Response (correct/incorrect)
+% col 10:   Trial onset time
+% col 11:   Trial offset time
+% col 12:   Probe time
+% col 13:   Response time
 
 end
