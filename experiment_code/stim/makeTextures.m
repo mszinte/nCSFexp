@@ -77,8 +77,8 @@ tex_fix_dot_probe       =   Screen('MakeTexture',scr.main,fix_dot_probe);
 % Make noise and combine all
 kappa_val_num           =   const.num_steps_kappa;
 noise_rand_num          =   const.noise_num;
-sp_cut_num              =   const.sp_stepCut;
-mc_cut_num              =   const.mc_stepCont;
+sp_cut_num              =   const.sf_filtNum;
+mc_cut_num              =   const.contNum;
 
 numPrint                =   0;
 rect_noise              =   const.rect_noise;
@@ -94,9 +94,9 @@ for sp_val_stim = 1:sp_cut_num
         for kappa_val_stim = 2:kappa_val_num
             for noise_rand = 1:noise_rand_num
                 % make stim texture full screen
-                sp_sigma_val            =   const.sp_cutSigma;
-                sp_center_val           =   const.sp_cutCenters(sp_val_stim);
-                contrast_val            =   const.mc_values(contrast_val_stim);
+                sp_sigma_val            =   const.sf_cutSigma;
+                sp_center_val           =   const.sf_filtCenters(sp_val_stim);
+                contrast_val            =   const.contValues(contrast_val_stim);
                 kappa_val               =   const.noise_kappa(kappa_val_stim);
 
                 mat_noise               =   genNoisePatch(const, sp_center_val, sp_sigma_val, kappa_val, contrast_val);
@@ -164,9 +164,9 @@ for sp_val_stim = 1:sp_cut_num
     for contrast_val_stim = 1:mc_cut_num
         for noise_rand = 1:noise_rand_num
             % make stim texture
-            sp_sigma_val            =   const.sp_cutSigma;
-            sp_center_val           =   const.sp_cutCenters(sp_val_stim);
-            contrast_val            =   const.mc_values(contrast_val_stim);
+            sp_sigma_val            =   const.sf_cutSigma;
+            sp_center_val           =   const.sf_filtCenters(sp_val_stim);
+            contrast_val            =   const.contValues(contrast_val_stim);
             kappa_val               =   const.noise_kappa(1);
 
             mat_noise               =   genNoisePatch(const, sp_center_val, sp_sigma_val, kappa_val, contrast_val);

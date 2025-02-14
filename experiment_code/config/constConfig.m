@@ -48,7 +48,7 @@ const.stim_size = [scr.scr_sizeY,scr.scr_sizeY];                            % fu
 const.noise_size = const.stim_size(1);                                      % size of the patch
 const.native_noise_dim = round([const.noise_size/const.noise_pixel,...      % starting size of the patch
     const.noise_size/const.noise_pixel]);
-const.noise_dpp = pix2vaDeg(const.noise_pixel, scr);                        % noise pixel in dva
+const.noise_dpp = scr.screen_dpp(1) * const.noise_pixel;                    % noise pixel in dva
 const.stim_rect = [scr.x_mid - const.noise_size/2;...                       % rect of the actual stimulus
     scr.y_mid - const.noise_size/2;...
     scr.x_mid + const.noise_size/2;...
@@ -69,27 +69,27 @@ const.num_steps_kappa = 15;                                                 % Nu
 const.noise_kappa = [0,10.^(linspace(-1,1.5,const.num_steps_kappa-1))];     % Von misses filter kappa parameter (1st = noise, last = less noisy)
 
 % Spatial Frequency filter
-const.sp_minFreq = 0.5;                                                     % Minimal central spatial frequency filter in cycle/dva
-const.sp_maxFreq = 20;                                                      % Maximal central spatial frequency filter in cycle/dva
-const.sp_stepCut = 6;                                                       % Number of spatial frequency filters
-const.sp_overlapCut = 0.6;                                                  % Proportion of overlaping for the gaussian spatial frequency filters 
-const.repetition_sp_sequence = 2;                                           % Number of repetition of de spatial frequency sequence (for ascending and descending contrast gradient)
-const.sp_cutCenters = round(logspace(log10(const.sp_minFreq), ...           % Centers (mu) of the gaussians spatial frequency filters
-    log10(const.sp_maxFreq), const.sp_stepCut),2);
-const.sp_logDiff = log10(const.sp_cutCenters(2)) - ...
-    log10(const.sp_cutCenters(1));
-const.sp_cutSigma  = sqrt(-const.sp_logDiff^2 / ...                         % Sigma (std) of the gaussians spatial frequency filters
-    (4 * log(const.sp_overlapCut)));         
+const.sf_minFreq = 0.5;                                                     % Minimal central spatial frequency filter in cycle/dva
+const.sf_maxFreq = 20;                                                      % Maximal central spatial frequency filter in cycle/dva
+const.sf_filtNum = 6;                                                       % Number of spatial frequency filters
+const.sf_filtOverlap = 0.6;                                                 % Proportion of overlaping for the gaussian spatial frequency filters 
+const.sf_seqNum = 2;                                                        % Number of repetition of de spatial frequency sequence (for ascending and descending contrast gradient)
+const.sf_filtCenters = round(logspace(log10(const.sf_minFreq), ...          % Centers (mu) of the gaussians spatial frequency filters
+    log10(const.sf_maxFreq), const.sf_filtNum),2);
+const.sf_logDiff = log10(const.sf_filtCenters(2)) - ...
+    log10(const.sf_filtCenters(1));
+const.sf_cutSigma  = sqrt(-const.sf_logDiff^2 / ...                         % Sigma (std) of the gaussians spatial frequency filters
+    (4 * log(const.sf_filtOverlap)));         
 
 % Michelson contrast
-const.mc_minCont = 0.0025;                                                  % Minimal Michelson contrast value
-const.mc_maxCont = 0.8;                                                     % Maximal Michelson contrast value
-const.mc_stepCont = 6;                                                     % Number of Michelson contrast value
-const.mc_values = logspace(log10(const.mc_minCont), ...                     % Michelson contrast values
-    log10(const.mc_maxCont), const.mc_stepCont);
+const.minCont = 0.0025;                                                     % Minimal Michelson contrast value
+const.maxCont = 0.8;                                                        % Maximal Michelson contrast value
+const.contNum = 6;                                                          % Number of Michelson contrast value
+const.contValues = logspace(log10(const.minCont), ...                       % Michelson contrast values
+    log10(const.maxCont), const.contNum);
 
 % Breaks
-const.num_break = const.sp_stepCut + 1;                                     % number of brakes
+const.breakNum = const.sf_filtNum + 1;                                      % number of breaks
 const.break_trs = 10;                                                       % duration of breaks (in TR)
 
 % Apertures
@@ -141,14 +141,14 @@ const.line_fix_down_right = [const.rect_center(1) + const.fix_out_rim_rad,...% d
     const.rect_center(2) + const.apt_rad;];                                 % down right part of fix cross y end
 
 %% Define all drawing frames
-const.nb_trials = const.sp_stepCut * const.mc_stepCont * 2 + ...            % total ammount of trials
-    const.num_break * const.break_trs;
+const.nb_trials = const.sf_filtNum * const.contNum * 2 + ...                % total ammount of trials
+    const.breakNum * const.break_trs;
 const.nb_trials_noise_freq = const.nb_trials * const.TR_num_noise;          % total ammount of trials in noise frequence
-const.num_stim_periods = const.sp_stepCut * const.repetition_sp_sequence;   % number of stimulation period
+const.num_stim_periods = const.sf_filtNum * const.sf_seqNum;                % number of stimulation period
 
 % stimulation sequence
 const.break_trial_TR_freq = zeros(const.break_trs, 1);                      % break block in TR
-const.stim_block_TR_freq = ones(const.mc_stepCont, 1);                      % stim block in TR
+const.stim_block_TR_freq = ones(const.contNum, 1);                          % stim block in TR
 const.break_stim_cycle_tr_freq = [const.break_trial_TR_freq; ...
     const.stim_block_TR_freq];                                              % break / stim cycle in TR
 const.stim_sequence_tr_freq = repmat(const.break_stim_cycle_tr_freq,...     % stimulation sequence in TR

@@ -47,8 +47,7 @@ const.behav_file_fid = fopen(const.behav_file, 'w');
 const.mat_file = sprintf('%s_matlab.mat', const.dat_output_file);
 
 % Spatial frequency sequence file
-const.sequence_order_file = sprintf('%s_spSequence.mat', ...
-    const.dat_output_file);
+const.expMat_file = sprintf('%s_expMat.mat', const.dat_output_file);
 
 % Staircase file
 const.staircase_file = sprintf('%s_staircases.mat', const.dat_output_file);
