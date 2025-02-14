@@ -35,8 +35,8 @@ expDes.txt_var2{end+1} = 'none';
 % Sequence : ascending or descending contrast gradient
 % =========
 expDes.sequence = [3, 2, 1];                                                % 1: ascending contrast; 2: descending contrast; 3: blank
-expDes.sequences = repmat(expDes.sequence, 1, const.sf_filtNum);
-expDes.sequences = [expDes.sequences, 3];                                   % add last blank
+expDes.run = repmat(expDes.sequence, 1, const.sf_filtNum);
+expDes.run = [expDes.run, 3];                                   % add last blank
 
 % Rand 1: stim orientation
 % =======
@@ -48,7 +48,7 @@ expDes.txt_rand1 = {'cw', 'ccw', 'none'};
 % To be done 
 
 % seq order
-% % ---------
+% ---------
 % defind ascending and descending random sequence
 sf_ascending = randperm(const.sf_filtNum);
 sf_descending = randperm(const.sf_filtNum);
@@ -62,7 +62,7 @@ num_seq_ascending = 0;
 num_seq_descending = 0;
 
 if const.runNum == 1
-    for seq = expDes.sequences
+    for seq = expDes.run
         if seq == 1 % ascending
             num_seq_ascending = num_seq_ascending + 1;
             grad_seq = seq * ones(const.contNum, 1);
@@ -75,7 +75,7 @@ if const.runNum == 1
             sf_seq = repmat(sf_descending(num_seq_descending), const.contNum, 1);
             constrast_seq = linspace(const.contNum, 1, const.contNum)';
             ori_seq = expDes.oneR(randi(length(expDes.oneR), const.contNum, 1));
-        elseif seq == 3 % pause
+        elseif seq == 3 % break
             grad_seq = seq * ones(const.break_trs, 1);
             sf_seq = repmat(const.sf_filtNum + 1, const.break_trs, 1);
             constrast_seq = repmat(const.contNum + 1, const.break_trs, 1);
@@ -88,9 +88,9 @@ if const.runNum == 1
         ori_seqs = [ori_seqs; ori_seq];
     end
 
-    runNum = const.runNum * ones(const.nb_trials, 1);
-    trialNum = linspace(1, const.nb_trials, const.nb_trials)';
-    nan_vector = nan(const.nb_trials, 1);
+    runNum = const.runNum * ones(const.trialsNum, 1);
+    trialNum = linspace(1, const.trialsNum, const.trialsNum)';
+    nan_vector = nan(const.trialsNum, 1);
     
     expDes.expMat = [runNum, trialNum, grad_seqs, sf_seqs, ...
         constrast_seqs, ori_seqs, nan_vector, nan_vector, ...
@@ -118,7 +118,7 @@ else
     expDes.expMat = load(const.expMat_file).expMat;
 
     % change orientation sequence 
-    for seq = expDes.sequences
+    for seq = expDes.run
         if seq == 1 % ascending
             ori_seq = expDes.oneR(randi(length(expDes.oneR), const.contNum, 1)); 
 
