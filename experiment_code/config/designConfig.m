@@ -13,7 +13,6 @@ function [expDes]=designConfig(const)
 % ----------------------------------------------------------------------
 % Function created by Martin SZINTE (martin.szinte@gmail.com)
 % Project : nCSFexp
-% Version : 1.0
 % ----------------------------------------------------------------------
 
 %% Experimental random variables
@@ -24,42 +23,53 @@ expDes.oneV = linspace(1, const.sf_filtNum, const.sf_filtNum)';
 expDes.txt_var1 = cellfun(@(x) sprintf('%.2f cycle/dva', x), ...
     num2cell(const.sf_filtCenters), 'UniformOutput', false);
 expDes.txt_var1{end+1} = 'none';
+% 1 - Lowest spatial frequency distribution
+% ...
+% max - Highest spatial frequency distribution
+% 7 - No stim
 
-% Var 2 : Michelson contrast
+% Var 2 : Contrast
 % ======
 expDes.twoV = linspace(1, const.contNum, const.contNum)';
 expDes.txt_var2 = cellfun(@(x) sprintf('%.2f %%', x*100), ...
     num2cell(const.contValues), 'UniformOutput', false);
 expDes.txt_var2{end+1} = 'none';
+% 1 - Lowest contrast
+% ...
+% max - Highest constrast
+% 7 - No stim
 
-% Sequence : ascending or descending contrast gradient
+% Sequence : Ascending or descending contrast gradient
 % =========
-expDes.sequence = [3, 2, 1];                                                % 1: ascending contrast; 2: descending contrast; 3: blank
+expDes.sequence = [3, 2, 1];                                        
 expDes.run = repmat(expDes.sequence, 1, const.sf_filtNum);
-expDes.run = [expDes.run, 3];                                   % add last blank
+expDes.run = [expDes.run, 3];                                       % add last blank
+% 1 - Ascending contrast sequence; 
+% 2 - Descending contrast sequence; 
+% 3 - Blank sequence
 
 % Rand 1: stim orientation
 % =======
 expDes.oneR = [1;2];
 expDes.txt_rand1 = {'cw', 'ccw', 'none'};
+% 1 - Clockwise signal
+% 2 - Counter-clockwise signal
+% 3 - No stim
 
 % Staircase
 % ---------
 % To be done 
 
-% seq order
-% ---------
-% defind ascending and descending random sequence
-sf_ascending = randperm(const.sf_filtNum);
-sf_descending = randperm(const.sf_filtNum);
-
+% Trial loop
+% ----------
 grad_seqs = []; 
 sf_seqs = [];
 constrast_seqs = [];
 ori_seqs = [];
-
 num_seq_ascending = 0;
 num_seq_descending = 0;
+sf_ascending = randperm(const.sf_filtNum);
+sf_descending = randperm(const.sf_filtNum);
 
 if const.runNum == 1
     for seq = expDes.run
@@ -96,19 +106,6 @@ if const.runNum == 1
         constrast_seqs, ori_seqs, nan_vector, nan_vector, ...
         nan_vector, nan_vector, nan_vector, nan_vector];
 
-    % col 01:   Run number
-    % col 02:   Trial number
-    % col 03:   Sequence
-    % col 04:   Spatial frequency
-    % col 05:   Contrast
-    % col 06:   Stimulus noise orientation
-    % col 07:   Trial onset time
-    % col 08:   Trial offset time
-    % col 09:   Stimulus noise staircase value
-    % col 10:   Stimulus noise staircase value
-    % col 11:   Probe time
-    % col 12:   Response time
-
     % Export expMat for next run 
     expMat = expDes.expMat;
     save(const.expMat_file, 'expMat');
@@ -119,30 +116,26 @@ else
 
     % change orientation sequence 
     for seq = expDes.run
-        if seq == 1 % ascending
-            ori_seq = expDes.oneR(randi(length(expDes.oneR), const.contNum, 1)); 
-
-        elseif seq == 2 % descending
-            ori_seq = expDes.oneR(randi(length(expDes.oneR), const.contNum, 1)); 
-
-        elseif seq == 3 % pause
+        if seq == 3 % pause
             ori_seq = repmat(length(expDes.oneR) + 1, const.break_trs, 1);
+        else % ascending and descending
+            ori_seq = expDes.oneR(randi(length(expDes.oneR), const.contNum, 1)); 
         end
         ori_seqs = [ori_seqs; ori_seq];
     end
     expDes.expMat(:, 6) = ori_seqs;
-    
-    % col 01:   Run number
-    % col 02:   Trial number
-    % col 03:   Sequence
-    % col 04:   Spatial frequency
-    % col 05:   Contrast
-    % col 06:   Stimulus noise orientation
-    % col 07:   Trial onset time
-    % col 08:   Trial offset time
-    % col 09:   Stimulus noise staircase value
-    % col 10:   Stimulus noise staircase value
-    % col 11:   Probe time
-    % col 12:   Response time
 end
+% col 01:   Run
+% col 02:   Trial
+% col 03:   Sequence
+% col 04:   Spatial frequency
+% col 05:   Contrast
+% col 06:   Probe orientation
+% col 07:   staicaise number
+% col 08:   staicaise value
+% col 09:   Trial onset time
+% col 10:   Trial offset time
+% col 11:   Probe time
+% col 12:   Response time
+
 end

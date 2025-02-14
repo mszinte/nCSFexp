@@ -100,7 +100,7 @@ const.contValues = logspace(log10(const.minCont), ...                       % Mi
 % Breaks
 % ------
 const.breakNum = const.sf_filtNum + 1;                                      % Number of breaks
-const.break_trs = 2;                                                        % Duration of breaks (in TR)
+const.break_trs = 10;                                                       % Duration of breaks (in TR)
 
 % Apertures
 % ---------
