@@ -131,12 +131,11 @@ end
 % col 04:   Spatial frequency
 % col 05:   Contrast
 % col 06:   Probe orientation
-% col 07:   staicaise number
-% col 08:   staicaise value
+% col 07:   Staircase number
+% col 08:   Staircase value
 % col 09:   Response (correct/incorrect)
 % col 10:   Trial onset time
 % col 11:   Trial offset time
 % col 12:   Probe time
 % col 13:   Response time
-
 end
