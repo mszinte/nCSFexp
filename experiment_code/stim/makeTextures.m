@@ -144,7 +144,7 @@ for sp_val_stim = 1:sp_cut_num
                     % save the sreenshot
                     screen_stim             =   Screen('GetImage', scr.main,const.stim_rect,'backBuffer',[],1);
                 end
-                screen_filename         =   sprintf('%s/%sprobe_spStim%i_contStim%i_kappaStim%i_noiseRand%i.mat',...
+                screen_filename         =   sprintf('%s/probe_spStim%i_contStim%i_kappaStim%i_noiseRand%i.mat',...
                     const.stim_folder, sp_val_stim, contrast_val_stim, kappa_val_stim, noise_rand);
                 save(screen_filename,'screen_stim')
                 clear screen_stim
@@ -215,7 +215,7 @@ for sp_val_stim = 1:sp_cut_num
                 % save the sreenshot
                 screen_stim             =   Screen('GetImage', scr.main,const.stim_rect,'backBuffer',[],1);
             end
-            screen_filename         =   sprintf('%s/%snoprobe_spStim%i_contStim%i_noiseRand%i.mat',...
+            screen_filename         =   sprintf('%s/noprobe_spStim%i_contStim%i_noiseRand%i.mat',...
                         const.stim_folder, sp_val_stim, contrast_val_stim, noise_rand);
 
             save(screen_filename,'screen_stim')
