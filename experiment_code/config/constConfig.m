@@ -50,6 +50,7 @@ const.TR_num_noise = (floor(const.TR_dur/const.patch_dur));                 % Re
 % Noise parameters
 % ----------------
 const.noise_num = 20;                                                       % Number of generated patches
+const.noise_seeds = randi([1, 10000], 1, const.noise_num);                  % Seeds for noise
 const.noise_pixel = 1;                                                      % Stimulus noise pixel size in pixels
 const.stim_size = [scr.scr_sizeY,scr.scr_sizeY];                            % Full screen stimuli size in pixels
 const.noise_size = const.stim_size(1);                                      % Size of the patch

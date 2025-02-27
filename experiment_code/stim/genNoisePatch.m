@@ -1,4 +1,4 @@
-function [filtered_contrastedNoise] = genNoisePatch(const, gauss_mu, gauss_sigma, kappa, mc_contrast)
+function [filtered_contrastedNoise] = genNoisePatch(const, gauss_mu, gauss_sigma, kappa, mc_contrast, seed)
 % ----------------------------------------------------------------------
 % [noiseMatFiltNorm] = genNoisePatch(const,kappa)
 % ----------------------------------------------------------------------
@@ -8,17 +8,22 @@ function [filtered_contrastedNoise] = genNoisePatch(const, gauss_mu, gauss_sigma
 % ----------------------------------------------------------------------
 % Input(s) :
 % const : struct containing constant configurations
+% gauss_mu : center of the gaussian filter
+% gauss_sigma : sigma of the gaussian filter
 % kappa : dispersion parameter of the von misses filter
+% mc_contrast : value of Michelson Contrast
+% seed : seed for random process 
 % ----------------------------------------------------------------------
 % Output(s):
 % noiseMatFiltNorm: patch
 % ----------------------------------------------------------------------
 % Function created by Martin SZINTE (martin.szinte@gmail.com)
+% Adapted by Uriel LASCOMBES (uriel.lascombes@laposte.net)
 % Project :     nCSFexp
-% Version :     1.0
 % ----------------------------------------------------------------------
 
 % Main parameters
+rng(seed)
 noise_size = const.native_noise_dim;
 pixelSize = const.noise_dpp; % degree per pixel
 
