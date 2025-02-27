@@ -112,20 +112,20 @@ for sp_val_stim = 1:sp_cut_num
                 clear noise_patch
 
                 % define all texture parameters
-                rects = [rect_noise,...                                                  % stim noise
-                         rect_noise,...                                                  % fix annulus
-                         rect_noise,...                                                  % empty center
-                         rect_noise];                                                    % fixation dot
+                rects = [rect_noise,...                                  % stim noise
+                         rect_noise,...                                  % fix annulus
+                         rect_noise,...                                  % empty center
+                         rect_noise];                                    % fixation dot
 
-                texs = [tex_stim,...                                                    % stim noise
-                        tex_fix_ann_probe,...                                           % fix annulus
-                        tex_black_fix_noise,...                                         % empty center
-                        tex_fix_dot_probe];                                             % fixation dot
+                texs = [tex_stim,...                                     % stim noise
+                        tex_fix_ann_probe,...                            % fix annulus
+                        tex_black_fix_noise,...                          % empty center
+                        tex_fix_dot_probe];                              % fixation dot
 
-                angles = [0,...                                                           % stim noise
-                          0,...                                                           % fix annulus
-                          0,...                                                           % empty center
-                          0];                                                             % fixation dot
+                angles = [const.native_noise_orientation,...             % stim noise
+                          0,...                                          % fix annulus
+                          0,...                                          % empty center
+                          0];                                            % fixation dot
 
                 % draw all textures
                 Screen('FillRect', scr.main, const.background_color);
@@ -183,20 +183,20 @@ for sp_val_stim = 1:sp_cut_num
             clear noise_patch
 
             % define all texture parameters
-            rects = [rect_noise,...                                                  % stim noise
-                     rect_noise,...                                                  % fix annulus
-                     rect_noise,...                                                  % empty center
-                     rect_noise];                                                    % fixation dot
+            rects = [rect_noise,...                                      % stim noise
+                     rect_noise,...                                      % fix annulus
+                     rect_noise,...                                      % empty center
+                     rect_noise];                                        % fixation dot
 
-            texs = [tex_stim,...                                                    % stim noise
-                    tex_fix_ann_no_probe,...                                        % fix annulus
-                    tex_black_fix_noise,...                                         % empty center
-                    tex_fix_dot_no_probe];                                          % fixation dot
+            texs = [tex_stim,...                                         % stim noise
+                    tex_fix_ann_no_probe,...                             % fix annulus
+                    tex_black_fix_noise,...                              % empty center
+                    tex_fix_dot_no_probe];                               % fixation dot
 
-            angles = [0,...                                                           % stim noise
-                      0,...                                                           % fix annulus
-                      0,...                                                           % empty center
-                      0];                                                             % fixation dot
+            angles = [const.native_noise_orientation,...                 % stim noise
+                      0,...                                              % fix annulus
+                      0,...                                              % empty center
+                      0];                                                % fixation dot
 
 
             % draw all textures
