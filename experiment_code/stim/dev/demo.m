@@ -7,15 +7,15 @@ const.native_noise_dim = [1080, 1080];
 const.noise_dpp = 0.01; % degree per pixel
 
 % Spatial frequency filter paramaters
-gauss_mu = 18;
-gauss_sigma = 0.3;
+gauss_mu = 2;
+gauss_sigma = 4;
 
 % Orientation filter parameters
-kappa = 100;
-const.preferred_orientation_deg = 45;
+kappa = 0.1;
+const.native_noise_orientation = 45;
 
 % Contrast filter
-mc_contrast = 1; % Michelson contrast
+mc_contrast = 0.05; % Michelson contrast
 
 % Call the genNoisePatch function
 noiseMatFiltNorm = genNoisePatch(const, gauss_mu, gauss_sigma, kappa, mc_contrast);

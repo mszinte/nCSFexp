@@ -33,7 +33,7 @@ kappa = 0;
 preferred_orientation_deg = 45;
 
 % Contrast filter
-C = 0.50; % Michelson contrast
+C = 0.1; % Michelson contrast
 
 % Define parameters
 centers = logspace(log10(minFreq), log10(maxFreq), stepFreq); % Center frequencies
