@@ -1,6 +1,6 @@
-function [expDes]=designConfig(const)
+function [expDes] = designConfig(const)
 % ----------------------------------------------------------------------
-% [expDes]=designConfig(const)
+% [expDes] = designConfig(const)
 % ----------------------------------------------------------------------
 % Goal of the function :
 % Define experimental design
@@ -12,6 +12,7 @@ function [expDes]=designConfig(const)
 % expDes : struct containg experimental design
 % ----------------------------------------------------------------------
 % Function created by Martin SZINTE (martin.szinte@gmail.com)
+% Adapted by Uriel LASCOMBES (uriel.lascombes@laposte.net)
 % Project : nCSFexp
 % ----------------------------------------------------------------------
 
@@ -55,11 +56,7 @@ expDes.txt_rand1 = {'cw', 'ccw', 'none'};
 % 1 - Clockwise signal
 % 2 - Counter-clockwise signal
 % 3 - No stim
-
-% Staircase
-% ---------
-% To be done 
-
+ 
 % Trial loop
 % ----------
 grad_seqs = []; 

@@ -1,6 +1,6 @@
-function makeTextures(scr,const,expDes)
+function makeTextures(scr, const)
 % ----------------------------------------------------------------------
-% makeTextures(scr,const,expDes)
+% makeTextures(scr, const)
 % ----------------------------------------------------------------------
 % Goal of the function :
 % Make textures for later drawing them
@@ -8,14 +8,13 @@ function makeTextures(scr,const,expDes)
 % Input(s) :
 % scr : struct containing screen configurations
 % const : struct containing constant configurations
-% expDes : struct containg experimental design
 % ----------------------------------------------------------------------
 % Output(s):
 % none - images saved
 % ----------------------------------------------------------------------
 % Function created by Martin SZINTE (martin.szinte@gmail.com)
+% Adapted by Uriel LASCOMBES (uriel.lascombes@laposte.net)
 % Project : nCSFexp
-% Version : 1.0
 % ----------------------------------------------------------------------
 fprintf(1,'\n\tDrawing all texture screens\n\t');
 
@@ -128,8 +127,6 @@ for sp_val_stim = 1:sp_cut_num
                 % draw all textures
                 Screen('FillRect',scr.main,const.background_color);
                 Screen('DrawTextures',scr.main,texs,[],rects,angles)
-                % Screen('FillRect',scr.main,const.background_color,const.left_propixx_hide)
-                % Screen('FillRect',scr.main,const.background_color,const.right_propixx_hide)
                 Screen('DrawLines',scr.main, const.line_fix_up_left, const.line_width, const.white, [], 1);
                 Screen('DrawLines',scr.main, const.line_fix_up_right, const.line_width, const.white, [], 1);
                 Screen('DrawLines',scr.main, const.line_fix_down_left, const.line_width, const.white, [], 1);
@@ -144,7 +141,7 @@ for sp_val_stim = 1:sp_cut_num
                     % save the sreenshot
                     screen_stim             =   Screen('GetImage', scr.main,const.stim_rect,'backBuffer',[],1);
                 end
-                screen_filename         =   sprintf('%s/probe_spStim%i_contStim%i_kappaStim%i_noiseRand%i.mat',...
+                screen_filename         =   sprintf('%s/probe_sfStim%i_contStim%i_kappaStim%i_noiseRand%i.mat',...
                     const.stim_folder, sp_val_stim, contrast_val_stim, kappa_val_stim, noise_rand);
                 save(screen_filename,'screen_stim')
                 clear screen_stim
@@ -199,8 +196,6 @@ for sp_val_stim = 1:sp_cut_num
             % draw all textures
             Screen('FillRect',scr.main,const.background_color);
             Screen('DrawTextures',scr.main,texs,[],rects,angles)
-            % Screen('FillRect',scr.main,const.background_color,const.left_propixx_hide)
-            % Screen('FillRect',scr.main,const.background_color,const.right_propixx_hide)
             Screen('DrawLines',scr.main, const.line_fix_up_left, const.line_width, const.white, [], 1);
             Screen('DrawLines',scr.main, const.line_fix_up_right, const.line_width, const.white, [], 1);
             Screen('DrawLines',scr.main, const.line_fix_down_left, const.line_width, const.white, [], 1);
@@ -213,9 +208,9 @@ for sp_val_stim = 1:sp_cut_num
                 screen_stim             =   Screen('GetImage', scr.main,const.stim_rect,[],0,1);
             else
                 % save the sreenshot
-                screen_stim             =   Screen('GetImage', scr.main,const.stim_rect,'backBuffer',[],1);
+                screen_stim             =   Screen('GetImage', scr.main,const.stim_rect, 'backBuffer', [], 1);
             end
-            screen_filename         =   sprintf('%s/noprobe_spStim%i_contStim%i_noiseRand%i.mat',...
+            screen_filename         =   sprintf('%s/noprobe_sfStim%i_contStim%i_noiseRand%i.mat',...
                         const.stim_folder, sp_val_stim, contrast_val_stim, noise_rand);
 
             save(screen_filename,'screen_stim')
@@ -240,8 +235,6 @@ texs                    =   [tex_fix_ann_no_probe,...                           
 
 Screen('FillRect',scr.main,const.background_color);
 Screen('DrawTextures',scr.main,texs,[],rects)
-% Screen('FillRect',scr.main,const.background_color,const.left_propixx_hide)
-% Screen('FillRect',scr.main,const.background_color,const.right_propixx_hide)
 Screen('DrawLines',scr.main, const.line_fix_up_left, const.line_width, const.white, [], 1);
 Screen('DrawLines',scr.main, const.line_fix_up_right, const.line_width, const.white, [], 1);
 Screen('DrawLines',scr.main, const.line_fix_down_left, const.line_width, const.white, [], 1);
@@ -251,10 +244,10 @@ Screen('DrawingFinished',scr.main,[],1);
 if const.drawStimuli
     % plot and save the screenshot
 	Screen('Flip',scr.main);
-	screen_stim             =   Screen('GetImage', scr.main,const.stim_rect,[],0,1);
+	screen_stim             =   Screen('GetImage', scr.main, const.stim_rect,[],0,1);
 else
     % save the sreenshot
-    screen_stim             =   Screen('GetImage', scr.main,const.stim_rect,'backBuffer',[],1);
+    screen_stim             =   Screen('GetImage', scr.main, const.stim_rect, 'backBuffer', [], 1);
 end
 screen_filename         =   sprintf('%s/blank.mat',const.stim_folder);
 save(screen_filename,'screen_stim')

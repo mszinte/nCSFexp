@@ -12,6 +12,7 @@ function [const] = sbjConfig(const)
 % const : struct containing constant configurations
 % ----------------------------------------------------------------------
 % Function created by Martin SZINTE (martin.szinte@gmail.com)
+% Adapted by Uriel LASCOMBES (uriel.lascombes@laposte.net)
 % Project : nCSFexp
 % ----------------------------------------------------------------------
 

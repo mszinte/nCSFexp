@@ -12,5 +12,7 @@ to fixate and report an orientation of the noise pattern presented on every TR.
 
 ## TO DO 
 - [ ] Take care of random process
-- [ ] create runTrial
+- [ ] recheack dirSaveFile
+- [ ] create runTrial 
 - [ ] create runExp 
+

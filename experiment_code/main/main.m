@@ -12,6 +12,7 @@ function main(const)
 % none
 % ----------------------------------------------------------------------
 % Function created by Martin SZINTE (martin.szinte@gmail.com)
+% Adapted by Uriel LASCOMBES (uriel.lascombes@laposte.net)
 % Project : nCSFexp
 % ----------------------------------------------------------------------
 
@@ -31,7 +32,7 @@ tic;
 
 % Experimental constant
 % ---------------------
-[const] = constConfig(scr,const);
+[const] = constConfig(scr, const);
 
 % Experimental design
 % -------------------
@@ -41,17 +42,17 @@ tic;
 % ------------------
 [scr.main,scr.rect] = Screen('OpenWindow',scr.scr_num,const.background_color,[], scr.clr_depth,2);
 [~] = Screen('BlendFunction', scr.main, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-priorityLevel = MaxPriority(scr.main);Priority(priorityLevel);
+priorityLevel = MaxPriority(scr.main); Priority(priorityLevel);
 
 % Draw and save all textures
 % --------------------------
 if const.genStimuli
-    makeTextures(scr,const,expDes);
+    makeTextures(scr, const);
 end
 
 % Trial runner
 % ------------
-[const] = runExp(scr,const,expDes,my_key);
+[const] = runExp(scr, const, expDes, my_key);
 
 % End
 % ---

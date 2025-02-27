@@ -12,6 +12,7 @@ function [scr] = scrConfig(const)
 % scr : struct containing screen configurations
 % ----------------------------------------------------------------------
 % Function created by Martin SZINTE (martin.szinte@gmail.com)
+% Adapted by Uriel LASCOMBES (uriel.lascombes@laposte.net)
 % Project : nCSFexp
 % ----------------------------------------------------------------------
 

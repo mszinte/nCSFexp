@@ -1,6 +1,6 @@
-function [const]=constConfig(scr,const)
+function [const] = constConfig(scr,const)
 % ----------------------------------------------------------------------
-% [const]=constConfig(scr,const)
+% [const] = constConfig(scr,const)
 % ----------------------------------------------------------------------
 % Goal of the function :
 % Define all constant configurations
@@ -19,8 +19,8 @@ function [const]=constConfig(scr,const)
 % run : chain of sequence 
 % ----------------------------------------------------------------------
 % Function created by Martin SZINTE (martin.szinte@gmail.com)
+% Adapted by Uriel LASCOMBES (uriel.lascombes@laposte.net)
 % Project : nCSFexp
-% Version : 1.0
 % ----------------------------------------------------------------------
 
 % Fix randomization
@@ -49,7 +49,7 @@ const.TR_num_noise = (floor(const.TR_dur/const.patch_dur));                 % Re
 
 % Noise parameters
 % ----------------
-const.noise_num = 10;                                                       % Number of generated patches
+const.noise_num = 20;                                                       % Number of generated patches
 const.noise_pixel = 1;                                                      % Stimulus noise pixel size in pixels
 const.stim_size = [scr.scr_sizeY,scr.scr_sizeY];                            % Full screen stimuli size in pixels
 const.noise_size = const.stim_size(1);                                      % Size of the patch
@@ -73,8 +73,14 @@ const.rect_noise        =  [const.rect_center(1) - const.noise_size/2;...   % No
 % Kappa and staircase
 % -------------------
 const.native_noise_orientation = 90;                                       	% Von misses original orientation
-const.num_steps_kappa = 15;                                                 % Number of kappa steps
-const.noise_kappa = [0,10.^(linspace(-1,1.5,const.num_steps_kappa-1))];     % Von misses filter kappa parameter (1st = noise, last = less noisy)
+const.num_steps_kappa_pRF = 15;                                             % Number of kappa steps in pRF task
+const.noise_kappa_pRF = [0, 10.^(linspace(-1, 1.5, ...
+                                          const.num_steps_kappa_pRF-1))];   % Von misses filter kappa parameter (1st = noise, last = less noisy) in pRF
+const.num_steps_kappa = 2;                                                  % Number of kappa steps in nCSF task
+const.noise_kappa_rand = 1;                                                 % kappa at for noise
+const.noise_kappa_threshold = 10;                                           % kappa at threshold (based on previous pRF experiment)
+const.noise_kappa = const.noise_kappa_pRF([const.noise_kappa_rand, ...
+                                           const.noise_kappa_threshold]);   % Von misses filter kappa parameter in nCSF task
 
 % Spatial Frequency filter
 % ------------------------
