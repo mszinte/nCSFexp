@@ -74,7 +74,6 @@ fix_dot_probe(:, :, 4) = const.fix_dot_probe;
 tex_fix_dot_probe = Screen('MakeTexture', scr.main, fix_dot_probe);
 
 % Make noise and combine all
-kappa_val_num = const.num_steps_kappa;
 noise_rand_num = const.noise_num;
 sp_cut_num = const.sf_filtNum;
 mc_cut_num = const.contNum;
@@ -83,79 +82,77 @@ numPrint = 0;
 rect_noise = const.rect_noise;
 
 % compute total amount of picture to print
-total_amount = ((kappa_val_num-1) * noise_rand_num * sp_cut_num * mc_cut_num) + ...
+total_amount = (noise_rand_num * sp_cut_num * mc_cut_num) + ...
     (noise_rand_num * sp_cut_num * mc_cut_num) + 1;
 
 textprogressbar('Progress: ');
 
 for sp_val_stim = 1:sp_cut_num
     for contrast_val_stim = 1:mc_cut_num
-        for kappa_val_stim = 2:kappa_val_num
-            for noise_rand = 1:noise_rand_num
-                % Noise seed
-                seed = const.noise_seeds(noise_rand);
+        for noise_rand = 1:noise_rand_num
+            % Noise seed
+            seed = const.noise_seeds(noise_rand);
+            
+            % make stim texture full screen
+            sp_sigma_val = const.sf_cutSigma;
+            sp_center_val = const.sf_filtCenters(sp_val_stim);
+            contrast_val = const.contValues(contrast_val_stim);
+            kappa_val = const.noise_kappa(const.noise_kappa_threshold);
+            
+            mat_noise = genNoisePatch(const, sp_center_val, sp_sigma_val, kappa_val, contrast_val, seed);
+            
+            noise_patch(:,:,1) = mat_noise * const.stim_color(1);
+            noise_patch(:,:,2) = mat_noise * const.stim_color(2);
+            noise_patch(:,:,3) = mat_noise * const.stim_color(3);
+            noise_patch(:,:,4) = const.stim_aperture;
+            
+            tex_stim = Screen('MakeTexture', scr.main, noise_patch);
+            clear noise_patch
+            
+            % define all texture parameters
+            rects = [rect_noise,...                                  % stim noise
+                     rect_noise,...                                  % fix annulus
+                     rect_noise,...                                  % empty center
+                     rect_noise];                                    % fixation dot
+            
+            texs = [tex_stim,...                                     % stim noise
+                    tex_fix_ann_probe,...                            % fix annulus
+                    tex_black_fix_noise,...                          % empty center
+                    tex_fix_dot_probe];                              % fixation dot
+            
+            angles = [const.native_noise_orientation,...             % stim noise
+                      0,...                                          % fix annulus
+                      0,...                                          % empty center
+                      0];                                            % fixation dot
 
-                % make stim texture full screen
-                sp_sigma_val = const.sf_cutSigma;
-                sp_center_val = const.sf_filtCenters(sp_val_stim);
-                contrast_val = const.contValues(contrast_val_stim);
-                kappa_val = const.noise_kappa(kappa_val_stim);
-
-                mat_noise = genNoisePatch(const, sp_center_val, sp_sigma_val, kappa_val, contrast_val, seed);
-
-                noise_patch(:,:,1) = mat_noise * const.stim_color(1);
-                noise_patch(:,:,2) = mat_noise * const.stim_color(2);
-                noise_patch(:,:,3) = mat_noise * const.stim_color(3);
-                noise_patch(:,:,4) = const.stim_aperture;
-
-                tex_stim = Screen('MakeTexture', scr.main, noise_patch);
-                clear noise_patch
-
-                % define all texture parameters
-                rects = [rect_noise,...                                  % stim noise
-                         rect_noise,...                                  % fix annulus
-                         rect_noise,...                                  % empty center
-                         rect_noise];                                    % fixation dot
-
-                texs = [tex_stim,...                                     % stim noise
-                        tex_fix_ann_probe,...                            % fix annulus
-                        tex_black_fix_noise,...                          % empty center
-                        tex_fix_dot_probe];                              % fixation dot
-
-                angles = [const.native_noise_orientation,...             % stim noise
-                          0,...                                          % fix annulus
-                          0,...                                          % empty center
-                          0];                                            % fixation dot
-
-                % draw all textures
-                Screen('FillRect', scr.main, const.background_color);
-                Screen('DrawTextures', scr.main, texs, [], rects, angles)
-                Screen('DrawLines', scr.main, const.line_fix_up_left, const.line_width, const.white, [], 1);
-                Screen('DrawLines', scr.main, const.line_fix_up_right, const.line_width, const.white, [], 1);
-                Screen('DrawLines', scr.main, const.line_fix_down_left, const.line_width, const.white, [], 1);
-                Screen('DrawLines', scr.main, const.line_fix_down_right, const.line_width, const.white, [], 1);
-                Screen('DrawingFinished', scr.main, [], 1);
-
-                if const.drawStimuli
-                    % plot and save the screenshot
-                    Screen('Flip', scr.main);
-                    screen_stim = Screen('GetImage', scr.main, const.stim_rect, [], 0, 1);
-                else
-                    % save the screenshot
-                    screen_stim = Screen('GetImage', scr.main, const.stim_rect, 'backBuffer', [], 1);
-                end
-                screen_filename = sprintf('%s/probe_sfStim%i_contStim%i_kappaStim%i_noiseRand%i.mat', ...
-                    const.stim_folder, sp_val_stim, contrast_val_stim, kappa_val_stim, noise_rand);
-                save(screen_filename, 'screen_stim')
-                clear screen_stim
-
-                numPrint = numPrint + 1;
-                textprogressbar(numPrint * 100 / total_amount);
-
-                % close opened texture
-                Screen('Close', tex_stim);
-
+            % draw all textures
+            Screen('FillRect', scr.main, const.background_color);
+            Screen('DrawTextures', scr.main, texs, [], rects, angles)
+            Screen('DrawLines', scr.main, const.line_fix_up_left, const.line_width, const.white, [], 1);
+            Screen('DrawLines', scr.main, const.line_fix_up_right, const.line_width, const.white, [], 1);
+            Screen('DrawLines', scr.main, const.line_fix_down_left, const.line_width, const.white, [], 1);
+            Screen('DrawLines', scr.main, const.line_fix_down_right, const.line_width, const.white, [], 1);
+            Screen('DrawingFinished', scr.main, [], 1);
+            
+            if const.drawStimuli
+                % plot and save the screenshot
+                Screen('Flip', scr.main);
+                screen_stim = Screen('GetImage', scr.main, const.stim_rect, [], 0, 1);
+            else
+                % save the screenshot
+                screen_stim = Screen('GetImage', scr.main, const.stim_rect, 'backBuffer', [], 1);
             end
+            screen_filename = sprintf('%s/probe_sfStim%i_contStim%i_noiseRand%i.mat', ...
+                const.stim_folder, sp_val_stim, contrast_val_stim, noise_rand);
+            save(screen_filename, 'screen_stim')
+            clear screen_stim
+            
+            numPrint = numPrint + 1;
+            textprogressbar(numPrint * 100 / total_amount);
+            
+            % close opened texture
+            Screen('Close', tex_stim);
+            
         end
     end
 end
@@ -170,8 +167,7 @@ for sp_val_stim = 1:sp_cut_num
             sp_sigma_val = const.sf_cutSigma;
             sp_center_val = const.sf_filtCenters(sp_val_stim);
             contrast_val = const.contValues(contrast_val_stim);
-            kappa_val = const.noise_kappa(1);
-
+            kappa_val = 0;
             mat_noise = genNoisePatch(const, sp_center_val, sp_sigma_val, kappa_val, contrast_val, seed);
 
             noise_patch(:,:,1) = mat_noise * const.stim_color(1);

@@ -74,14 +74,12 @@ const.rect_noise        =  [const.rect_center(1) - const.noise_size/2;...   % No
 % Kappa and staircase
 % -------------------
 const.native_noise_orientation = 90;                                       	% Von misses original orientation
-const.num_steps_kappa_pRF = 15;                                             % Number of kappa steps in pRF task
-const.noise_kappa_pRF = [0, 10.^(linspace(-1, 1.5, ...
-                                          const.num_steps_kappa_pRF-1))];   % Von misses filter kappa parameter (1st = noise, last = less noisy) in pRF
-const.num_steps_kappa = 2;                                                  % Number of kappa steps in nCSF task
-const.noise_kappa_rand = 1;                                                 % kappa at for noise
+const.num_steps_kappa = 15;                                                 % Number of kappa steps in pRF task
+const.noise_kappa = [0, 10.^(linspace(-1, 1.5, ...
+                                      const.num_steps_kappa-1))];           % Von misses filter kappa parameter (1st = noise, last = less noisy) in pRF
+
 const.noise_kappa_threshold = 10;                                           % kappa at threshold (based on previous pRF experiment)
-const.noise_kappa = const.noise_kappa_pRF([const.noise_kappa_rand, ...
-                                           const.noise_kappa_threshold]);   % Von misses filter kappa parameter in nCSF task
+
 
 % Spatial Frequency filter
 % ------------------------
