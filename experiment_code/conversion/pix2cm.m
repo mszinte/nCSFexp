@@ -1,6 +1,6 @@
-function [cmX,cmY] = pix2cm(pix,scr)
+function [cmX, cmY] = pix2cm(pix, scr)
 % ----------------------------------------------------------------------
-% [cmX,cmY] = pix2cm(pix,scr)
+% [cmX,cmY] = pix2cm(pix ,scr)
 % ----------------------------------------------------------------------
 % Goal of the function :
 % Convert pix in cm ( x and y )
@@ -16,13 +16,13 @@ function [cmX,cmY] = pix2cm(pix,scr)
 % cmX  = size in cm(X)                             ex : = 35
 % cmY  = size in cm(Y)                             ex : = 25.35  
 % ----------------------------------------------------------------------
-% Fuction created by Martin SZINTE (martin.szinte@gmail.com)
-% Last edit : 30 / 10 / 2008
-% Project : All
-% Version : 1.0
+% Function created by Martin SZINTE (martin.szinte@gmail.com)
+% Adapted by Uriel LASCOMBES (uriel.lascombes@laposte.net)
+% Project : nCSFexp
 % ----------------------------------------------------------------------
-pix_by_mmX = scr.scr_sizeX/scr.disp_sizeX;
-pix_by_mmY = scr.scr_sizeY/scr.disp_sizeY;
-cmX = pix./pix_by_mmX./10;
-cmY = pix./pix_by_mmY./10;
+pix_by_mmX = scr.scr_sizeX / scr.disp_sizeX;
+pix_by_mmY = scr.scr_sizeY / scr.disp_sizeY;
+cmX = pix ./ pix_by_mmX ./ 10;
+cmY = pix ./ pix_by_mmY ./ 10;
+
 end

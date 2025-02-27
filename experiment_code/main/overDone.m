@@ -1,6 +1,6 @@
-function overDone(const,my_key)
+function overDone(const, my_key)
 % ----------------------------------------------------------------------
-% overDone(const,my_key)
+% overDone(const, my_key)
 % ----------------------------------------------------------------------
 % Goal of the function :
 % Close screen and audio, transfer eye-link data, close files
@@ -13,13 +13,13 @@ function overDone(const,my_key)
 % none
 % ----------------------------------------------------------------------
 % Function created by Martin SZINTE (martin.szinte@gmail.com)
-% Project :     nCSFexp
-% Version :     1.0
+% Adapted by Uriel LASCOMBES (uriel.lascombes@laposte.net)
+% Project : nCSFexp
 % ----------------------------------------------------------------------
 
 % Stop recording the keyboard
 % ---------------------------
-for keyb = 1:size(my_key.keyboard_idx,2)
+for keyb = 1:size(my_key.keyboard_idx, 2)
     KbQueueStop(my_key.keyboard_idx(keyb));
     KbQueueFlush(my_key.keyboard_idx(keyb));
 end
@@ -43,7 +43,7 @@ Screen('CloseAll');
 
 % Print block duration
 % --------------------
-timeDur=toc/60;
-fprintf(1,'\n\tThis part of the experiment took : %2.0f min.\n\n',timeDur);
+timeDur = toc / 60;
+fprintf(1, '\n\tThis part of the experiment took : %2.0f min.\n\n', timeDur);
 
 end

@@ -19,7 +19,7 @@ function [filtered_contrastedNoise] = genNoisePatch(const, gauss_mu, gauss_sigma
 % ----------------------------------------------------------------------
 % Function created by Martin SZINTE (martin.szinte@gmail.com)
 % Adapted by Uriel LASCOMBES (uriel.lascombes@laposte.net)
-% Project :     nCSFexp
+% Project : nCSFexp
 % ----------------------------------------------------------------------
 
 % Main parameters
