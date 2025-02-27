@@ -40,14 +40,6 @@ expDes.txt_var2{end+1} = 'none';
 % max - Highest constrast
 % 7 - No stim
 
-% Sequence : Ascending or descending contrast gradient
-% =========
-expDes.sequence = [3, 2, 1];                                        
-expDes.run = repmat(expDes.sequence, 1, const.sf_filtNum);
-expDes.run = [expDes.run, 3];                                       % add last blank
-% 1 - Ascending contrast sequence; 
-% 2 - Descending contrast sequence; 
-% 3 - Blank sequence
 
 % Rand 1: stim orientation
 % =======
@@ -59,7 +51,6 @@ expDes.txt_rand1 = {'cw', 'ccw', 'none'};
  
 % Trial loop
 % ----------
-grad_seqs = []; 
 sf_seqs = [];
 constrast_seqs = [];
 ori_seqs = [];
@@ -69,27 +60,23 @@ sf_ascending = randperm(const.sf_filtNum);
 sf_descending = randperm(const.sf_filtNum);
 
 if const.runNum == 1
-    for seq = expDes.run
+    for seq = const.run_sequence
         if seq == 1 % ascending
             num_seq_ascending = num_seq_ascending + 1;
-            grad_seq = seq * ones(const.contNum, 1);
             sf_seq = repmat(sf_ascending(num_seq_ascending), const.contNum, 1);
             constrast_seq = linspace(1, const.contNum, const.contNum)';
             ori_seq = expDes.oneR(randi(length(expDes.oneR), const.contNum, 1));
         elseif seq == 2 % descending
             num_seq_descending = num_seq_descending + 1;
-            grad_seq = seq * ones(const.contNum, 1);
             sf_seq = repmat(sf_descending(num_seq_descending), const.contNum, 1);
             constrast_seq = linspace(const.contNum, 1, const.contNum)';
             ori_seq = expDes.oneR(randi(length(expDes.oneR), const.contNum, 1));
         elseif seq == 3 % break
-            grad_seq = seq * ones(const.break_trs, 1);
             sf_seq = repmat(const.sf_filtNum + 1, const.break_trs, 1);
             constrast_seq = repmat(const.contNum + 1, const.break_trs, 1);
             ori_seq = repmat(length(expDes.oneR) + 1, const.break_trs, 1);
         end
 
-        grad_seqs = [grad_seqs; grad_seq];
         sf_seqs = [sf_seqs; sf_seq];
         constrast_seqs = [constrast_seqs; constrast_seq];
         ori_seqs = [ori_seqs; ori_seq];
@@ -99,9 +86,9 @@ if const.runNum == 1
     trialNum = linspace(1, const.trialsNum, const.trialsNum)';
     nan_vector = nan(const.trialsNum, 1);
     
-    expDes.expMat = [runNum, trialNum, grad_seqs, sf_seqs, ...
-        constrast_seqs, ori_seqs, nan_vector, nan_vector, nan_vector, ...
-        nan_vector, nan_vector, nan_vector, nan_vector];
+    expDes.expMat = [runNum, trialNum, sf_seqs, constrast_seqs, ...
+        ori_seqs, nan_vector, nan_vector, nan_vector, nan_vector, ...
+        nan_vector];
 
     % Export expMat for next run 
     expMat = expDes.expMat;
@@ -112,7 +99,7 @@ else
     expDes.expMat = load(const.expMat_file).expMat;
 
     % change orientation sequence 
-    for seq = expDes.run
+    for seq = const.run_sequence
         if seq == 3 % pause
             ori_seq = repmat(length(expDes.oneR) + 1, const.break_trs, 1);
         else % ascending and descending
@@ -120,19 +107,16 @@ else
         end
         ori_seqs = [ori_seqs; ori_seq];
     end
-    expDes.expMat(:, 6) = ori_seqs;
+    expDes.expMat(:, 5) = ori_seqs;
 end
-% col 01:   Run
-% col 02:   Trial
-% col 03:   Sequence
-% col 04:   Spatial frequency
-% col 05:   Contrast
-% col 06:   Probe orientation
-% col 07:   Staircase number
-% col 08:   Staircase value
-% col 09:   Response (correct/incorrect)
-% col 10:   Trial onset time
-% col 11:   Trial offset time
-% col 12:   Probe time
-% col 13:   Response time
+% col 01: Run
+% col 02: Trial
+% col 03: Spatial frequency
+% col 04: Michelson contrast
+% col 05: Probe orientation
+% col 06: Response (correct/incorrect)
+% col 07: Trial onset time
+% col 08: Trial offset time
+% col 09: Probe time
+% col 10: Response time
 end

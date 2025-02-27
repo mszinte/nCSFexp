@@ -1,9 +1,9 @@
-function instructionsIm(scr,const,my_key,nameImage,exitFlag)
+function instructionsIm(scr, const, my_key, nameImage, exitFlag)
 % ----------------------------------------------------------------------
-% instructionsIm(scr,const,my_key,nameImage,exitFlag)
+% instructionsIm(scr, const, my_key, nameImage, exitFlag)
 % ----------------------------------------------------------------------
 % Goal of the function :
-% Display instructions draw in .tif file.
+% Display instructions draw in .png file.
 % ----------------------------------------------------------------------
 % Input(s) :
 % scr : main window pointer.
@@ -15,7 +15,8 @@ function instructionsIm(scr,const,my_key,nameImage,exitFlag)
 % (none)
 % ----------------------------------------------------------------------
 % Function created by Martin SZINTE (martin.szinte@gmail.com)
-% Project : nCSFexp
+% Adapted by Uriel LASCOMBES (uriel.lascombes@laposte.net)
+% Project: nCSFexp
 % ----------------------------------------------------------------------
 
 dirImageFile = 'instructions/image/';
@@ -26,7 +27,6 @@ imageToDraw(:, :, 4) = alpha;
 t_handle = Screen('MakeTexture', scr.main, imageToDraw);
 texrect = Screen('Rect', t_handle);
 push_button = 0;
-
 
 Screen('FillRect', scr.main, const.background_color);
 Screen('DrawTexture', scr.main,t_handle,texrect, [0, 0, scr.scr_sizeX, scr.scr_sizeY]);

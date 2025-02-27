@@ -1,6 +1,6 @@
-function [const] = runExp(scr,const,expDes,my_key)
+function [const] = runExp(scr, const, expDes, my_key)
 % ----------------------------------------------------------------------
-% [const] = runExp(scr,const,expDes,my_key)
+% [const] = runExp(scr, const, expDes, my_key)
 % ----------------------------------------------------------------------
 % Goal of the function :
 % Launch experiement instructions and run trials
@@ -15,7 +15,8 @@ function [const] = runExp(scr,const,expDes,my_key)
 % const : struct containing constant configurations
 % ----------------------------------------------------------------------
 % Function created by Martin SZINTE (martin.szinte@gmail.com)
-% Project :     nCSFexp
+% Adapted by Uriel LASCOMBES (uriel.lascombes@laposte.net)
+% Project: nCSFexp
 % ----------------------------------------------------------------------
 
 % Configuration of videos
@@ -47,7 +48,7 @@ save(const.mat_file,'config');
 % First mouse config
 % ------------------
 if const.expStart
-    HideCursor;%ListenChar(-1);
+    HideCursor;
     for keyb = 1:size(my_key.keyboard_idx,2)
         KbQueueFlush(my_key.keyboard_idx(keyb));
     end
@@ -57,8 +58,7 @@ end
 % --------------------
 % Task instructions 
 fprintf(1,'\n\tTask instructions -press space or left button-');
-
-% instructionsIm(scr,const,my_key,sprintf('%s',const.cond1_txt,scanTxt),0);
+instructionsIm(scr, const, my_key, sprintf('%s', const.task, scanTxt), 0);
 for keyb = 1:size(my_key.keyboard_idx,2)
     KbQueueFlush(my_key.keyboard_idx(keyb));
 end
@@ -73,31 +73,24 @@ fprintf(1,'\n\n\tBUTTON PRESSED BY SUBJECT\n');
 behav_txt_head{1} = 'onset';                        
 behav_txt_head{2} = 'duration';                     
 behav_txt_head{3} = 'run_number';                   
-behav_txt_head{4} = 'trial_number';                 
-behav_txt_head{5} = 'sequence';                     
-behav_txt_head{6} = 'spatial_frequency';                
-behav_txt_head{7} = 'contrast';                   
-behav_txt_head{8} = 'stim_noise_ori';               
-behav_txt_head{9} = 'stim_stair_num';               
-behav_txt_head{10} = 'stim_stair_val';               
-behav_txt_head{11} = 'response_val';                 
-behav_txt_head{12} = 'probe_time';                   
-behav_txt_head{13} = 'reaction_time';                
+behav_txt_head{4} = 'trial_number';                          
+behav_txt_head{5} = 'spatial_frequency';                
+behav_txt_head{6} = 'contrast';                   
+behav_txt_head{7} = 'stim_noise_ori';               
+behav_txt_head{8} = 'response_val';                 
+behav_txt_head{9} = 'probe_time';                   
+behav_txt_head{10} = 'reaction_time';                
 
 behav_mat_res{1}  = expDes.expMat(:, 10);                                   % Onset
 behav_mat_res{2}  = expDes.expMat(:, 11) - expDes.expMat(:, 10);            % Duration
 behav_mat_res{3}  = expDes.expMat(:, 1);                                    % Run number
 behav_mat_res{4}  = expDes.expMat(:, 2);                                    % Trial number
-behav_mat_res{5}  = expDes.expMat(:, 3);                                    % Sequence
-behav_mat_res{6}  = expDes.expMat(:, 4);                                    % Spatial frequency
-behav_mat_res{7}  = expDes.expMat(:, 5);                                    % Contrast 
-behav_mat_res{8}  = expDes.expMat(:, 6);                                    % Probe orientation
-behav_mat_res{9}  = expDes.expMat(:, 7);                                    % Staircase number
-behav_mat_res{10} = expDes.expMat(:, 8);                                    % Staircase value
-behav_mat_res{11} = expDes.expMat(:, 9);                                    % Response (correct/incorrect)
-behav_mat_res{12} = expDes.expMat(:, 12);                                   % Probe time
-behav_mat_res{13} = expDes.expMat(:, 13) - expDes.expMat(:, 12);            % Reaction time
-
+behav_mat_res{5}  = expDes.expMat(:, 4);                                    % Spatial frequency
+behav_mat_res{6}  = expDes.expMat(:, 5);                                    % Contrast 
+behav_mat_res{7}  = expDes.expMat(:, 6);                                    % Probe orientation
+behav_mat_res{8}  = expDes.expMat(:, 9);                                    % Response (correct/incorrect)
+behav_mat_res{9}  = expDes.expMat(:, 12);                                   % Probe time
+behav_mat_res{10} = expDes.expMat(:, 13) - expDes.expMat(:, 12);            % Reaction time
 
 head_line               =   [];
 for trial = 1:expDes.nb_trials

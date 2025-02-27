@@ -16,7 +16,8 @@ function [expDes] = runTrials(scr,const,expDes,my_key)
 % expDes : struct containing all the variable design configurations.
 % ----------------------------------------------------------------------
 % Function created by Martin SZINTE (martin.szinte@gmail.com)
-% Project :     nCSFexp
+% Adapted by Uriel LASCOMBES (uriel.lascombes@laposte.net)
+% Project: nCSFexp
 % ----------------------------------------------------------------------
 
 for n_trial = 1:const.trialsNum
@@ -28,17 +29,24 @@ for n_trial = 1:const.trialsNum
     % ---------------------------------
 
     % Var 1 : Spatial Frequency
-    var1 = expDes.expMat(n_trial, 4);
+    var1 = expDes.expMat(n_trial, 3);
 
     % Var 2 : Michelson contrast
-    var2 = expDes.expMat(n_trial, 5);
-
-    % Var 3 : ascending or descending contrast gradient
-    var3 = expDes.expMat(n_trial, 3);
+    var2 = expDes.expMat(n_trial, 4);
 
     % Rand 1 : Stimulus orientation
-    rand1 = expDes.expMat(n_trial, 6);
-
+    rand1 = expDes.expMat(n_trial, 5);
+    
+    if const.checkTrial && const.expStart == 0
+        fprintf(1,'\n\n\t========================  Trial %3.0f ========================\n', n_trial);
+        fprintf(1,'\n\tSpatial frequency            =\t');
+        fprintf(1,'%s', expDes.txt_var1{var1(1)});
+        fprintf(1,'\n\tMichelson contrast           =\t');
+        fprintf(1,'%s',expDes.txt_var2{var2});
+        fprintf(1,'\n\tStimulus orientation         =\t');
+        fprintf(1,'%s',expDes.txt_rand1{rand1});
+    end
+    
     % Prepare stimuli
     % ---------------
     % Stimulus

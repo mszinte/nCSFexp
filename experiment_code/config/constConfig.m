@@ -103,6 +103,12 @@ const.contNum = 6;                                                          % Nu
 const.contValues = logspace(log10(const.minCont), ...                       % Michelson contrast values
     log10(const.maxCont), const.contNum);
 
+
+% Run sequence
+% ------------
+const.run_sequence = repmat([3, 2, 1], 1, const.sf_filtNum);                % 1: ascending contrast; 2: descending contrast; 3: Blank
+const.run_sequence = [const.run_sequence, 3];                               % add last blank
+
 % Breaks
 % ------
 const.breakNum = const.sf_filtNum + 1;                                      % Number of breaks
