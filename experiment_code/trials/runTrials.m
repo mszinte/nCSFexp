@@ -58,17 +58,20 @@ for n_trial = 1:const.trialsNum
 
     % wait for bar_pass press in trial beginning
     if n_trial == 1
+        time_start = GetSecs;
         Screen('FillRect', scr.main, const.background_color);
         drawEmptyTarget(scr, const, const.rect_center(1), const.rect_center(2));
         Screen('DrawLines', scr.main, const.line_fix_up_left, const.line_width, const.line_color, [], 1);
         Screen('DrawLines', scr.main, const.line_fix_up_right, const.line_width, const.line_color, [], 1);
         Screen('DrawLines', scr.main, const.line_fix_down_left, const.line_width, const.line_color, [], 1);
         Screen('DrawLines', scr.main, const.line_fix_down_right, const.line_width, const.line_color, [], 1);
-        Screen('Flip', scr.main);
+        vbl = Screen('Flip', scr.main);
+        tellapsed = vbl - time_start;
+        
         first_trigger = 0;
-
         while ~first_trigger
             if const.scanner == 0 || const.scannerTest
+                WaitSecs(const.TR_dur-tellapsed);
                 first_trigger = 1;
             else
                 keyPressed = 0;
@@ -78,7 +81,6 @@ for n_trial = 1:const.trialsNum
                     keyPressed = keyPressed + keyP;
                     keyCode = keyCode + keyC;
                 end
-
                 if keyPressed
                     if keyCode(my_key.escape) && const.expStart == 0
                         overDone(const, my_key)
@@ -89,14 +91,11 @@ for n_trial = 1:const.trialsNum
                 end
             end
         end
-            
-        t_start = GetSecs;
         vbl = GetSecs;
-        % log_txt = sprintf('bar pass  trial onset %i', bar_pass, bar_trials_num(bar_step));
+        log_txt = sprintf('trial onset %i', n_trial);
         fprintf(const.log_file_fid, log_txt);
-        expDes.expMat(n_trial, 8) = vbl;
+        expDes.expMat(n_trial, end-4) = vbl;
     end
-
 
     % loop over noise frame frequence
     % define name of next frame
@@ -104,8 +103,8 @@ for n_trial = 1:const.trialsNum
         screen_filename = sprintf('%s/blank.mat', const.stim_folder);
     else
         if time2probe_cond(n_trial)
-            screen_filename = sprintf('%s/probe_sfStim%i_contStim%i_kappaStim%i_noiseRand%i.mat', ...
-                const.stim_folder, var1, var2, expDes.stim_stair_val, rand1);
+            screen_filename = sprintf('%s/probe_sfStim%i_contStim%i_noiseRand%i.mat', ...
+                const.stim_folder, var1, var2, rand1);
         else
             screen_filename = sprintf('%s/noprobe_sfStim%i_contStim%i_noiseRand%i.mat', ...
                     const.stim_folder, var1, var2, rand1);

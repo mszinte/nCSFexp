@@ -40,7 +40,6 @@ expDes.txt_var2{end+1} = 'none';
 % max - Highest constrast
 % 7 - No stim
 
-
 % Rand 1: stim orientation
 % =======
 expDes.oneR = [1;2];
