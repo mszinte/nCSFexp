@@ -93,7 +93,7 @@ behav_mat_res{9} = expDes.expMat(:, 9);                                     % Pr
 behav_mat_res{10} = expDes.expMat(:, 9) - expDes.expMat(:, 10);             % Reaction time
 
 head_line = [];
-for trial = 1:expDes.nb_trials
+for trial = 1:const.trialsNum
     % header line
     if trial == 1
         for tab = 1:size(behav_txt_head, 2)
@@ -126,24 +126,17 @@ for trial = 1:expDes.nb_trials
     fprintf(const.behav_file_fid, '%s\n', trial_line);
 end
 
-% End messages
-% ------------
-if const.runNum == size(const.cond_run_order, 1)
-    instructionsIm(scr, const, my_key, 'End', 1);
-else
-    instructionsIm(scr, const, my_key, 'End_block', 1);
-end
+% % End messages
+% % ------------
+% if const.runNum == size(const.cond_run_order, 1)
+%     instructionsIm(scr, const, my_key, 'End', 1);
+% else
+%     instructionsIm(scr, const, my_key, 'End_block', 1);
+% end
 
 % Save all config at the end of the block (overwrite start made at start)
 % ---------------------------------------
 config.scr = scr; config.const = const; config.expDes = expDes; config.my_key = my_key;
 save(const.mat_file, 'config');
-
-% Save staircases
-% ---------------
-staircase.stim_stair_val = expDes.stim_stair_val;
-staircase.cor_count_stim = expDes.cor_count_stim;
-staircase.incor_count_stim = expDes.incor_count_stim;
-save(const.staircase_file, 'staircase');
 
 end
