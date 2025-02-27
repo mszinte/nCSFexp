@@ -1,6 +1,6 @@
-function [cm] = vaDeg2cm (vaDeg,scr)
+function [cm] = vaDeg2cm (vaDeg, scr)
 % ----------------------------------------------------------------------
-% [cm] = vaDeg2cm (vaDeg,dist)
+% [cm] = vaDeg2cm (vaDeg, dist)
 % ----------------------------------------------------------------------
 % Goal of the function :
 % Convert visual angle (degree) in cm
@@ -13,10 +13,9 @@ function [cm] = vaDeg2cm (vaDeg,scr)
 % cm    = size in cm                                ex : cm = 12
 % ----------------------------------------------------------------------
 % Function created by Martin SZINTE (martin.szinte@gmail.com)
-% Last edit : 30 / 10 / 2008
-% Project : All
-% Version : 1.0
+% Adapted by Uriel LASCOMBES (uriel.lascombes@laposte.net)
+% Project : nCSFexp
 % ----------------------------------------------------------------------
 
-cm = (2*scr.dist*tan(0.5*pi/180))*vaDeg;
+cm = (2 * scr.dist * tan(0.5 * pi / 180)) * vaDeg;
 end

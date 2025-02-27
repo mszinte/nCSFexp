@@ -1,6 +1,6 @@
-function [pixX,pixY]= vaDeg2pix(vaDeg,scr)
+function [pixX, pixY] = vaDeg2pix(vaDeg, scr)
 % ----------------------------------------------------------------------
-% [pixX, pixY] = vaDeg2pix(vaDeg,scr)
+% [pixX, pixY] = vaDeg2pix(vaDeg, scr)
 % ----------------------------------------------------------------------
 % Goal of the function :
 % Convert visual angle (degree) in pixel ( x and y )
@@ -18,11 +18,11 @@ function [pixX,pixY]= vaDeg2pix(vaDeg,scr)
 % pixY  = size in pixel(Y)                             ex : = 25.35  
 % ----------------------------------------------------------------------
 % Function created by Martin SZINTE (martin.szinte@gmail.com)
-% Last edit : 30 / 10 / 2008
-% Project : All
-% Version : 1.0
+% Adapted by Uriel LASCOMBES (uriel.lascombes@laposte.net)
+% Project : nCSFexp
 % ----------------------------------------------------------------------
 
-cm= vaDeg2cm(vaDeg,scr);
-[pixX,pixY] = cm2pix(cm,scr);
+cm = vaDeg2cm(vaDeg, scr);
+[pixX, pixY] = cm2pix(cm, scr);
+
 end

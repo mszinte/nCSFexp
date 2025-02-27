@@ -1,4 +1,4 @@
-function [vaDeg] =cm2vaDeg (cm,scr)
+function [vaDeg] = cm2vaDeg (cm, scr)
 % ----------------------------------------------------------------------
 % [vaDeg] = cm2vaDeg(cm,scr)
 % ----------------------------------------------------------------------
@@ -13,10 +13,10 @@ function [vaDeg] =cm2vaDeg (cm,scr)
 % vaDeg = size in visual angle (degree)             ex : vaDeg = 2.5
 % ----------------------------------------------------------------------
 % Function created by Martin SZINTE (martin.szinte@gmail.com)
-% Last edit : 30 / 10 / 2008
-% Project : All
-% Version : 1.0
+% Adapted by Uriel LASCOMBES (uriel.lascombes@laposte.net)
+% Project : nCSFexp
 % ----------------------------------------------------------------------
 
-vaDeg = cm./(2*scr.dist*tan(0.5*pi/180));
+vaDeg = cm ./ (2 * scr.dist * tan(0.5 * pi / 180));
+
 end

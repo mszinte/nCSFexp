@@ -1,6 +1,6 @@
-function [vaDeg]= pix2vaDeg (pix,scr)
+function [vaDeg] = pix2vaDeg (pix, scr)
 % ----------------------------------------------------------------------
-% [vaDeg]= pix2vaDeg (pix,scr)
+% [vaDeg]= pix2vaDeg (pix, scr)
 % ----------------------------------------------------------------------
 % Goal of the function :
 % Convert pixel in visual angle
@@ -17,12 +17,11 @@ function [vaDeg]= pix2vaDeg (pix,scr)
 % vaDeg = size in visual angle (degree)                ex : = 35
 % ----------------------------------------------------------------------
 % Function created by Martin SZINTE (martin.szinte@gmail.com)
-% Last edit : 30 / 10 / 2008
-% Project : All
-% Version : 1.0
+% Adapted by Uriel LASCOMBES (uriel.lascombes@laposte.net)
+% Project : nCSFexp
 % ----------------------------------------------------------------------
 
-[cmX,cmY]=pix2cm(pix,scr);
-[vaDeg] = cm2vaDeg([cmX,cmY],scr);
+[cmX, cmY] = pix2cm(pix, scr);
+[vaDeg] = cm2vaDeg([cmX, cmY], scr);
 
 end
