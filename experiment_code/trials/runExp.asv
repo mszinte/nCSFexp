@@ -77,20 +77,33 @@ behav_txt_head{4} = 'trial_number';
 behav_txt_head{5} = 'spatial_frequency';
 behav_txt_head{6} = 'michelson_contrast';
 behav_txt_head{7} = 'probe_orientation';
-behav_txt_head{8} = 'response_correctness';
+behav_txt_head{8} = 'response_val';
 behav_txt_head{9} = 'probe_time';
 behav_txt_head{10} = 'reaction_time';
 
-behav_mat_res{1} = expDes.expMat(:, 7);
-behav_mat_res{2} = expDes.expMat(:, 8) - expDes.expMat(:, 7);
-behav_mat_res{3} = expDes.expMat(:, 1);
-behav_mat_res{4} = expDes.expMat(:, 2);
-behav_mat_res{5} = expDes.expMat(:, 3);
-behav_mat_res{6} = expDes.expMat(:, 4);
-behav_mat_res{7} = expDes.expMat(:, 5);
-behav_mat_res{8} = expDes.expMat(:, 6);
-behav_mat_res{9} = expDes.expMat(:, 9);
-behav_mat_res{10} = expDes.expMat(:, 9) - expDes.expMat(:, 10);
+
+% col 01: Run
+% col 02: Trial
+% col 03: Spatial frequency
+% col 04: Michelson contrast
+% col 05: Probe orientation
+% col 06: Response (correct/incorrect)
+% col 07: Trial onset time
+% col 08: Trial offset time
+% col 09: Probe time
+% col 10: Response time
+
+
+behav_mat_res{1} = expDes.expMat(:, 7);                                     % Onset
+behav_mat_res{2} = expDes.expMat(:, 8) - expDes.expMat(:, 7);               % Duration
+behav_mat_res{3} = expDes.expMat(:, 1);                                     % Run number
+behav_mat_res{4} = expDes.expMat(:, 2);                                     % Trial number
+behav_mat_res{5} = expDes.expMat(:, 3);                                     % Spatial frequency
+behav_mat_res{6} = expDes.expMat(:, 4);                                     % Contrast
+behav_mat_res{7} = expDes.expMat(:, 5);                                     % Probe orientation
+behav_mat_res{8} = expDes.expMat(:, 6);                                     % Response (correct/incorrect)
+behav_mat_res{9} = expDes.expMat(:, 9);                                     % Probe time
+behav_mat_res{10} = expDes.expMat(:, 9) - expDes.expMat(:, 10);             % Reaction time
 
 head_line = [];
 for trial = 1:const.trialsNum
@@ -126,15 +139,15 @@ for trial = 1:const.trialsNum
     fprintf(const.behav_file_fid, '%s\n', trial_line);
 end
 
-% End messages
-% ------------
-if const.runNum == const.runs
-    instructionsIm(scr, const, my_key, 'End', 1);
-else
-    instructionsIm(scr, const, my_key, 'End_block', 1);
-end
+% % End messages
+% % ------------
+% if const.runNum == size(const.cond_run_order, 1)
+%     instructionsIm(scr, const, my_key, 'End', 1);
+% else
+%     instructionsIm(scr, const, my_key, 'End_block', 1);
+% end
 
-% Save all config at the end of the block
+% Save all config at the end of the block (overwrite start made at start)
 % ---------------------------------------
 config.scr = scr; config.const = const; config.expDes = expDes; config.my_key = my_key;
 save(const.mat_file, 'config');

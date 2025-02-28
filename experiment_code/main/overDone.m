@@ -39,7 +39,6 @@ fclose(const.log_file_fid);
 % -------------------------
 ShowCursor;
 Screen('CloseAll');
-%ListenChar(1);
 
 % Print block duration
 % --------------------

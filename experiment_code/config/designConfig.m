@@ -116,6 +116,6 @@ end
 % col 06: Response (correct/incorrect)
 % col 07: Trial onset time
 % col 08: Trial offset time
-% col 09: Probe time
-% col 10: Response time
+% col 09: Probe onset
+% col 10: Response onset
 end

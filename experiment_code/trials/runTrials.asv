@@ -21,10 +21,7 @@ function [expDes] = runTrials(scr,const,expDes,my_key)
 % ----------------------------------------------------------------------
 
 for n_trial = 1:const.trialsNum
-    % Write in log
-    log_txt = sprintf('Trial %i started\n', n_trial);
-    fprintf(const.log_file_fid, log_txt); 
-
+    
     % Compute and simplify var and rand
     % ---------------------------------
 
@@ -47,28 +44,22 @@ for n_trial = 1:const.trialsNum
         fprintf(1, '%s', expDes.txt_rand1{rand1});
     end
     
-    % Prepare stimuli
-    % ---------------
-    % Stimulus
-    time2probe_cond = const.time2prob;
-    time2resp_cond = const.time2resp;
-    resp_reset_cond = const.resp_reset;
     trial_start_cond = const.trial_start;
     probe_onset_cond = const.probe_onset;
 
-    % wait for bar_pass press in trial beginning
+    % wait for first TR trigger
     if n_trial == 1
-        time_start = GetSecs;
-        screen_filename = sprintf('%s/blank.mat', const.stim_folder);
+        
+        screen_filename = sprintf('%s/first_tr.mat', const.stim_folder);
         load(screen_filename, 'screen_stim');
-        expDes.tex = Screen('MakeTexture', scr.main, screen_stim, [], [], [], 0);
+        expDes.tex = Screen('MakeTexture', scr.main, screen_stim);
         Screen('DrawTexture', scr.main, expDes.tex, [], const.stim_rect)
         vbl = Screen('Flip', scr.main);
         
         first_trigger = 0;
         while ~first_trigger
             if const.scanner == 0 || const.scannerTest
-                WaitSecs(const.TR_dur-time_start);
+                WaitSecs(const.TR_dur-vbl);
                 first_trigger = 1;
             else
                 keyPressed = 0;
@@ -88,54 +79,142 @@ for n_trial = 1:const.trialsNum
                 end
             end
         end
-        log_txt = sprintf('trial onset %i', n_trial);
-        fprintf(const.log_file_fid, log_txt);
-        expDes.expMat(n_trial, end-4) = time_start;
     end
     
     drawf = 1;
     while drawf <= drawf_max
 
+        % Define stimulus
+        % ---------------
+        % Define noise number
+        rand_num_tex = const.rand_num_tex(drawf);
+        
         % Define name of next frame
         if var1 == 7
             screen_filename = sprintf('%s/blank.mat', const.stim_folder);
         else
-            if time2probe_cond(n_trial)
-                screen_filename = sprintf('%s/probe_sfStim%i_contStim%i_noiseRand%i.mat', ...
-                    const.stim_folder, var1, var2, rand1);
+            if const.time2prob(drawf)
+                screen_filename = sprintf('%s/probe_sfStim%i_contStim%i_noiseRand%i_kappaNum%i.mat', ...
+                    const.stim_folder, var1, var2, rand_num_tex, ...
+                    const.kappa_probe_num);
             else
-                screen_filename = sprintf('%s/noprobe_sfStim%i_contStim%i_noiseRand%i.mat', ...
-                        const.stim_folder, var1, var2, rand1);
+                screen_filename = sprintf('%s/noprobe_sfStim%i_contStim%i_noiseRand%i_kappaNum%i.mat', ...
+                        const.stim_folder, var1, var2, rand_num_tex, ...
+                        const.kappa_noise_num);
             end
         end
         
         % Define displayed orientation of probe
         switch rand1
-            case 1; angle = -45;
-            case 1; angle = 45;
-            case 3; angle = 0;
+            case 1; tex_angle = 0;  % native orientation (i.e. 45)
+            case 2; tex_angle = 90; % 90 deg rotated orientation (i.e. -45)
+            case 3; tex_angle = 0; 
         end
-        if rand1 == 1
-        elseif rand1 == 2
-        else; angle =0;
-            
         
-        stim_ori                =   rand1(bar_step);
-        
-        
-
-        % Load the matrix
+        % Load the tex matrix
         load(screen_filename, 'screen_stim');
 
         % Make texture
-        expDes.tex = Screen('MakeTexture', scr.main, screen_stim, [], [], [], 0);
+        tex = Screen('MakeTexture', scr.main, screen_stim, [], ...
+            [], [], tex_angle);
 
         % Draw texture
-        Screen('DrawTexture', scr.main, expDes.tex, [], const.stim_rect)
+        Screen('DrawTexture', scr.main, tex, [], const.stim_rect)
 
+        % Check response
+        % --------------
+        % Define when to reset resp
+        if const.resp_reset(drawf); resp = 0; end
+        
+        % Key keyboard
+        keyPressed = 0;
+        keyCode = zeros(1, my_key.keyCodeNum);
+        for keyb = 1:size(my_key.keyboard_idx, 2)
+            [keyP, keyC] = KbQueueCheck(my_key.keyboard_idx(keyb));
+            keyPressed = keyPressed + keyP;
+            keyCode = keyCode + keyC;
+        end
+
+        if keyPressed
+            if keyCode(my_key.mri_tr)
+                log_txt = sprintf('trial %i event mri_trigger at %f\n', ...
+                    n_trial, vbl);
+                fprintf(const.log_file_fid, log_txt);
+            end
+            if keyCode(my_key.escape)
+                if const.expStart == 0
+                    overDone(const, my_key)
+                end
+            elseif keyCode(my_key.left1) % ccw button
+                if const.time2resp(drawf) && resp == 0
+                    log_txt = sprintf('trial %i event_%s at %f\n', ...
+                        n_trial, my_key.left1Val, vbl);
+                    fprintf(const.log_file_fid, log_txt);
+                    switch rand1
+                        case 1; response = 0;
+                        case 2; response = 1;
+                    end
+                    expDes.expMat(n_trial, end-4) = response;
+                    expDes.expMat(n_trial, end) = GetSecs;
+                    resp = 1;
+                end
+            elseif keyCode(my_key.right1)  % cw button
+                if const.time2resp(drawf) && resp == 0
+                    log_txt = sprintf('trial %i event_%s at %f\n', ...
+                        n_trial, my_key.right1Val, vbl);
+                    fprintf(const.log_file_fid, log_txt);
+                    if cond1(bar_step) == 1
+                        switch rand1(bar_step)
+                            case 1; response = 1;
+                            case 2; response = 0;
+                        end
+                    end
+                    expDes.expMat(n_trial, end-4) = response;
+                    expDes.expMat(n_trial, end) = GetSecs;
+                    resp = 1;
+                end
+            end
+        end
+        
+        % Create movie
+        if const.mkVideo
+            expDes.vid_num = expDes.vid_num + 1;
+            image_vid =   Screen('GetImage', scr.main);
+            imwrite(image_vid,sprintf('%s_frame_%i.png', ...
+                const.movie_image_file, expDes.vid_num))
+            open(const.vid_obj);
+            writeVideo(const.vid_obj, image_vid);
+        end
+                
         % Flip screen
         when2flip = vbl + const.patch_dur - scr.frame_duration / 2;
         vbl = Screen('Flip', scr.main, when2flip);
+        
+        % Get time info
+        % -------------
+        % trial onset
+        if const.trial_start(drawf)
+            log_txt = sprintf('trial %i trial_onset at %f', n_trial, vbl);
+            fprintf(const.log_file_fid, log_txt);
+            expDes.expMat(n_trial, end-3) = vbl;
+        end
+        
+        % trial offset
+        if drawf == drawf_max
+            log_txt = sprintf('trial %i trial_offset at %f', n_trial, vbl);
+            fprintf(const.log_file_fid, log_txt);
+            expDes.expMat(n_trial, end-2) = vbl;
+        end
+        
+        % probe onset
+        if const.probe_onset(drawf)
+            log_txt = sprintf('trial %i probe_onset at %f', n_trial, vbl);
+            fprintf(const.log_file_fid, log_txt);
+            expDes.expMat(n_trial, end-1) = vbl;
+        end
+
+        % Frame number
+        drawf = drawf + 1;
     end
         
 end
