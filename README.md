@@ -2,7 +2,6 @@
 By :      Uriel Lascombes<br/>
 Projet :  nCSFexp<br/>
 With :    Martin SZINTE
-Version:  1.0<br/>
 
 ## Version description
 Experiment in which we use pink noise different filtered to display specific <br/>
@@ -11,6 +10,5 @@ Sensitivity Function (nCSF) of visual cortical areas. Participants are instructe
 to fixate and report an orientation of the noise pattern presented on every TR.
 
 ## TO DO 
-- [ ] Take care of random process
-- [ ] create runTrial
-- [ ] create runExp 
+- Save .mat when stimuli are generated
+- Do instructions
