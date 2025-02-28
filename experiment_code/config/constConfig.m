@@ -78,7 +78,9 @@ const.num_steps_kappa = 15;                                                 % Nu
 const.noise_kappa = [0, 10.^(linspace(-1, 1.5, ...
                                       const.num_steps_kappa-1))];           % Von misses filter kappa parameter (1st = noise, last = less noisy) in pRF
 
-const.noise_kappa_threshold = 10;                                           % kappa at threshold (based on previous pRF experiment)
+const.num_steps_kappa_used = 2;                                             % kappa level used in nCSF task
+const.kappa_noise_num = 1;                                                  % kappa at noise
+const.kappa_threshold_num = 10;                                             % kappa at threshold (based on previous pRF experiment)
 
 
 % Spatial Frequency filter

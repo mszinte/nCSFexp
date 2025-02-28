@@ -61,7 +61,7 @@ for n_trial = 1:const.trialsNum
         time_start = GetSecs;
         screen_filename = sprintf('%s/blank.mat', const.stim_folder);
         load(screen_filename, 'screen_stim');
-        expDes.tex = Screen('MakeTexture', scr.main, screen_stim);
+        expDes.tex = Screen('MakeTexture', scr.main, screen_stim, [], [], [], 0);
         Screen('DrawTexture', scr.main, expDes.tex, [], const.stim_rect)
         vbl = Screen('Flip', scr.main);
         
@@ -96,38 +96,42 @@ for n_trial = 1:const.trialsNum
     drawf = 1;
     while drawf <= drawf_max
 
-        % Define noise number
-        rand_num_tex = const.rand_num_tex(drawf);
-        
         % Define name of next frame
         if var1 == 7
             screen_filename = sprintf('%s/blank.mat', const.stim_folder);
         else
-            if time2probe_cond(drawf)
+            if time2probe_cond(n_trial)
                 screen_filename = sprintf('%s/probe_sfStim%i_contStim%i_noiseRand%i.mat', ...
-                    const.stim_folder, var1, var2, rand_num_tex);
+                    const.stim_folder, var1, var2, rand1);
             else
                 screen_filename = sprintf('%s/noprobe_sfStim%i_contStim%i_noiseRand%i.mat', ...
-                        const.stim_folder, var1, var2, rand_num_tex);
+                        const.stim_folder, var1, var2, rand1);
             end
         end
         
         % Define displayed orientation of probe
         switch rand1
-            case 1; tex_angle = -45;
-            case 2; tex_angle = 45;
-            case 3; tex_angle = 0;
+            case 1; angle = -45;
+            case 1; angle = 45;
+            case 3; angle = 0;
         end
+        if rand1 == 1
+        elseif rand1 == 2
+        else; angle =0;
+            
         
+        stim_ori                =   rand1(bar_step);
+        
+        
+
         % Load the matrix
         load(screen_filename, 'screen_stim');
 
         % Make texture
-        tex = Screen('MakeTexture', scr.main, screen_stim, [], ...
-            [], [], tex_angle);
+        expDes.tex = Screen('MakeTexture', scr.main, screen_stim, [], [], [], 0);
 
         % Draw texture
-        Screen('DrawTexture', scr.main, tex, [], const.stim_rect)
+        Screen('DrawTexture', scr.main, expDes.tex, [], const.stim_rect)
 
         % Flip screen
         when2flip = vbl + const.patch_dur - scr.frame_duration / 2;
