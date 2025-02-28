@@ -10,6 +10,7 @@ Sensitivity Function (nCSF) of visual cortical areas. Participants are instructe
 to fixate and report an orientation of the noise pattern presented on every TR.
 
 ## TO DO 
+- End the analysis of fourier analysis and save the figures in others/ folders
 - Do instructions
 - Check all trials
 - Check all output (log, .mat, event.tsv, etc)
