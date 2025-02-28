@@ -73,7 +73,7 @@ const.rect_noise        =  [const.rect_center(1) - const.noise_size/2;...   % No
 
 % Kappa and staircase
 % -------------------
-const.native_noise_orientation = 90;                                       	% Von misses original orientation
+const.native_noise_orientation = 0;                                       	% Von misses original orientation
 const.num_steps_kappa = 15;                                                 % Number of kappa steps in pRF task
 const.noise_kappa = [0, 10.^(linspace(-1, 1.5, ...
                                       const.num_steps_kappa-1))];           % Von misses filter kappa parameter (1st = noise, last = less noisy) in pRF

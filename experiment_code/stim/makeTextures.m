@@ -87,10 +87,10 @@ numPrint = 0;
 total_amount = (noise_rand_num * sp_cut_num * mc_cut_num * kappa_num) + 1;
 textprogressbar('Progress: ');
 
-for sp_val_stim = 1:sp_cut_num
-    for contrast_val_stim = 1:mc_cut_num
-        for noise_rand = 1:noise_rand_num
-            for kappa = 1:const.num_steps_kappa_used
+for kappa = 1:const.num_steps_kappa_used
+    for sp_val_stim = 1:sp_cut_num
+        for contrast_val_stim = 1:mc_cut_num
+            for noise_rand = 1:noise_rand_num
                 % Noise seed
                 seed = const.noise_seeds(noise_rand);
 
@@ -98,10 +98,12 @@ for sp_val_stim = 1:sp_cut_num
                 sp_sigma_val = const.sf_cutSigma;
                 sp_center_val = const.sf_filtCenters(sp_val_stim);
                 contrast_val = const.contValues(contrast_val_stim);
-                if kappa == 1; kappa_val = const.noise_kappa(...
-                        const.kappa_noise_num);
-                elseif kappa == 2; kappa_val = const.noise_kappa(...
-                        const.kappa_threshold_num);
+                if kappa == 1
+                    kappa_val = const.noise_kappa(const.kappa_noise_num);
+                    tex_fix_dot = tex_fix_dot_no_probe;
+                elseif kappa == 2
+                    kappa_val = const.noise_kappa(const.kappa_threshold_num);
+                    tex_fix_dot = tex_fix_dot_probe;
                 end
                     
                 mat_noise = genNoisePatch(const, sp_center_val, ...
@@ -116,15 +118,15 @@ for sp_val_stim = 1:sp_cut_num
                 clear noise_patch
 
                 % define all texture parameters
-                rects = [rect_noise,...                                  % stim noise
-                         rect_noise,...                                  % fix annulus
-                         rect_noise,...                                  % empty center
-                         rect_noise];                                    % fixation dot
+                rects = [rect_noise,...                                 % stim noise
+                         rect_noise,...                                 % fix annulus
+                         rect_noise,...                                 % empty center
+                         rect_noise];                                   % fixation dot
 
-                texs = [tex_stim,...                                     % stim noise
-                        tex_fix_ann_probe,...                            % fix annulus
-                        tex_black_fix_noise,...                          % empty center
-                        tex_fix_dot_probe];                              % fixation dot
+                texs = [tex_stim,...                                    % stim noise
+                        tex_fix_ann_probe,...                           % fix annulus
+                        tex_black_fix_noise,...                         % empty center
+                        tex_fix_dot];                                   % fixation dot
 
                 % draw all textures
                 Screen('FillRect', scr.main, const.background_color);
