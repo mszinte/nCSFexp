@@ -23,34 +23,23 @@ function [const] = constConfig(scr,const)
 % Project : nCSFexp
 % ----------------------------------------------------------------------
 
-% Fix randomization
-[const.seed, const.whichGen] = ClockRandSeed;
-rng(const.seed);
 
-%% Colors
+%% Stim parameters
+
+% Colors
+% ------
 const.white = [255,255,255];                                                % White color
 const.black = [0,0,0];                                                      % Black color
 const.background_color = const.black;                                       % Background color
 const.stim_color = const.white;                                             % Stimulus color
 const.ann_color = const.white;                                              % Define anulus around fixation color
 const.ann_probe_color = const.white;                                        % Define anulus around fixation color when probe
-const.dot_color =   const.white;                                            % Define fixation dot color
+const.dot_color = const.white;                                              % Define fixation dot color
 const.dot_probe_color = const.black;                                        % Define fixation dot color when probe
-
-%% Time parameters
-const.TR_dur = 1.6;                                                         % Repetition time
-const.TR_num = (floor(const.TR_dur/scr.frame_duration));                    % Repetition time in screen frames
-
-const.noise_freq = 10;                                                      % Compute noise frequency in hertz
-const.patch_dur = 1/const.noise_freq;                                       % Compute single patch duration in seconds
-const.TR_num_noise = (floor(const.TR_dur/const.patch_dur));                 % Repetition time in noise frames
-
-%% Stim parameters
 
 % Noise parameters
 % ----------------
 const.noise_num = 20;                                                       % Number of generated patches
-const.noise_seeds = randi([1, 10000], 1, const.noise_num);                  % Seeds for noise
 const.noise_pixel = 1;                                                      % Stimulus noise pixel size in pixels
 const.stim_size = [scr.scr_sizeY,scr.scr_sizeY];                            % Full screen stimuli size in pixels
 const.noise_size = const.stim_size(1);                                      % Size of the patch
@@ -71,48 +60,6 @@ const.rect_noise        =  [const.rect_center(1) - const.noise_size/2;...   % No
     const.rect_center(1) + const.noise_size/2;...
     const.rect_center(2) + const.noise_size/2];
 
-% Kappa and staircase
-% -------------------
-const.native_noise_orientation = 45;                                       	% Von misses original orientation
-const.num_steps_kappa = 15;                                                 % Number of kappa steps in pRF task
-const.noise_kappa = [0, 10.^(linspace(-1, 1.5, ...
-                                      const.num_steps_kappa-1))];           % Von misses filter kappa parameter (1st = noise, last = less noisy) in pRF
-
-const.num_steps_kappa_used = 2;                                             % kappa level used in nCSF task
-const.kappa_noise_num = 1;                                                  % kappa for noise texture
-const.kappa_probe_num = 10;                                                 % kappa for probe texture (defined as a function of previous experience)
-
-% Spatial Frequency filter
-% ------------------------
-const.sf_minFreq = 0.5;                                                     % Minimal central spatial frequency filter in cycle/dva
-const.sf_maxFreq = 20;                                                      % Maximal central spatial frequency filter in cycle/dva
-const.sf_filtNum = 6;                                                       % Number of spatial frequency filters
-const.sf_filtOverlap = 0.6;                                                 % Proportion of overlaping for the gaussian spatial frequency filters 
-const.sf_filtCenters = round(logspace(log10(const.sf_minFreq), ...          % Centers (mu) of the gaussians spatial frequency filters
-    log10(const.sf_maxFreq), const.sf_filtNum),2);
-const.sf_logDiff = log10(const.sf_filtCenters(2)) - ...
-    log10(const.sf_filtCenters(1));
-const.sf_cutSigma  = sqrt(-const.sf_logDiff^2 / ...                         % Sigma (std) of the gaussians spatial frequency filters
-    (4 * log(const.sf_filtOverlap)));         
-
-% Michelson contrast
-% ------------------
-const.minCont = 0.0025;                                                     % Minimal Michelson contrast value
-const.maxCont = 0.8;                                                        % Maximal Michelson contrast value
-const.contNum = 6;                                                          % Number of Michelson contrast value
-const.contValues = logspace(log10(const.minCont), ...                       % Michelson contrast values
-    log10(const.maxCont), const.contNum);
-
-
-% Run sequence
-% ------------
-const.run_sequence = repmat([3, 2, 1], 1, const.sf_filtNum);                % 1: ascending contrast; 2: descending contrast; 3: Blank
-const.run_sequence = [const.run_sequence, 3];                               % add last blank
-
-% Breaks
-% ------
-const.breakNum = const.sf_filtNum + 1;                                      % Number of breaks
-const.break_trs = 10;                                                       % Duration of breaks (in TR)
 
 % Apertures
 % ---------
@@ -167,73 +114,84 @@ const.line_fix_down_right = [const.rect_center(1) + ...
     const.rect_center(2) + const.fix_out_rim_rad,...                        % Down right part of fix cross y start
     const.rect_center(2) + const.apt_rad;];                                 % Down right part of fix cross y end
 
-%% Define all drawing frames
-const.trialsNum = const.sf_filtNum * const.contNum * 2 + ...                % Total ammount of trials
-    const.breakNum * const.break_trs;
-const.trialsNum_noiseFreq = const.trialsNum * const.TR_num_noise;           % Total ammount of trials in noise frequence
-const.seqNum = const.sf_filtNum;                                            % Number of sequences
+%% Time parameters
 
-% Create a run 
-% ------------
-% Break and stim block 
-const.breakBlock_trFreq = zeros(const.break_trs, 1);                        % Break block in TR
-const.stimBlock_trFreq = ones(const.contNum, 1);                            % Stim block in TR
-
-% Sequence (break, descending, ascending)
-const.seq_trFreq = [const.breakBlock_trFreq; const.stimBlock_trFreq;...
-    const.stimBlock_trFreq];                                                % Sequence of break descending ascending
-
-% Run 
-const.run_trFreq = repmat(const.seq_trFreq, const.seqNum, 1);               % One run in TR
-const.run_trFreq = [const.run_trFreq; const.breakBlock_trFreq];             % Run with final break
+const.noise_freq = 10;                                                      % Compute noise frequency in hertz
+const.TR_dur_sec = 1.6;                                                     % Repetition time in seconds
+const.TR_dur_nnf = (floor(const.TR_dur_sec * const.noise_freq));            % Repetition time in number of noise frames
+const.probe_dur_sec = const.TR_dur_sec / 2;                                 % Probe duration in seconds
+const.probe_dur_nnf = (floor(const.probe_dur_sec * const.noise_freq));      % Probe duration in number of noise frames
+const.no_probe_dur_nnf = (const.TR_dur_nnf - const.probe_dur_nnf) / 2;      % Number of frame without probe in noise frames
+const.resp_dur_nnf = const.probe_dur_nnf + const.no_probe_dur_nnf;          % Reponse window in noise frames
 
 % Create timings trials
 % ----------------------
-const.prob_length = const.TR_num_noise / 2;                                 % Length of prob in noise freq
-const.no_prob_length = (const.TR_num_noise - const.prob_length) / 2;        % Length of no prob in noise freq
-const.resp_length = const.prob_length + const.no_prob_length;               % Length of reponse window in noise freq
+const.time2probe = [zeros(const.no_probe_dur_nnf, 1);...                  
+                    ones(const.probe_dur_nnf, 1); ...
+                    zeros(const.no_probe_dur_nnf, 1)];                      % Matrix of time to probe in a trial
+                
+const.resp_reset = [1; zeros(const.TR_dur_nnf-1, 1)];                       % Matrix of reset answer window in one trial
 
-% break 
-const.breakTrial_noiseFreq = zeros(const.TR_num_noise, 1);                  % Break trial in noise freq
+const.time2resp = [zeros(const.no_probe_dur_nnf, 1);...                      
+                    ones(const.resp_dur_nnf, 1)];                           % Matrix of response window
 
-% Trials start
-const.trial_start = zeros(const.trialsNum_noiseFreq, 1);
-const.trial_start(mod(1:const.trialsNum_noiseFreq, ...
-    const.TR_num_noise) == 0) = 1;                                          % Timing for trial start in noise freq
+const.probe_onset = [zeros(const.no_probe_dur_nnf, 1);...
+                     1; ...
+                     zeros(const.resp_dur_nnf - 1, 1)];                     % Matrix of probe onset
 
-% Prob
-const.prob_trial = [zeros(const.no_prob_length, 1);...                      
-    ones(const.prob_length, 1); zeros(const.no_prob_length, 1)];            % One trial with prob in noise freq
+const.rand_num_tex = randperm(const.noise_num);
+const.rand_num_tex = const.rand_num_tex(1:const.TR_dur_nnf);                % Matrix of random noise generation number in each trial
 
-const.prob_onset_trial = [zeros(const.no_prob_length, 1);...                
-    1; zeros(const.prob_length - 1 + const.no_prob_length, 1)];             % Onset of prob in one trial in noise freq
+%% Experimentatal settings
 
-% Resp
-const.resp_trial = [zeros(const.no_prob_length, 1);...                      
-    ones(const.resp_length, 1)];                                            % Response window in one trial in noise freq
+% Orientation
+% -----------
+const.native_noise_orientation = 45;                                       	% Von misses original orientation
+const.num_steps_kappa = 15;                                                 % Number of kappa steps in pRF task
+const.noise_kappa = [0, 10.^(linspace(-1, 1.5, ...
+                                      const.num_steps_kappa-1))];           % Von misses filter kappa parameter (1st = noise, last = less noisy) in pRF
 
-const.resp_reset_trial = [zeros(const.TR_num_noise-1, 1); 1];               % Timing for reset answer window in one trial in noise freq
+const.num_steps_kappa_used = 2;                                             % kappa level used in nCSF task
+const.kappa_noise_num = 1;                                                  % kappa for noise texture
+const.kappa_probe_num = 10;                                                 % kappa for probe texture (defined as a function of previous experience)
 
-% Create timings run
+% Spatial Frequency filter
+% ------------------------
+const.sf_minFreq = 0.5;                                                     % Minimal central spatial frequency filter in cycle/dva
+const.sf_maxFreq = 20;                                                      % Maximal central spatial frequency filter in cycle/dva
+const.sf_filtNum = 6;                                                       % Number of spatial frequency filters
+const.sf_filtOverlap = 0.6;                                                 % Proportion of overlaping for the gaussian spatial frequency filters 
+const.sf_filtCenters = round(logspace(log10(const.sf_minFreq), ...          % Centers (mu) of the gaussians spatial frequency filters
+    log10(const.sf_maxFreq), const.sf_filtNum),2);
+const.sf_logDiff = log10(const.sf_filtCenters(2)) - ...
+    log10(const.sf_filtCenters(1));
+const.sf_cutSigma  = sqrt(-const.sf_logDiff^2 / ...                         % Sigma (std) of the gaussians spatial frequency filters
+    (4 * log(const.sf_filtOverlap)));         
+
+% Michelson contrast
 % ------------------
-const.time2prob = [];
-const.probe_onset = [];
-const.time2resp = [];
-const.resp_reset = [];
+const.minCont = 0.0025;                                                     % Minimal Michelson contrast value
+const.maxCont = 0.8;                                                        % Maximal Michelson contrast value
+const.contNum = 6;                                                          % Number of Michelson contrast value
+const.contValues = logspace(log10(const.minCont), ...                       % Michelson contrast values
+    log10(const.maxCont), const.contNum);
 
-for i = 1:const.trialsNum
-    if const.run_trFreq(i) == 0 % break 
-        const.time2prob = [const.time2prob; const.breakTrial_noiseFreq];
-        const.probe_onset = [const.probe_onset; const.breakTrial_noiseFreq];
-        const.time2resp = [const.time2resp; const.breakTrial_noiseFreq];
-        const.resp_reset = [const.resp_reset; const.breakTrial_noiseFreq];
+% General settings
+% ----------------
+const.breakNum = const.sf_filtNum + 1;                                      % Number of breaks
+const.break_trs = 10;                                                       % Duration of breaks (in TR)
 
-    elseif const.run_trFreq(i) == 1 % stim
-        const.time2prob = [const.time2prob; const.prob_trial];
-        const.probe_onset = [const.probe_onset; const.prob_onset_trial];
-        const.time2resp = [const.time2resp; const.resp_trial];
-        const.resp_reset = [const.resp_reset; const.resp_reset_trial];
+const.run_sequence = repmat([3, 2, 1], 1, const.sf_filtNum);                % 1: ascending contrast; 2: descending contrast; 3: Blank
+const.run_sequence = [const.run_sequence, 3];                               % add last blank
 
-    end
-end
+const.trialsNum = const.sf_filtNum * const.contNum * 2 + ...                % Total ammount of trials
+                  const.breakNum * const.break_trs;
+
+%% Randomization
+[const.seed, const.whichGen] = ClockRandSeed;
+rng(const.seed);
+const.num_seeds = const.sf_filtNum * const.contNum * const.noise_num ...    % number of seeds needed
+                  * const.num_steps_kappa_used;
+const.noise_seeds = randi([1, 10000], 1, const.num_seeds);                  % Seeds number used to generate noise
+
 end

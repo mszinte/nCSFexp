@@ -20,6 +20,7 @@ function [expDes] = runTrials(scr,const,expDes,my_key)
 % Project: nCSFexp
 % ----------------------------------------------------------------------
 
+vid_num = 0;
 for n_trial = 1:const.trialsNum
     
     % Compute and simplify var and rand
@@ -76,26 +77,25 @@ for n_trial = 1:const.trialsNum
             end
         end
     end
+   
     
     drawf = 1;
-    while drawf <= drawf_max
+    while drawf <= const.TR_dur_nnf
 
         % Define stimulus
         % ---------------
-        % Define noise number
-        rand_num_tex = const.rand_num_tex(drawf);
-        
         % Define name of next frame
         if var1 == 7
             screen_filename = sprintf('%s/blank.mat', const.stim_folder);
         else
-            if const.time2prob(drawf)
+            
+            if const.time2probe(drawf)
                 screen_filename = sprintf('%s/probe_sfStim%i_contStim%i_noiseRand%i_kappaNum%i.mat', ...
-                    const.stim_folder, var1, var2, rand_num_tex, ...
+                    const.stim_folder, var1, var2, const.rand_num_tex(drawf), ...
                     const.kappa_probe_num);
             else
                 screen_filename = sprintf('%s/noprobe_sfStim%i_contStim%i_noiseRand%i_kappaNum%i.mat', ...
-                        const.stim_folder, var1, var2, rand_num_tex, ...
+                        const.stim_folder, var1, var2, const.rand_num_tex(drawf), ...
                         const.kappa_noise_num);
             end
         end
@@ -104,7 +104,7 @@ for n_trial = 1:const.trialsNum
         switch rand1
             case 1; tex_angle = 0;  % native orientation (i.e. 45)
             case 2; tex_angle = 90; % 90 deg rotated orientation (i.e. -45)
-            case 3; tex_angle = 0; 
+            case 3; tex_angle = 0;
         end
         
         % Load the tex matrix
@@ -133,7 +133,7 @@ for n_trial = 1:const.trialsNum
 
         if keyPressed
             if keyCode(my_key.mri_tr)
-                log_txt = sprintf('trial %i event mri_trigger at %f\n', ...
+                log_txt = sprintf('trial %i event_mri_trigger at %f\n', ...
                     n_trial, vbl);
                 fprintf(const.log_file_fid, log_txt);
             end
@@ -147,10 +147,10 @@ for n_trial = 1:const.trialsNum
                         n_trial, my_key.left1Val, vbl);
                     fprintf(const.log_file_fid, log_txt);
                     switch rand1
-                        case 1; response = 0;
-                        case 2; response = 1;
+                        case 1; correctness = 0;
+                        case 2; correctness = 1;
                     end
-                    expDes.expMat(n_trial, end-4) = response;
+                    expDes.expMat(n_trial, end-4) = correctness;
                     expDes.expMat(n_trial, end) = GetSecs;
                     resp = 1;
                 end
@@ -159,13 +159,11 @@ for n_trial = 1:const.trialsNum
                     log_txt = sprintf('trial %i event_%s at %f\n', ...
                         n_trial, my_key.right1Val, vbl);
                     fprintf(const.log_file_fid, log_txt);
-                    if cond1(bar_step) == 1
-                        switch rand1(bar_step)
-                            case 1; response = 1;
-                            case 2; response = 0;
-                        end
+                    switch rand1
+                        case 1; correctness = 1;
+                        case 2; correctness = 0;
                     end
-                    expDes.expMat(n_trial, end-4) = response;
+                    expDes.expMat(n_trial, end-4) = correctness;
                     expDes.expMat(n_trial, end) = GetSecs;
                     resp = 1;
                 end
@@ -174,10 +172,10 @@ for n_trial = 1:const.trialsNum
         
         % Create movie
         if const.mkVideo
-            expDes.vid_num = expDes.vid_num + 1;
+            vid_num = vid_num + 1;
             image_vid =   Screen('GetImage', scr.main);
             imwrite(image_vid,sprintf('%s_frame_%i.png', ...
-                const.movie_image_file, expDes.vid_num))
+                const.movie_image_file, vid_num))
             open(const.vid_obj);
             writeVideo(const.vid_obj, image_vid);
         end
@@ -189,14 +187,14 @@ for n_trial = 1:const.trialsNum
         % Get time info
         % -------------
         % trial onset
-        if const.trial_start(drawf)
+        if drawf == 1
             log_txt = sprintf('trial %i trial_onset at %f\n', n_trial, vbl);
             fprintf(const.log_file_fid, log_txt);
             expDes.expMat(n_trial, end-3) = vbl;
         end
         
         % trial offset
-        if drawf == drawf_max
+        if drawf == const.TR_dur_nnf
             log_txt = sprintf('trial %i trial_offset at %f\n', n_trial, vbl);
             fprintf(const.log_file_fid, log_txt);
             expDes.expMat(n_trial, end-2) = vbl;
@@ -212,7 +210,6 @@ for n_trial = 1:const.trialsNum
         % Frame number count
         drawf = drawf + 1;
     end
-        
-end
 
+end
 end

@@ -47,14 +47,17 @@ const.behav_file_fid = fopen(const.behav_file, 'w');
 % Define .mat saving file
 const.mat_file = sprintf('%s_matlab.mat', const.dat_output_file);
 
+
+
 % Spatial frequency sequence file
 const.expMat_file = sprintf('%s_expMat.mat', const.dat_output_file);
 
 % Staircase file
 const.staircase_file = sprintf('%s_staircases.mat', const.dat_output_file);
 
-% Define .mat stimuli file
+% Define .mat stimuli file and saving file
 const.stim_folder = sprintf('stim/screenshots');
+const.stim_mat_file = 'stim/screenshots/stim_matlab.mat';
 
 % Log file
 const.log_file = sprintf('%s_logData.txt', const.dat_output_file);

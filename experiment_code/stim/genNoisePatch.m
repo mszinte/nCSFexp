@@ -1,6 +1,8 @@
-function [filtered_contrastedNoise] = genNoisePatch(const, gauss_mu, gauss_sigma, kappa, mc_contrast, seed)
+function [filtered_contrastedNoise] = genNoisePatch(const, gauss_mu, ...
+    gauss_sigma, kappa, mc_contrast, seed)
 % ----------------------------------------------------------------------
-% [noiseMatFiltNorm] = genNoisePatch(const,kappa)
+% [filtered_contrastedNoise] = genNoisePatch(const, gauss_mu, 
+%                                 gauss_sigma, kappa, mc_contrast, seed)
 % ----------------------------------------------------------------------
 % Goal of the function :
 % Create noise patches with SP, orientation filtering and contrast
@@ -15,7 +17,7 @@ function [filtered_contrastedNoise] = genNoisePatch(const, gauss_mu, gauss_sigma
 % seed : seed for random process 
 % ----------------------------------------------------------------------
 % Output(s):
-% noiseMatFiltNorm: patch
+% filtered_contrastedNoise: patch of noise
 % ----------------------------------------------------------------------
 % Function created by Martin SZINTE (martin.szinte@gmail.com)
 % Adapted by Uriel LASCOMBES (uriel.lascombes@laposte.net)

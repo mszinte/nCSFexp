@@ -75,7 +75,7 @@ tex_fix_dot_probe = Screen('MakeTexture', scr.main, fix_dot_probe);
 
 % Make noise and combine all
 noise_rand_num = const.noise_num;
-sp_cut_num = const.sf_filtNum;
+sf_cut_num = const.sf_filtNum;
 mc_cut_num = const.contNum;
 kappa_num = const.num_steps_kappa_used;
 
@@ -84,15 +84,16 @@ rect_noise = const.rect_noise;
 
 % compute total amount of picture to print
 numPrint = 0;
-total_amount = (noise_rand_num * sp_cut_num * mc_cut_num * kappa_num) + 2;
+total_amount = (noise_rand_num * sf_cut_num * mc_cut_num * kappa_num) + 2;
 textprogressbar('Progress: ');
 
+seed_num = 0;
 for kappa = 1:const.num_steps_kappa_used
-    for sp_val_stim = 1:sp_cut_num
+    for sp_val_stim = 1:sf_cut_num
         for contrast_val_stim = 1:mc_cut_num
             for noise_rand = 1:noise_rand_num
                 % Noise seed
-                seed = const.noise_seeds(noise_rand);
+                seed_num = seed_num +1;
 
                 % make stim texture full screen
                 sp_sigma_val = const.sf_cutSigma;
@@ -107,8 +108,8 @@ for kappa = 1:const.num_steps_kappa_used
                 end
                     
                 mat_noise = genNoisePatch(const, sp_center_val, ...
-                    sp_sigma_val, kappa_val, contrast_val, seed);
-            
+                    sp_sigma_val, kappa_val, contrast_val, const.noise_seeds(seed_num));
+
                 noise_patch(:,:,1) = mat_noise * const.stim_color(1);
                 noise_patch(:,:,2) = mat_noise * const.stim_color(2);
                 noise_patch(:,:,3) = mat_noise * const.stim_color(3);

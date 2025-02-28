@@ -44,6 +44,9 @@ config.const = const;
 config.expDes = expDes;
 config.my_key = my_key;
 save(const.mat_file, 'config');
+if const.genStimuli
+    save(const.stim_mat_file, 'config');
+end
 
 % First mouse config
 % ------------------
@@ -128,7 +131,7 @@ end
 
 % End messages
 % ------------
-if const.runNum == const.runs
+if const.runNum == const.runTotal
     instructionsIm(scr, const, my_key, 'End', 1);
 else
     instructionsIm(scr, const, my_key, 'End_block', 1);
