@@ -56,10 +56,10 @@ for n_trial = 1:const.trialsNum
     trial_start_cond = const.trial_start;
     probe_onset_cond = const.probe_onset;
 
-    % wait for bar_pass press in trial beginning
+    % wait for first TR trigger
     if n_trial == 1
-        time_start = GetSecs;
-        screen_filename = sprintf('%s/blank.mat', const.stim_folder);
+        
+        screen_filename = sprintf('%s/first_tr.mat', const.stim_folder);
         load(screen_filename, 'screen_stim');
         expDes.tex = Screen('MakeTexture', scr.main, screen_stim);
         Screen('DrawTexture', scr.main, expDes.tex, [], const.stim_rect)
@@ -68,7 +68,7 @@ for n_trial = 1:const.trialsNum
         first_trigger = 0;
         while ~first_trigger
             if const.scanner == 0 || const.scannerTest
-                WaitSecs(const.TR_dur-time_start);
+                WaitSecs(const.TR_dur-vbl);
                 first_trigger = 1;
             else
                 keyPressed = 0;
@@ -88,10 +88,12 @@ for n_trial = 1:const.trialsNum
                 end
             end
         end
-        log_txt = sprintf('trial onset %i', n_trial);
-        fprintf(const.log_file_fid, log_txt);
-        expDes.expMat(n_trial, end-4) = time_start;
     end
+    
+    % Define trial onset
+    log_txt = sprintf('trial onset %i', n_trial);
+    fprintf(const.log_file_fid, log_txt);
+    expDes.expMat(n_trial, end-4) = vbl;
     
     drawf = 1;
     while drawf <= drawf_max
@@ -104,19 +106,19 @@ for n_trial = 1:const.trialsNum
             screen_filename = sprintf('%s/blank.mat', const.stim_folder);
         else
             if time2probe_cond(drawf)
-                screen_filename = sprintf('%s/probe_sfStim%i_contStim%i_noiseRand%i.mat', ...
-                    const.stim_folder, var1, var2, rand_num_tex);
+                screen_filename = sprintf('%s/probe_sfStim%i_contStim%i_noiseRand%i_kappaNum%i.mat', ...
+                    const.stim_folder, var1, var2, const.kappa_probe_num);
             else
-                screen_filename = sprintf('%s/noprobe_sfStim%i_contStim%i_noiseRand%i.mat', ...
-                        const.stim_folder, var1, var2, rand_num_tex);
+                screen_filename = sprintf('%s/noprobe_sfStim%i_contStim%i_noiseRand%i_kappaNum%i.mat', ...
+                        const.stim_folder, var1, var2, const.kappa_noise_num);
             end
         end
         
         % Define displayed orientation of probe
         switch rand1
-            case 1; tex_angle = -45;
-            case 2; tex_angle = 45;
-            case 3; tex_angle = 0;
+            case 1; tex_angle = 0;  % native orientation (i.e. 45)
+            case 2; tex_angle = 90; % 90 deg rotated orientation (i.e. -45)
+            case 3; tex_angle = 0; 
         end
         
         % Load the matrix

@@ -32,7 +32,6 @@ center = gauss_mu;
 sigma = gauss_sigma;
 
 % Orientation filter parameters
-kappa = kappa;
 preferred_orientation_deg = const.native_noise_orientation;
 
 % Generate pink noise patterns

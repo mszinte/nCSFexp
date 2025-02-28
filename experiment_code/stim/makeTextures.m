@@ -84,7 +84,7 @@ rect_noise = const.rect_noise;
 
 % compute total amount of picture to print
 numPrint = 0;
-total_amount = (noise_rand_num * sp_cut_num * mc_cut_num * kappa_num) + 1;
+total_amount = (noise_rand_num * sp_cut_num * mc_cut_num * kappa_num) + 2;
 textprogressbar('Progress: ');
 
 for kappa = 1:const.num_steps_kappa_used
@@ -102,7 +102,7 @@ for kappa = 1:const.num_steps_kappa_used
                     kappa_val = const.noise_kappa(const.kappa_noise_num);
                     tex_fix_dot = tex_fix_dot_no_probe;
                 elseif kappa == 2
-                    kappa_val = const.noise_kappa(const.kappa_threshold_num);
+                    kappa_val = const.noise_kappa(const.kappa_probe_num);
                     tex_fix_dot = tex_fix_dot_probe;
                 end
                     
@@ -161,13 +161,44 @@ for kappa = 1:const.num_steps_kappa_used
     end
 end
 
+% make wait first tr screenshot
+rects = [rect_noise,...                                                 % fix annulus
+         rect_noise,...                                                 % empty center
+         rect_noise];                                                   % fixation dot
+texs = [tex_fix_ann_no_probe,...                                        % fix annulus
+        tex_black_fix_noise,...                                         % empty center
+        tex_fix_dot_probe];                                             % fixation dot
+
+Screen('FillRect', scr.main, const.background_color);
+Screen('DrawTextures', scr.main, texs, [], rects)
+Screen('DrawLines', scr.main, const.line_fix_up_left, const.line_width, const.white, [], 1);
+Screen('DrawLines', scr.main, const.line_fix_up_right, const.line_width, const.white, [], 1);
+Screen('DrawLines', scr.main, const.line_fix_down_left, const.line_width, const.white, [], 1);
+Screen('DrawLines', scr.main, const.line_fix_down_right, const.line_width, const.white, [], 1);
+Screen('DrawingFinished', scr.main, [], 1);
+
+if const.drawStimuli
+    % plot and save the screenshot
+    Screen('Flip', scr.main);
+    screen_stim = Screen('GetImage', scr.main, const.stim_rect, [], 0, 1);
+else
+    % save the screenshot
+    screen_stim = Screen('GetImage', scr.main, const.stim_rect, 'backBuffer', [], 1);
+end
+screen_filename = sprintf('%s/first_tr.mat', const.stim_folder);
+save(screen_filename, 'screen_stim')
+clear screen_stim
+
+numPrint = numPrint + 1;
+textprogressbar(numPrint * 100 / total_amount);
+
 % make inter-interval screenshot
-rects = [rect_noise,...                                                                         % fix annulus
-         rect_noise,...                                                                         % empty center
-         rect_noise];                                                                           % fixation dot
-texs = [tex_fix_ann_no_probe,...                                                               % fix annulus
-         tex_black_fix_noise,...                                                                % empty center
-         tex_fix_dot_no_probe];                                                                 % fixation dot
+rects = [rect_noise,...                                                  % fix annulus
+         rect_noise,...                                                  % empty center
+         rect_noise];                                                    % fixation dot
+texs = [tex_fix_ann_no_probe,...                                         % fix annulus
+         tex_black_fix_noise,...                                         % empty center
+         tex_fix_dot_no_probe];                                          % fixation dot
 
 Screen('FillRect', scr.main, const.background_color);
 Screen('DrawTextures', scr.main, texs, [], rects)
@@ -190,7 +221,6 @@ save(screen_filename, 'screen_stim')
 clear screen_stim
 
 numPrint = numPrint + 1;
-textprogressbar(numPrint * 100 / total_amount);
 textprogressbar(numPrint * 100 / total_amount);
 
 % Close all textures
