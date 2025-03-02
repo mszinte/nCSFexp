@@ -12,7 +12,7 @@ const.native_noise_orientation = 45;
 gauss_mu = 2;
 gauss_sigma = 0.1;
 kappa = 100;
-mc_contrast = 0.1;
+mc_contrast = 1;
 seed = 42;
 
 % Generate filtered noise
