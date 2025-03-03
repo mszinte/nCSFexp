@@ -1,5 +1,5 @@
 function [filtered_contrastedNoise] = genNoisePatch(const, gauss_mu, ...
-    gauss_sigma, kappa, mc_contrast, seed)
+    gauss_sigma, kappa, preferred_orientation_deg, mc_contrast, seed)
 % ----------------------------------------------------------------------
 % [filtered_contrastedNoise] = genNoisePatch(const, gauss_mu, 
 %                                 gauss_sigma, kappa, mc_contrast, seed)
@@ -32,9 +32,6 @@ pixelSize = const.noise_dpp; % degree per pixel
 % Spatial frequency filter paramaters
 center = gauss_mu;
 sigma = gauss_sigma;
-
-% Orientation filter parameters
-preferred_orientation_deg = const.native_noise_orientation;
 
 % Generate pink noise patterns
 % Create a grid of spatial frequencies

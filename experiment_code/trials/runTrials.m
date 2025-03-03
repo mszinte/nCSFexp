@@ -56,7 +56,7 @@ for n_trial = 1:const.trialsNum
         first_trigger = 0;
         while ~first_trigger
             if const.scanner == 0 || const.scannerTest
-                WaitSecs(const.TR_dur-vbl);
+                WaitSecs(const.TR_dur_sec - vbl);
                 first_trigger = 1;
             else
                 keyPressed = 0;
@@ -103,7 +103,7 @@ for n_trial = 1:const.trialsNum
         % Define displayed orientation of probe
         switch rand1
             case 1; tex_angle = 0;  % native orientation (i.e. 45)
-            case 2; tex_angle = 90; % 90 deg rotated orientation (i.e. -45)
+            case 2; tex_angle = 90;  % 90 deg rotated orientation (i.e. -45)
             case 3; tex_angle = 0;
         end
         
@@ -181,7 +181,7 @@ for n_trial = 1:const.trialsNum
         end
                 
         % Flip screen
-        when2flip = vbl + const.patch_dur - scr.frame_duration / 2;
+        when2flip = vbl + const.noise_dur_sec - scr.frame_duration / 2;
         vbl = Screen('Flip', scr.main, when2flip);
         
         % Get time info
