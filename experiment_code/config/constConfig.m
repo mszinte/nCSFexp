@@ -117,6 +117,7 @@ const.line_fix_down_right = [const.rect_center(1) + ...
 %% Time parameters
 
 const.noise_freq = 10;                                                      % Compute noise frequency in hertz
+const.noise_dur_sec = 1 / const.noise_freq;                                 % compute single patch duration in seconds
 const.TR_dur_sec = 1.6;                                                     % Repetition time in seconds
 const.TR_dur_nnf = (floor(const.TR_dur_sec * const.noise_freq));            % Repetition time in number of noise frames
 const.probe_dur_sec = const.TR_dur_sec / 2;                                 % Probe duration in seconds
@@ -146,7 +147,8 @@ const.rand_num_tex = const.rand_num_tex(1:const.TR_dur_nnf);                % Ma
 
 % Orientation
 % -----------
-const.native_noise_orientation = 45;                                       	% Von misses original orientation
+const.oriNum = 2;
+const.noise_orientations = [45, -45];                                       	% Von misses orientations
 const.num_steps_kappa = 15;                                                 % Number of kappa steps in pRF task
 const.noise_kappa = [0, 10.^(linspace(-1, 1.5, ...
                                       const.num_steps_kappa-1))];           % Von misses filter kappa parameter (1st = noise, last = less noisy) in pRF
