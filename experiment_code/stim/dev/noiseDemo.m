@@ -11,9 +11,6 @@
 % non
 % ----------------------------------------------------------------------
 % Function created by Martin SZINTE (martin.szinte@gmail.com)
-% Last update : 09 / 02 / 2021
-% Project :     nCSFexp
-% Version :     1.0
 % ----------------------------------------------------------------------
 
 clear all; close all;
