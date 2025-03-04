@@ -19,21 +19,20 @@ function [my_key]=keyConfig(const)
 KbName('UnifyKeyNames');
 
 if const.training
-    my_key.mri_trVal = 's';                % mri trigger letter
-    my_key.left1Val = 'a';                 % left button 1
-    my_key.left2Val = 'q';                 % left button 2
-    my_key.right1Val = 'p';                % right button 1
-    my_key.right2Val = 'm';                % right button 2
+    my_key.mri_trVal = 's';                                                 % mri trigger letter
+    my_key.left1Val = 'a';                                                  % left button 1
+    my_key.left2Val = 'q';                                                  % left button 2
+    my_key.right1Val = 'p';                                                 % right button 1
+    my_key.right2Val = 'm';                                                 % right button 2
 else
-    my_key.mri_trVal = 't';                % mri trigger letter
-    my_key.left1Val = 'g';                 % left button index (inside)
-    my_key.left2Val = 'r';                 % left button thumb (outside)
-    my_key.right1Val = 'y';                % right button index (inside)
-    my_key.right2Val = 'b';                % right button thumb (outside)
+    my_key.left1Val         =   'r';                                        % left button index (inside)
+    my_key.left2Val         =   'g';                                        % left button thumb (outside)
+    my_key.right1Val        =   'b';                                        % right button index (inside)
+    my_key.right2Val        =   'y';                                        % right button thumb (outsid
 end
 
-my_key.escapeVal = 'escape';              % escape button
-my_key.spaceVal = 'space';                % space button
+my_key.escapeVal = 'escape';                                                % escape button
+my_key.spaceVal = 'space';                                                  % space button
 
 my_key.mri_tr = KbName(my_key.mri_trVal);
 my_key.left1 = KbName(my_key.left1Val);
