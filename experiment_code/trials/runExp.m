@@ -60,7 +60,7 @@ end
 % Initial calibrations
 % --------------------
 % Task instructions
-fprintf(1, '\n\tTask instructions -press space or left button-');
+fprintf(1, '\n\tTask instructions -press space or right button-');
 instructionsIm(scr, const, my_key, sprintf('%s', const.task, scanTxt), 0);
 for keyb = 1:size(my_key.keyboard_idx, 2)
     KbQueueFlush(my_key.keyboard_idx(keyb));
@@ -93,7 +93,7 @@ behav_mat_res{6} = expDes.expMat(:, 4);
 behav_mat_res{7} = expDes.expMat(:, 5);
 behav_mat_res{8} = expDes.expMat(:, 6);
 behav_mat_res{9} = expDes.expMat(:, 9);
-behav_mat_res{10} = expDes.expMat(:, 9) - expDes.expMat(:, 10);
+behav_mat_res{10} = expDes.expMat(:, 10) - expDes.expMat(:, 9);
 
 head_line = [];
 for trial = 1:const.trialsNum
