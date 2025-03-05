@@ -60,7 +60,7 @@ end
 % Initial calibrations
 % --------------------
 % Task instructions
-fprintf(1, '\n\tTask instructions -press space or left button-');
+fprintf(1, '\n\tTask instructions -press space or right button-');
 instructionsIm(scr, const, my_key, sprintf('%s', const.task, scanTxt), 0);
 for keyb = 1:size(my_key.keyboard_idx, 2)
     KbQueueFlush(my_key.keyboard_idx(keyb));
