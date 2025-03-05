@@ -85,7 +85,7 @@ rect_noise = const.rect_noise;
 
 % compute total amount of picture to print
 numPrint = 0;
-total_amount = (noise_rand_num * sf_cut_num * mc_cut_num * kappa_num) + 2;
+total_amount = (noise_rand_num * sf_cut_num * mc_cut_num * kappa_num * ori_num) + 2;
 textprogressbar('Progress: ');
 
 seed_num = 0;
@@ -106,14 +106,14 @@ for kappa = 1:const.num_steps_kappa_used
                         kappa_val = const.noise_kappa(const.kappa_noise_num);
                         tex_fix_dot = tex_fix_dot_no_probe;
                         orientation_val = 0;
-                        screen_filename = sprintf('%s/noprobe_sfStim%i_contStim%i_noiseRand%i_kappaNum%i.mat', ...
+                        screen_filename = sprintf('%s/sfStim%i_contStim%i_noiseRand%i_kappaNum%i.mat', ...
                                                   const.stim_folder, sp_val_stim,...
                                                   contrast_val_stim, noise_rand, const.kappa_noise_num);
                     elseif kappa == 2
                         kappa_val = const.noise_kappa(const.kappa_probe_num);
                         tex_fix_dot = tex_fix_dot_probe;
     
-                        screen_filename = sprintf('%s/probe_sfStim%i_contStim%i_noiseRand%i_kappaNum%i_ori-%i.mat', ...
+                        screen_filename = sprintf('%s/sfStim%i_contStim%i_noiseRand%i_kappaNum%i_ori%i.mat', ...
                                                   const.stim_folder, sp_val_stim,...
                                                   contrast_val_stim, noise_rand, const.kappa_probe_num, noise_ori);
                     end
