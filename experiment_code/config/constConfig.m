@@ -193,7 +193,7 @@ const.trialsNum = const.sf_filtNum * const.contNum * 2 + ...                % To
 [const.seed, const.whichGen] = ClockRandSeed;
 rng(const.seed);
 const.num_seeds = const.sf_filtNum * const.contNum * const.noise_num ...    % number of seeds needed
-                  * const.num_steps_kappa_used;
+                  * const.num_steps_kappa_used * const.oriNum;
 const.noise_seeds = randi([1, 10000], 1, const.num_seeds);                  % Seeds number used to generate noise
 
 end

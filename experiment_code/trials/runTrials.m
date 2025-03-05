@@ -90,29 +90,29 @@ for n_trial = 1:const.trialsNum
         else
             
             if const.time2probe(drawf)
-                screen_filename = sprintf('%s/probe_sfStim%i_contStim%i_noiseRand%i_kappaNum%i.mat', ...
+                screen_filename = sprintf('%s/sfStim%i_contStim%i_noiseRand%i_kappaNum%i_ori%i.mat', ...
                     const.stim_folder, var1, var2, const.rand_num_tex(drawf), ...
-                    const.kappa_probe_num);
+                    const.kappa_probe_num, rand1);
             else
-                screen_filename = sprintf('%s/noprobe_sfStim%i_contStim%i_noiseRand%i_kappaNum%i.mat', ...
+                screen_filename = sprintf('%s/sfStim%i_contStim%i_noiseRand%i_kappaNum%i.mat', ...
                         const.stim_folder, var1, var2, const.rand_num_tex(drawf), ...
                         const.kappa_noise_num);
             end
         end
         
         % Define displayed orientation of probe
-        switch rand1
-            case 1; tex_angle = 0;  % native orientation (i.e. 45)
-            case 2; tex_angle = 90;  % 90 deg rotated orientation (i.e. -45)
-            case 3; tex_angle = 0;
-        end
+        % switch rand1
+        %     case 1; tex_angle = 0;  % native orientation (i.e. 45)
+        %     case 2; tex_angle = 0;  % 90 deg rotated orientation (i.e. -45)
+        %     case 3; tex_angle = 0;
+        % end
         
         % Load the tex matrix
         load(screen_filename, 'screen_stim');
 
         % Make texture
         tex = Screen('MakeTexture', scr.main, screen_stim, [], ...
-            [], [], tex_angle);
+            [], []);
 
         % Draw texture
         Screen('DrawTexture', scr.main, tex, [], const.stim_rect)
