@@ -100,13 +100,6 @@ for n_trial = 1:const.trialsNum
             end
         end
         
-        % Define displayed orientation of probe
-        % switch rand1
-        %     case 1; tex_angle = 0;  % native orientation (i.e. 45)
-        %     case 2; tex_angle = 0;  % 90 deg rotated orientation (i.e. -45)
-        %     case 3; tex_angle = 0;
-        % end
-        
         % Load the tex matrix
         load(screen_filename, 'screen_stim');
 
@@ -142,7 +135,7 @@ for n_trial = 1:const.trialsNum
                     overDone(const, my_key)
                 end
             elseif keyCode(my_key.left1) % ccw button
-                if const.time2resp(drawf) && resp == 0
+                if var1 ~= 7 && const.time2resp(drawf) && resp == 0
                     log_txt = sprintf('trial %i event_%s at %f\n', ...
                         n_trial, my_key.left1Val, vbl);
                     fprintf(const.log_file_fid, log_txt);
@@ -155,7 +148,7 @@ for n_trial = 1:const.trialsNum
                     resp = 1;
                 end
             elseif keyCode(my_key.right1)  % cw button
-                if const.time2resp(drawf) && resp == 0
+                if var1 ~= 7 && const.time2resp(drawf) && resp == 0
                     log_txt = sprintf('trial %i event_%s at %f\n', ...
                         n_trial, my_key.right1Val, vbl);
                     fprintf(const.log_file_fid, log_txt);
