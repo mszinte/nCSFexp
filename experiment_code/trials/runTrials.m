@@ -109,7 +109,21 @@ for n_trial = 1:const.trialsNum
 
         % Draw texture
         Screen('DrawTexture', scr.main, tex, [], const.stim_rect)
-
+                
+        % Flip screen
+        when2flip = vbl + const.noise_dur_sec - scr.frame_duration / 2;
+        vbl = Screen('Flip', scr.main, when2flip);
+        
+        % Create movie
+        if const.mkVideo
+            vid_num = vid_num + 1;
+            image_vid =   Screen('GetImage', scr.main);
+            imwrite(image_vid,sprintf('%s_frame_%i.png', ...
+                const.movie_image_file, vid_num))
+            open(const.vid_obj);
+            writeVideo(const.vid_obj, image_vid);
+        end
+        
         % Check response
         % --------------
         % Define when to reset resp
@@ -163,20 +177,6 @@ for n_trial = 1:const.trialsNum
             end
         end
         
-        % Create movie
-        if const.mkVideo
-            vid_num = vid_num + 1;
-            image_vid =   Screen('GetImage', scr.main);
-            imwrite(image_vid,sprintf('%s_frame_%i.png', ...
-                const.movie_image_file, vid_num))
-            open(const.vid_obj);
-            writeVideo(const.vid_obj, image_vid);
-        end
-                
-        % Flip screen
-        when2flip = vbl + const.noise_dur_sec - scr.frame_duration / 2;
-        vbl = Screen('Flip', scr.main, when2flip);
-        
         % Get time info
         % -------------
         % trial onset
@@ -190,7 +190,7 @@ for n_trial = 1:const.trialsNum
         if drawf == const.TR_dur_nnf
             log_txt = sprintf('trial %i trial_offset at %f\n', n_trial, vbl);
             fprintf(const.log_file_fid, log_txt);
-            expDes.expMat(n_trial, end-2) = vbl;
+            expDes.expMat(n_trial, end-2) = vbl + const.noise_dur_sec;
         end
         
         % probe onset
@@ -203,6 +203,5 @@ for n_trial = 1:const.trialsNum
         % Frame number count
         drawf = drawf + 1;
     end
-
 end
 end

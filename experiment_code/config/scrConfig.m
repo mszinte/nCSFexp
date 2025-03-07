@@ -90,5 +90,8 @@ else
     Screen('Preference', 'SuppressAllWarnings', 1);
     Screen('Preference', 'Verbosity', 0);
 end
-scr.screen_dpp = pix2vaDeg(1, scr);                                         % Size of one screen pixel in DVA
+
+% Get degrees per pixels
+scr.screen_dpp = pix2vaDeg(1, scr);
+
 end

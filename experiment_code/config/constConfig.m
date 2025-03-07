@@ -29,13 +29,14 @@ function [const] = constConfig(scr,const)
 % Colors
 % ------
 const.white = [255,255,255];                                                % White color
+const.gray = [128, 128, 128];                                               % Mid gray
 const.black = [0,0,0];                                                      % Black color
-const.background_color = const.black;                                       % Background color
+const.background_color = const.gray;                                        % Background color
 const.stim_color = const.white;                                             % Stimulus color
 const.ann_color = const.white;                                              % Define anulus around fixation color
 const.ann_probe_color = const.white;                                        % Define anulus around fixation color when probe
 const.dot_color = const.white;                                              % Define fixation dot color
-const.dot_probe_color = const.black;                                        % Define fixation dot color when probe
+const.dot_probe_color = const.background_color;                             % Define fixation dot color when probe
 
 % Noise parameters
 % ----------------
@@ -147,8 +148,8 @@ const.rand_num_tex = const.rand_num_tex(1:const.TR_dur_nnf);                % Ma
 
 % Orientation
 % -----------
-const.oriNum = 2;
-const.noise_orientations = [45, -45];                                       	% Von misses orientations
+const.oriNum = 2;                                                           % Number of signal orientations
+const.noise_orientations = [45, -45];                                       % Signal orientations
 const.num_steps_kappa = 15;                                                 % Number of kappa steps in pRF task
 const.noise_kappa = [0, 10.^(linspace(-1, 1.5, ...
                                       const.num_steps_kappa-1))];           % Von misses filter kappa parameter (1st = noise, last = less noisy) in pRF
