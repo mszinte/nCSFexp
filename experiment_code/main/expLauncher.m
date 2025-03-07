@@ -32,8 +32,8 @@ const.runTotal = 4;                         % Number of runs to play
 const.expStart = 0;                         % Start of a recording exp                          0 = NO  , 1 = YES
 const.checkTrial = 0;                       % Print trial conditions (for debugging)            0 = NO  , 1 = YES
 const.genStimuli = 0;                       % Generate the stimuli                              0 = NO  , 1 = YES
-const.drawStimuli = 0 ;                      % Draw stimuli generated                            0 = NO  , 1 = YES
-const.mkVideo = 1;                          % Make a video of a run                             0 = NO  , 1 = YES
+const.drawStimuli = 0;                      % Draw stimuli generated                            0 = NO  , 1 = YES
+const.mkVideo = 0;                          % Make a video of a run                             0 = NO  , 1 = YES
 
 % External controls
 % -----------------
@@ -45,7 +45,7 @@ const.training = 0;                         % Training session                  
 % Desired screen setting
 % ----------------------
 if const.training; const.desiredFD = 60;    % Desired refresh rate for training on laptop
-else; const.desiredFD = 60;                % Desired refresh rate on propixx screen
+else; const.desiredFD = 120;                % Desired refresh rate on propixx screen
 end
 const.desiredRes = [1920,1080];             % Desired resolution
 

@@ -171,6 +171,11 @@ const.sf_logDiff = log10(const.sf_filtCenters(2)) - ...
 const.sf_cutSigma  = sqrt(-const.sf_logDiff^2 / ...                         % Sigma (std) of the gaussians spatial frequency filters
     (4 * log(const.sf_filtOverlap)));         
 
+
+% Luminance
+% ---------
+const.mean_luminance = 0.5;                                                 % Noise mean luminance in ratio of full luminance
+
 % Michelson contrast
 % ------------------
 const.minCont = 0.0025;                                                     % Minimal Michelson contrast value
@@ -190,6 +195,11 @@ const.run_sequence = [const.run_sequence, 3];                               % ad
 const.trialsNum = const.sf_filtNum * const.contNum * 2 + ...                % Total ammount of trials
                   const.breakNum * const.break_trs;
 
+const.TRs = const.trialsNum;                                                % Number of TR
+if const.scanner
+    fprintf(1,'\n\tScanner parameters; %1.0f TRs, %1.2f seconds, %s\n', ...
+        const.TRs, const.TR_dur_sec, datestr(seconds((const.TRs * const.TR_dur_sec)),'MM:SS'));              
+end
 %% Randomization
 [const.seed, const.whichGen] = ClockRandSeed;
 rng(const.seed);

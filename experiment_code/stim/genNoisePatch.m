@@ -1,12 +1,12 @@
-function [filtered_contrastedNoise] = genNoisePatch(const, gauss_mu, ...
+function [filtered_contrastedNoiseLum] = genNoisePatch(const, gauss_mu, ...
     gauss_sigma, kappa, preferred_orientation_deg, mc_contrast, seed)
 % ----------------------------------------------------------------------
-% [filtered_contrastedNoise] = genNoisePatch(const, gauss_mu, 
+% [filtered_contrastedNoiseLum] = genNoisePatch(const, gauss_mu, 
 %                                 gauss_sigma, kappa, mc_contrast, seed)
 % ----------------------------------------------------------------------
 % Goal of the function :
-% Create noise patches with SP, orientation filtering and contrast
-% definition
+% Create noise patches with SP, orientation filtering, contrast and 
+% luminance definition
 % ----------------------------------------------------------------------
 % Input(s) :
 % const : struct containing constant configurations
@@ -41,8 +41,8 @@ y = y / (noise_size(2) * pixelSize); % Convert to cycles per degree
 r = sqrt(x.^2 + y.^2); % Radial frequency
 
 % Generate pink noise in frequency domain
-pinkNoise = randn(noise_size(1)); % White noise
-pinkNoise = pinkNoise - mean(pinkNoise(:)); % Zero-mean
+whiteNoise = randn(noise_size(1)); % White noise
+pinkNoise = whiteNoise - mean(whiteNoise(:)); % Zero-mean
 pinkNoise = pinkNoise / std(pinkNoise(:)); % Unit variance
 pinkNoise_fft = fftshift(fft2(pinkNoise)); % Fourier transform
 pinkNoise_fft = pinkNoise_fft ./ (r + 1e-5); % Apply 1/f filter (pink noise)
@@ -75,5 +75,10 @@ Lmin = mean_value - (mc_contrast / 2);
 
 % Apply Michelson contrast
 filtered_contrastedNoise = (filteredNoise - mean_value) * (Lmax - Lmin) + mean_value;
+
+% Apply mean luminance
+targetLuminance = const.mean_luminance;
+currentLuminance = mean(filtered_contrastedNoise(:));
+filtered_contrastedNoiseLum = filtered_contrastedNoise * (targetLuminance / currentLuminance);
 
 end

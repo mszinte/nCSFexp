@@ -12,3 +12,5 @@ to fixate and report an orientation of the noise pattern presented on every TR.
 ## TO DO 
 - Check all trials
 - Do demo video
+- Test all modes
+- Change instructions for gray screen 72 pp exporter plan de travail en png

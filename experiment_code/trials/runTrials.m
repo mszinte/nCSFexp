@@ -111,7 +111,10 @@ for n_trial = 1:const.trialsNum
         Screen('DrawTexture', scr.main, tex, [], const.stim_rect)
                 
         % Flip screen
-        when2flip = vbl + const.noise_dur_sec - scr.frame_duration / 2;
+        if n_trial == 1; when2flip = 0;
+        else
+            when2flip = vbl + const.noise_dur_sec - scr.frame_duration / 2;
+        end
         vbl = Screen('Flip', scr.main, when2flip);
         
         % Create movie
