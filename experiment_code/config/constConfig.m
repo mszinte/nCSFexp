@@ -178,35 +178,33 @@ const.mean_luminance = 0.5;                                                 % No
 
 % Michelson contrast
 % ------------------
-if const.psychophy == 1;
-    const.minCont = 0.0025;                                                 % Minimal Michelson contrast value
-    const.maxCont = 0.8;                                                    % Maximal Michelson contrast value
-    const.contNum = 6;                                                      % Number of Michelson contrast value
-elseif const.psychophy == 2;
+if const.psy
     const.minCont = 0.0025;                                                 % Minimal Michelson contrast value
     const.maxCont = 0.8;                                                    % Maximal Michelson contrast value
     const.contNum = 12;                                                     % Number of Michelson contrast value
+else
+    const.minCont = 0.0025;                                                 % Minimal Michelson contrast value
+    const.maxCont = 0.8;                                                    % Maximal Michelson contrast value
+    const.contNum = 6;                                                      % Number of Michelson contrast value
 end
 const.contValues = logspace(log10(const.minCont), ...                       % Michelson contrast values
 log10(const.maxCont), const.contNum);
 
 % General settings
 % ----------------
-if const.psychophy == 1
+if const.psy
+    const.breakNum = 0;                                                     % Number of breaks
+    const.break_trs = 0;                                                    % Duration of breaks (in TR)
+    const.run_sequence = repmat([2, 1], 1, const.sf_filtNum);               % 1: ascending contrast; 2: descending contrast;
+    const.trialsNum = const.sf_filtNum * const.contNum * 2;                 % Total ammount of trials
+else
     const.breakNum = const.sf_filtNum + 1;                                  % Number of breaks
     const.break_trs = 10;                                                   % Duration of breaks (in TR)
     const.run_sequence = repmat([3, 2, 1], 1, const.sf_filtNum);            % 1: ascending contrast; 2: descending contrast; 3: Blank
     const.run_sequence = [const.run_sequence, 3];                           % add last blank
     const.trialsNum = const.sf_filtNum * const.contNum * 2 + ...            % Total ammount of trials
                   const.breakNum * const.break_trs;
-elseif const.psychophy == 2
-    const.breakNum = 0;                                                     % Number of breaks
-    const.break_trs = 0;                                                    % Duration of breaks (in TR)
-    const.run_sequence = repmat([2, 1], 1, const.sf_filtNum);               % 1: ascending contrast; 2: descending contrast;
-    const.trialsNum = const.sf_filtNum * const.contNum * 2;                 % Total ammount of trials
 end 
-
-
 
 const.TRs = const.trialsNum;                                                % Number of TR
 if const.scanner
