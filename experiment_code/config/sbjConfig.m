@@ -64,8 +64,12 @@ else
 end
 
 % Training
-if const.training
+if const.psychophy == 2
+    const.task = sprintf('%s_psy', const.task);
+elseif const.training && const.psychophy == 1
     const.task = sprintf('%sTraining', const.task);
+elseif const.training && const.psychophy == 2
+    const.task = sprintf('%sTraining_psy', const.task);
 end
 fprintf(1, '\n\tTask: %s\n', const.task);
 

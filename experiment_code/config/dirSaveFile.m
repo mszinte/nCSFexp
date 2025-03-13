@@ -51,8 +51,8 @@ const.mat_file = sprintf('%s_matlab.mat', const.dat_output_file);
 const.expMat_file = sprintf('%s_expMat.mat', const.dat_output_file);
 
 % Define .mat stimuli file and saving file
-const.stim_folder = sprintf('stim/screenshots');
-const.stim_mat_file = 'stim/screenshots/stim_matlab.mat';
+const.stim_folder = sprintf('stim/screenshots/%s', const.task);
+const.stim_mat_file = sprintf('%s/stim_matlab.mat');
 
 % Log file
 const.log_file = sprintf('%s_logData.txt', const.dat_output_file);
