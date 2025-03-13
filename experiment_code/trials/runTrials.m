@@ -111,7 +111,7 @@ for n_trial = 1:const.trialsNum
         Screen('DrawTexture', scr.main, tex, [], const.stim_rect)
                 
         % Flip screen
-        if n_trial == 1; when2flip = 0;
+        if n_trial == 1 && drawf == 1; when2flip = 0;
         else
             when2flip = vbl + const.noise_dur_sec - scr.frame_duration / 2;
         end
