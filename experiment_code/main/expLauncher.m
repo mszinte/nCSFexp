@@ -28,12 +28,11 @@ AssertOpenGL;
 % General settings
 % ----------------
 const.task = 'nCSF';                        % Name of the task
-const.psychophy = 2;                        % Run psychophysics or MRI task                     1 = MRI , 2 = psychophysics
 const.runTotal = 4;                         % Number of runs to play
 const.expStart = 0;                         % Start of a recording exp                          0 = NO  , 1 = YES
 const.checkTrial = 1;                       % Print trial conditions (for debugging)            0 = NO  , 1 = YES
 const.genStimuli = 0;                       % Generate the stimuli                              0 = NO  , 1 = YES
-const.drawStimuli = 0  ;                     % Draw stimuli generated                            0 = NO  , 1 = YES
+const.drawStimuli = 0;                      % Draw stimuli generated                            0 = NO  , 1 = YES
 const.mkVideo = 0;                          % Make a video of a run                             0 = NO  , 1 = YES
 
 % External controls
@@ -41,6 +40,7 @@ const.mkVideo = 0;                          % Make a video of a run             
 const.scanner = 0;                          % Run in MRI scanner                                0 = NO  , 1 = YES
 const.scannerTest = 0;                      % Run with T returned at TR time                    0 = NO  , 1 = YES
 const.room = 2;                             % Run in MRI or eye-tracking room                   1 = MRI , 2 = eye-tracking
+const.psy = 1;                              % Run psychophysics or MRI task                     0 = MRI , 1 = Psy
 const.training = 0;                         % Training session                                  0 = NO  , 1 = YES
 
 % Desired screen setting
