@@ -65,7 +65,7 @@ end
 
 % Psychophysics task
 if const.psy
-    const.task = sprintf('%sPsy', const.task);
+    const.task = sprintf('%spsy', const.task);
 end
 
 % Training
