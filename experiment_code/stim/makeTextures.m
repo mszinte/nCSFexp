@@ -88,15 +88,12 @@ numPrint = 0;
 total_amount = (noise_rand_num * sf_cut_num * mc_cut_num * kappa_num * ori_num) + 2;
 textprogressbar('Progress: ');
 
-seed_num = 0;
+const.noise_params = [];
 for kappa = 1:const.num_steps_kappa_used
     for sp_val_stim = 1:sf_cut_num
         for contrast_val_stim = 1:mc_cut_num
             for noise_rand = 1:noise_rand_num
                 for noise_ori = 1:ori_num
-                    % Noise seed
-                    seed_num = seed_num +1;
-    
                     % make stim texture full screen
                     sp_sigma_val = const.sf_cutSigma;
                     sp_center_val = const.sf_filtCenters(sp_val_stim);
@@ -118,9 +115,14 @@ for kappa = 1:const.num_steps_kappa_used
                                                   contrast_val_stim, noise_rand, const.kappa_probe_num, noise_ori);
                     end
                         
-                    mat_noise = genNoisePatch(const, sp_center_val, ...
-                        sp_sigma_val, kappa_val, orientation_val, contrast_val, const.noise_seeds(seed_num));
+                    [mat_noise, seed] = genNoisePatch(const, sp_center_val, ...
+                                                      sp_sigma_val, kappa_val,...
+                                                      orientation_val, contrast_val);
     
+                    const.noise_params = [const.noise_params; const.native_noise_dim(1), const.native_noise_dim(2), const.noise_dpp, ...
+                                          sp_center_val, sp_sigma_val, kappa_val, orientation_val, contrast_val, seed];
+
+                    
                     noise_patch(:,:,1) = mat_noise * const.stim_color(1);
                     noise_patch(:,:,2) = mat_noise * const.stim_color(2);
                     noise_patch(:,:,3) = mat_noise * const.stim_color(3);
@@ -172,6 +174,12 @@ for kappa = 1:const.num_steps_kappa_used
         end
     end
 end
+
+% Export noise parameters 
+fid = fopen(const.stim_tsv_fil, 'w');
+fprintf(fid, 'native_noise_dim_x\tnative_noise_dim_y\tnoise_dpp\tsp_center_val\tsp_sigma_val\tkappa_val\torientation_val\tcontrast_val\tseed\n');
+fprintf(fid, '%d\t%d\t%f\t%f\t%f\t%f\t%f\t%f\t%d\n', const.noise_params');
+fclose(fid);
 
 % make wait first tr screenshot
 rects = [rect_noise,...                                                 % fix annulus
