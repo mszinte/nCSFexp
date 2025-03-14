@@ -1,8 +1,8 @@
-function [filtered_contrastedNoiseLum] = genNoisePatch(const, gauss_mu, ...
-    gauss_sigma, kappa, preferred_orientation_deg, mc_contrast, seed)
+function [filtered_contrastedNoiseLum, seed] = genNoisePatch(const, gauss_mu, ...
+    gauss_sigma, kappa, preferred_orientation_deg, mc_contrast)
 % ----------------------------------------------------------------------
 % [filtered_contrastedNoiseLum] = genNoisePatch(const, gauss_mu, 
-%                                 gauss_sigma, kappa, mc_contrast, seed)
+%                                 gauss_sigma, kappa, mc_contrast)
 % ----------------------------------------------------------------------
 % Goal of the function :
 % Create noise patches with SP, orientation filtering, contrast and 
@@ -14,10 +14,10 @@ function [filtered_contrastedNoiseLum] = genNoisePatch(const, gauss_mu, ...
 % gauss_sigma : sigma of the gaussian filter
 % kappa : dispersion parameter of the von misses filter
 % mc_contrast : value of Michelson Contrast
-% seed : seed for random process 
 % ----------------------------------------------------------------------
 % Output(s):
 % filtered_contrastedNoise: patch of noise
+% seed : seed for random process 
 % ----------------------------------------------------------------------
 % Function created by Martin SZINTE (martin.szinte@gmail.com)
 % Adapted by Uriel LASCOMBES (uriel.lascombes@laposte.net)
@@ -25,6 +25,7 @@ function [filtered_contrastedNoiseLum] = genNoisePatch(const, gauss_mu, ...
 % ----------------------------------------------------------------------
 
 % Main parameters
+seed = randi([0, 10000]);
 rng(seed)
 noise_size = const.native_noise_dim;
 pixelSize = const.noise_dpp; % degree per pixel
@@ -80,5 +81,10 @@ filtered_contrastedNoise = (filteredNoise - mean_value) * (Lmax - Lmin) + mean_v
 targetLuminance = const.mean_luminance;
 currentLuminance = mean(filtered_contrastedNoise(:));
 filtered_contrastedNoiseLum = filtered_contrastedNoise * (targetLuminance / currentLuminance);
+
+% Avoid problems with clamping 
+if any(filtered_contrastedNoiseLum(:) > 1)
+    [filtered_contrastedNoiseLum, seed] = genNoisePatch(const, gauss_mu, gauss_sigma, kappa, preferred_orientation_deg, mc_contrast);
+end
 
 end

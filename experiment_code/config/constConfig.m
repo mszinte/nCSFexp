@@ -212,10 +212,10 @@ if const.scanner
         const.TRs, const.TR_dur_sec, datestr(seconds((const.TRs * const.TR_dur_sec)),'MM:SS'));              
 end
 %% Randomization
-[const.seed, const.whichGen] = ClockRandSeed;
-rng(const.seed);
-const.num_seeds = const.sf_filtNum * const.contNum * const.noise_num ...    % number of seeds needed
-                  * const.num_steps_kappa_used * const.oriNum;
-const.noise_seeds = randi([1, 10000], 1, const.num_seeds);                  % Seeds number used to generate noise
+% [const.seed, const.whichGen] = ClockRandSeed;
+% rng(const.seed);
+% const.num_seeds = const.sf_filtNum * const.contNum * const.noise_num ...    % number of seeds needed
+%                   * const.num_steps_kappa_used * const.oriNum;
+% const.noise_seeds = randi([1, 10000], 1, const.num_seeds);                  % Seeds number used to generate noise
 
 end
