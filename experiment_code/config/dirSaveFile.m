@@ -24,9 +24,11 @@ if ~isfolder(sprintf('data/%s/%s/%s/', const.sjct, const.session, ...
 end
 
 % Define directory
-const.dat_output_file = sprintf('data/%s/%s/%s/%s_%s_task-%s_%s',...
-    const.sjct, const.session, const.modality, const.sjct, ...
-    const.session, const.task, const.run);
+const.dat_output_dir = sprintf('data/%s/%s/%s',...
+                               const.sjct, const.session, const.modality);
+const.dat_output_file = sprintf('%s/%s_%s_task-%s_%s',...
+                                const.dat_output_dir, const.sjct, ...
+                                const.session, const.task, const.run);
 
 % Define behavioral data filename
 const.behav_file = sprintf('%s_events.tsv', const.dat_output_file);
@@ -48,7 +50,7 @@ const.behav_file_fid = fopen(const.behav_file, 'w');
 const.mat_file = sprintf('%s_matlab.mat', const.dat_output_file);
 
 % Spatial frequency sequence file
-const.expMat_file = sprintf('%s_expMat.mat', const.dat_output_file);
+const.expMat_file = sprintf('%s/%s_expMat.mat', const.dat_output_dir, const.sjct);
 
 % Define .mat stimuli file and saving file
 const.stim_folder = sprintf('stim/screenshots/%s', strrep(const.task, 'Training', ''));
