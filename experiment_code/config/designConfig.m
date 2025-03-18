@@ -55,8 +55,14 @@ constrast_seqs = [];
 ori_seqs = [];
 num_seq_ascending = 0;
 num_seq_descending = 0;
-sf_ascending = randperm(const.sf_filtNum);
-sf_descending = randperm(const.sf_filtNum);
+
+if const.training 
+    sf_ascending = linspace(1, const.sf_filtNum, const.sf_filtNum);
+    sf_descending = linspace(1, const.sf_filtNum, const.sf_filtNum);
+else
+    sf_ascending = randperm(const.sf_filtNum);
+    sf_descending = randperm(const.sf_filtNum);
+end
 
 if const.runNum == 1
     for seq = const.run_sequence

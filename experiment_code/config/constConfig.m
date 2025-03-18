@@ -193,10 +193,14 @@ log10(const.maxCont), const.contNum);
 % General settings
 % ----------------
 if const.psy
-    const.breakNum = 0;                                                     % Number of breaks
-    const.break_trs = 0;                                                    % Duration of breaks (in TR)
+    const.breakNum = 2;                                                     % Number of breaks
+    const.break_trs = 4;                                                    % Duration of breaks (in TR)
     const.run_sequence = repmat([2, 1], 1, const.sf_filtNum);               % 1: ascending contrast; 2: descending contrast;
-    const.trialsNum = const.sf_filtNum * const.contNum * 2;                 % Total ammount of trials
+    const.run_sequence = [repmat(3, 1, 1),...
+                          const.run_sequence,...
+                          repmat(3, 1, 1)];                                 % add blank at the begining and at the end
+    const.trialsNum = const.sf_filtNum * const.contNum * 2 ...
+                      + const.breakNum * const.break_trs;                   % Total ammount of trials
 else
     const.breakNum = const.sf_filtNum + 1;                                  % Number of breaks
     const.break_trs = 10;                                                   % Duration of breaks (in TR)
