@@ -114,6 +114,7 @@ else
         ori_seqs = [ori_seqs; ori_seq];
     end
     expDes.expMat(:, 5) = ori_seqs;
+    expDes.expMat(:, 1) = const.runNum * ones(const.trialsNum, 1);
 end
 % col 01: Run
 % col 02: Trial
