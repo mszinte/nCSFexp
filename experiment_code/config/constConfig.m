@@ -185,7 +185,7 @@ if const.psy
 else
     const.minCont = 0.0025;                                                 % Minimal Michelson contrast value
     const.maxCont = 0.8;                                                    % Maximal Michelson contrast value
-    const.contNum = 6;                                                      % Number of Michelson contrast value
+    const.contNum = 12;                                                      % Number of Michelson contrast value
 end
 const.contValues = logspace(log10(const.minCont), ...                       % Michelson contrast values
 log10(const.maxCont), const.contNum);
