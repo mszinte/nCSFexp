@@ -101,7 +101,7 @@ if const.runNum == 1
     
 else
     % Load expMat sequence from first run
-    fprintf(1, 'Load sequence from run-01');
+    fprintf(1, '\n\tLoad sequence from run-01\n\n');
     expDes.expMat = load(const.expMat_file).expMat;
 
     % change orientation sequence 
