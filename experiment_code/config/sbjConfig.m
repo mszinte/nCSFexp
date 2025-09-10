@@ -58,6 +58,7 @@ if const.expStart
 else
     const.sjct = 'sub-0X';
     const.session = 'ses-0X';
+    const.sesNum = 1;
     const.runNum = 1;
     const.run = 'run-0X';
     const.modality = 'beh';
