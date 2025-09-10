@@ -64,7 +64,7 @@ else
     sf_descending = randperm(const.sf_filtNum);
 end
 
-if const.runNum == 1
+if const.runNum == 1 && const.sesNum == 1
     for seq = const.run_sequence
         if seq == 1 % ascending
             num_seq_ascending = num_seq_ascending + 1;
@@ -102,7 +102,7 @@ if const.runNum == 1
 else
     % Load expMat sequence from first run
     fprintf(1, '\n\tLoad sequence from run-01\n\n');
-    expDes.expMat = load(const.expMat_file).expMat;
+    expDes.expMat = load(const.expMat_file_sess1).expMat;
 
     % change orientation sequence 
     for seq = const.run_sequence
@@ -115,6 +115,10 @@ else
     end
     expDes.expMat(:, 5) = ori_seqs;
     expDes.expMat(:, 1) = const.runNum * ones(const.trialsNum, 1);
+    
+    % Export expMat
+    expMat = expDes.expMat;
+    save(const.expMat_file, 'expMat');
 end
 % col 01: Run
 % col 02: Trial
