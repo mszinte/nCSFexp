@@ -57,8 +57,10 @@ num_seq_ascending = 0;
 num_seq_descending = 0;
 
 if const.training 
-    sf_ascending = linspace(1, const.sf_filtNum, const.sf_filtNum);
-    sf_descending = linspace(1, const.sf_filtNum, const.sf_filtNum);
+    % sf_ascending = linspace(1, const.sf_filtNum, const.sf_filtNum);
+    % sf_descending = linspace(1, const.sf_filtNum, const.sf_filtNum);
+    sf_ascending = [3,2,4,1,5,6]; 
+    sf_descending = [3,2,4,1,5,6]; 
 else
     sf_ascending = randperm(const.sf_filtNum);
     sf_descending = randperm(const.sf_filtNum);
