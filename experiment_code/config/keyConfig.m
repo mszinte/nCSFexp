@@ -24,7 +24,7 @@ if const.scanner == 0
     my_key.left2Val = 'q';                                                  % left button 2
     my_key.right1Val = 'u';                                                 % right button 1
     my_key.right2Val = 'm';                                                 % right button 2
-if const.scanner == 1
+elseif const.scanner == 1
     my_key.mri_trVal = 't';                                                 % mri trigger letter
     my_key.left1Val = 'r';                                                  % left button index (inside)
     my_key.left2Val = 'g';                                                  % left button thumb (outside)
