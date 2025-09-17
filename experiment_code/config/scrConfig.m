@@ -18,11 +18,12 @@ function [scr] = scrConfig(const)
 
 % Number of the experimental screen:
 scr.all = Screen('Screens');
-if size(scr.all,2) > 1 
-    scr.scr_num = min(scr.all)+1;
-else
-    scr.scr_num = min(scr.all);
+if const.room == 1
+    scr.scr_num = 2;
+elseif  const.room == 1
+    scr.scr_num = 0;
 end
+
 
 % Screen resolution (pixel):
 [scr.scr_sizeX, scr.scr_sizeY] = Screen('WindowSize', scr.scr_num);
