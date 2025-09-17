@@ -39,6 +39,14 @@ if const.expStart
         % It's a string with letters or non-integer
         const.sjct = sprintf('sub-%s', const.sjctNum);
     end
+    
+    % Define session
+    const.sesNum = input(sprintf('\n\tSession number: '));
+    if const.sesNum > 9
+        const.session           =  sprintf('ses-%i',const.sesNum);
+    else
+        const.session           =  sprintf('ses-0%i',const.sesNum);
+    end
 
     % Define run
     const.runNum = input(sprintf('\n\tRun number: '));

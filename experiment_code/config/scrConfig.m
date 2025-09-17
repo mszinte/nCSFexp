@@ -20,7 +20,7 @@ function [scr] = scrConfig(const)
 scr.all = Screen('Screens');
 if const.room == 1
     scr.scr_num = 2;
-elseif  const.room == 1
+elseif  const.room == 2
     scr.scr_num = 0;
 end
 
