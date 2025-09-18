@@ -1,0 +1,13 @@
+trial 1 trial_onset at 7383.936779
+trial 1 probe_onset at 7384.617045
+trial 1 trial_offset at 7385.830852
+trial 2 trial_onset at 7385.924222
+trial 2 probe_onset at 7386.297701
+trial 2 trial_offset at 7387.364784
+trial 3 trial_onset at 7387.458154
+trial 3 probe_onset at 7387.831633
+trial 3 trial_offset at 7388.858700
+trial 4 trial_onset at 7388.952070
+trial 4 probe_onset at 7389.325549
+trial 4 trial_offset at 7390.352617
+trial 5 trial_onset at 7390.445986
