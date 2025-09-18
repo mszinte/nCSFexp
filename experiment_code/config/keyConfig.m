@@ -21,7 +21,7 @@ KbName('UnifyKeyNames');
 if const.scanner == 0
     my_key.mri_trVal = 's';                                                 % mri trigger letter
     my_key.left1Val = 'r';                                                  % left button 1
-    my_key.right1Val = 'u';                                                 % right button 1
+    my_key.right1Val = 'b';                                                 % right button 1
 elseif const.scanner == 1
     my_key.mri_trVal = 't';                                                 % mri trigger letter
     my_key.left1Val = 'r';                                                  % left button index (inside)
