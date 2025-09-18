@@ -40,8 +40,8 @@ const.mkVideo = 0;                          % Make a video of a run             
 const.scanner = 0;                          % Run in MRI scanner                                0 = NO  , 1 = YES
 const.scannerTest = 1;                      % Run with T returned at TR time                    0 = NO  , 1 = YES
 const.room = 1;                             % Run in MRI or eye-tracking room                   1 = MRI , 2 = eye-tracking
-const.psy = 1;                             % Run psychophysics or MRI task                     0 = MRI , 1 = Psy
-const.training = 0;                         % Training session                                  0 = NO  , 1 = YES
+const.psy = 1;                              % Run psychophysics or MRI task                     0 = MRI , 1 = Psy
+const.training = 1;                         % Training session                                  0 = NO  , 1 = YES
 
 % Desired screen setting
 % ----------------------
