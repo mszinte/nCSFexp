@@ -29,7 +29,7 @@ AssertOpenGL;
 % ----------------
 const.task = 'nCSF';                        % Name of the task
 const.runTotal = 11;                        % Number of runs to play
-const.expStart = 0;                         % Start of a recording exp                          0 = NO  , 1 = YES
+const.expStart = 1;                         % Start of a recording exp                          0 = NO  , 1 = YES
 const.checkTrial = 0;                       % Print trial conditions (for debugging)            0 = NO  , 1 = YES
 const.genStimuli = 0;                       % Generate the stimuli                              0 = NO  , 1 = YES
 const.drawStimuli = 0;                      % Draw stimuli generated                            0 = NO  , 1 = YES
