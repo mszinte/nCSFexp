@@ -35,8 +35,8 @@ end
 if const.room == 1
     % Settings for 7T MRI room
     % --------------------------
-    scr.disp_sizeX = 773;                       % projection screen in mm
-    scr.disp_sizeY = 435;                       % projection screen in mm
+    scr.disp_sizeX = 837;                       % projection screen in mm
+    scr.disp_sizeY = 471;                       % projection screen in mm
     scr.dist = 102;                             % screen distance in cm
     scr.x_mid = (scr.scr_sizeX / 2.0);          
     scr.y_mid = (scr.scr_sizeY / 2.0);
