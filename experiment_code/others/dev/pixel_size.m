@@ -1,14 +1,16 @@
 % Psychtoolbox initialization
 Screen('Preference', 'SkipSyncTests', 1); % Set to 0 for real experiments
 Screen('Preference', 'VisualDebugLevel', 0);
+KbName('UnifyKeyNames');
 
 % Open the main screen
 screenID = max(Screen('Screens'));  % external screen if present
-[win, winRect] = PsychImaging('OpenWindow', screenID, 0); % black background
+[win, winRect] = PsychImaging('OpenWindow', screenID, [128, 128, 128]); % black background
+
 
 % Load the .mat files
-data1 = load('/Users/uriel/Desktop/nCSFpsy_r1_8-20/sfStim4_contStim12_noiseRand3_kappaNum10_ori2.mat');
-data2 = load('/Users/uriel/Desktop/nCSFpsy_scanner_8-20/sfStim4_contStim12_noiseRand3_kappaNum10_ori2.mat');
+data1 = load('C:\Users\pstellmann\Documents\Experiments\nCSFexp\experiment_code\stim\screenshots\nCSFpsy/sfStim1_contStim12_noiseRand2_kappaNum14_ori1.mat');
+data2 = load('C:\Users\pstellmann\Documents\Experiments\nCSFexp\experiment_code\stim\screenshots\nCSFpsy/sfStim3_contStim12_noiseRand2_kappaNum14_ori1.mat');
 
 % Extract stimuli (change variable names if necessary)
 stim1 = data1.screen_stim;

@@ -40,7 +40,7 @@ const.dot_probe_color = const.background_color;                             % De
 
 % Noise parameters
 % ----------------
-const.noise_num = 20;                                                       % Number of generated patches
+const.noise_num = 2;                                                       % Number of generated patches
 const.noise_pixel = 1;                                                      % Stimulus noise pixel size in pixels
 const.stim_size = [scr.scr_sizeY,scr.scr_sizeY];                            % Full screen stimuli size in pixels
 const.noise_size = const.stim_size(1);                                      % Size of the patch
@@ -142,7 +142,7 @@ const.probe_onset = [zeros(const.no_probe_dur_nnf, 1);...
                      zeros(const.resp_dur_nnf - 1, 1)];                     % Matrix of probe onset
 
 const.rand_num_tex = randperm(const.noise_num);
-const.rand_num_tex = const.rand_num_tex(1:const.TR_dur_nnf);                % Matrix of random noise generation number in each trial
+%const.rand_num_tex = const.rand_num_tex(1:const.TR_dur_nnf);                % Matrix of random noise generation number in each trial
 
 %% Experimentatal settings
 
@@ -156,7 +156,7 @@ const.noise_kappa = [0, 10.^(linspace(-1, 1.5, ...
 
 const.num_steps_kappa_used = 2;                                             % kappa level used in nCSF task
 const.kappa_noise_num = 1;                                                  % kappa for noise texture
-const.kappa_probe_num = 10;                                                 % kappa for probe texture (defined as a function of previous experience)
+const.kappa_probe_num = 14;                                                 % kappa for probe texture (defined as a function of previous experience)
 
 % Spatial Frequency filter
 % ------------------------
@@ -180,7 +180,7 @@ const.mean_luminance = 0.5;                                                 % No
 % ------------------
 if const.psy
     const.minCont = 0.0025;                                                 % Minimal Michelson contrast value
-    const.maxCont = 0.8;                                                    % Maximal Michelson contrast value
+    const.maxCont = 1;                                                      % Maximal Michelson contrast value
     const.contNum = 12;                                                     % Number of Michelson contrast value
 else
     const.minCont = 0.0025;                                                 % Minimal Michelson contrast value
