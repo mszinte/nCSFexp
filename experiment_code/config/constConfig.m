@@ -40,7 +40,7 @@ const.dot_probe_color = const.background_color;                             % De
 
 % Noise parameters
 % ----------------
-const.noise_num = 2;                                                       % Number of generated patches
+const.noise_num = 20;                                                       % Number of generated patches
 const.noise_pixel = 1;                                                      % Stimulus noise pixel size in pixels
 const.stim_size = [scr.scr_sizeY,scr.scr_sizeY];                            % Full screen stimuli size in pixels
 const.noise_size = const.stim_size(1);                                      % Size of the patch
@@ -156,11 +156,11 @@ const.noise_kappa = [0, 10.^(linspace(-1, 1.5, ...
 
 const.num_steps_kappa_used = 2;                                             % kappa level used in nCSF task
 const.kappa_noise_num = 1;                                                  % kappa for noise texture
-const.kappa_probe_num = 14;                                                 % kappa for probe texture (defined as a function of previous experience)
+const.kappa_probe_num = 10;                                                 % kappa for probe texture (defined as a function of previous experience)
 
 % Spatial Frequency filter
 % ------------------------
-const.sf_minFreq = 8;                                                       % Minimal central spatial frequency filter in cycle/dva
+const.sf_minFreq = 0.08;                                                       % Minimal central spatial frequency filter in cycle/dva
 const.sf_maxFreq = 20;                                                      % Maximal central spatial frequency filter in cycle/dva
 const.sf_filtNum = 6;                                                       % Number of spatial frequency filters
 const.sf_filtOverlap = 0.6;                                                 % Proportion of overlaping for the gaussian spatial frequency filters 
@@ -180,12 +180,12 @@ const.mean_luminance = 0.5;                                                 % No
 % ------------------
 if const.psy
     const.minCont = 0.0025;                                                 % Minimal Michelson contrast value
-    const.maxCont = 1;                                                      % Maximal Michelson contrast value
+    const.maxCont = 0.8;                                                    % Maximal Michelson contrast value
     const.contNum = 12;                                                     % Number of Michelson contrast value
 else
     const.minCont = 0.0025;                                                 % Minimal Michelson contrast value
     const.maxCont = 0.8;                                                    % Maximal Michelson contrast value
-    const.contNum = 12;                                                      % Number of Michelson contrast value
+    const.contNum = 12;                                                     % Number of Michelson contrast value
 end
 const.contValues = logspace(log10(const.minCont), ...                       % Michelson contrast values
 log10(const.maxCont), const.contNum);
