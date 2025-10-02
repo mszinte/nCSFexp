@@ -21,8 +21,8 @@ texture1 = Screen('MakeTexture', win, stim1);
 texture2 = Screen('MakeTexture', win, stim2);
 
 % Put textures in a cell for easy navigation
-textures = {texture1, texture2};
-% textures = {texture1, texture1};
+%textures = {texture1, texture2};
+textures = {texture2, texture2};
 current = 1; % start with the first image
 
 % Initial draw
@@ -31,15 +31,15 @@ Screen('Flip', win);
 
 
 
-
+Datapixx('Open') 
 % Main loop
 while true
     [keyIsDown, ~, keyCode] = KbCheck;
     if keyIsDown
         if keyCode(KbName('r'))
-           % Datapixx("Open"); 
-            %Datapixx('SetPropixxLedIntensity', 1);  
-            %Datapixx("RegWr");
+            
+            Datapixx('SetPropixxLedIntensity', 1)  
+            Datapixx('RegWr')
             current = current + 1;
             if current > length(textures)
                 current = length(textures);
@@ -48,6 +48,9 @@ while true
             Screen('Flip', win);
             KbReleaseWait; % wait for key release
         elseif keyCode(KbName('b'))
+            
+            Datapixx('SetPropixxLedIntensity', 2)  
+            Datapixx('RegWr')
             current = current - 1;
             if current < 1
                 current = 1;
