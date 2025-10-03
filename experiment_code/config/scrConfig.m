@@ -24,7 +24,6 @@ elseif  const.room == 2
     scr.scr_num = 0;
 end
 
-
 % Screen resolution (pixel):
 [scr.scr_sizeX, scr.scr_sizeY] = Screen('WindowSize', scr.scr_num);
 if (scr.scr_sizeX ~= const.desiredRes(1) || scr.scr_sizeY ~= const.desiredRes(2)) && const.expStart
