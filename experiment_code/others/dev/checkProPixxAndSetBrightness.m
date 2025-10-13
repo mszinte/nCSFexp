@@ -13,7 +13,7 @@ function checkProPixxAndSetBrightness()
                 disp('PROPixx detected.');
                 
                 % Target brightness value (0–100 %)
-                newBrightness = 70;
+                newBrightness = 2;
                 
                 % Apply the new brightness value
                 Datapixx('SetPropixxLedIntensity', newBrightness); 
