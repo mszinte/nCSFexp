@@ -160,8 +160,8 @@ const.kappa_probe_num = 10;                                                 % ka
 
 % Spatial Frequency filter
 % ------------------------
-const.sf_minFreq = 0.08;                                                       % Minimal central spatial frequency filter in cycle/dva
-const.sf_maxFreq = 15;                                                      % Maximal central spatial frequency filter in cycle/dva
+const.sf_minFreq = 0.05;                                                       % Minimal central spatial frequency filter in cycle/dva
+const.sf_maxFreq = 16;                                                      % Maximal central spatial frequency filter in cycle/dva
 const.sf_filtNum = 6;                                                       % Number of spatial frequency filters
 const.sf_filtOverlap = 0.6;                                                 % Proportion of overlaping for the gaussian spatial frequency filters 
 const.sf_filtCenters = round(logspace(log10(const.sf_minFreq), ...          % Centers (mu) of the gaussians spatial frequency filters
