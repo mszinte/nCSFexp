@@ -29,9 +29,9 @@ AssertOpenGL;
 % ----------------
 const.task = 'nCSF';                        % Name of the task
 const.runTotal = 11;                        % Number of runs to play
-const.expStart = 1;                         % Start of a recording exp                          0 = NO  , 1 = YES
+const.expStart = 0;                         % Start of a recording exp                          0 = NO  , 1 = YES
 const.checkTrial = 0;                       % Print trial conditions (for debugging)            0 = NO  , 1 = YES
-const.genStimuli = 0;                       % Generate the stimuli                              0 = NO  , 1 = YES
+const.genStimuli = 1;                       % Generate the stimuli                              0 = NO  , 1 = YES
 const.drawStimuli = 0;                      % Draw stimuli generated                            0 = NO  , 1 = YES
 const.mkVideo = 0;                          % Make a video of a run                             0 = NO  , 1 = YES
 
@@ -42,6 +42,30 @@ const.scannerTest = 0;                      % Run with T returned at TR time    
 const.room = 2;                             % Run in MRI or eye-tracking room                   1 = MRI , 2 = eye-tracking
 const.psy = 1;                              % Run psychophysics or MRI task                     0 = MRI , 1 = Psy
 const.training = 0;                         % Training session                                  0 = NO  , 1 = YES
+
+
+% Warning before deleting stim
+% -----------------------------
+if const.genStimuli == 1
+    disp('You are about to delete the previous stimulus and regenerate a new one.');
+    reply = input('Do you want to continue? (Y/N): ', 's');
+    
+    % Normalize user input (remove spaces and lowercase)
+    reply = strtrim(lower(reply));
+    
+    if ismember(reply, {'y', 'yes', 'Y', 'Yes','YES'})
+        disp('Proceeding with stimulus regeneration...');
+        % Continue the script normally
+        
+    elseif ismember(reply, {'n', 'no','N','No','NO'})
+        disp('Operation cancelled. Script terminated.');
+        return;  % Stop the entire script
+        
+    else
+        disp('Invalid input. Script terminated.');
+        return;  % Stop the entire script
+    end
+end
 
 % Desired screen setting
 % ----------------------

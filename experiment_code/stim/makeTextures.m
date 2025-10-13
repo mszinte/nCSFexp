@@ -16,8 +16,8 @@ function makeTextures(scr, const)
 % Adapted by Uriel LASCOMBES (uriel.lascombes@laposte.net)
 % Project : nCSFexp
 % ----------------------------------------------------------------------
-fprintf(1,'\n\tDrawing all texture screens\n\t');
 
+fprintf(1,'\n\tDrawing all texture screens\n\t');
 % delete old folder
 if isfolder(const.stim_folder)
     rmdir(const.stim_folder, 's')
