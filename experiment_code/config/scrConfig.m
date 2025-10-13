@@ -36,7 +36,7 @@ if const.room == 1
     % --------------------------
     scr.disp_sizeX = 807;                       % projection screen in mm
     scr.disp_sizeY = 454;                       % projection screen in mm
-    scr.dist = 102;                             % screen distance in cm
+    scr.dist = 100;                             % screen distance in cm
     scr.x_mid = (scr.scr_sizeX / 2.0);          
     scr.y_mid = (scr.scr_sizeY / 2.0);
     scr.mid = [scr.x_mid, scr.y_mid];
@@ -54,7 +54,7 @@ elseif const.room == 2
     % ---------------------
     scr.disp_sizeX = 696;                       % Display ++ INT
     scr.disp_sizeY = 391;                       % Display ++ INT
-    scr.dist = 102;                             % screen distance in cm
+    scr.dist = 100;                             % screen distance in cm
     scr.x_mid = (scr.scr_sizeX / 2.0);
     scr.y_mid = (scr.scr_sizeY / 2.0);
     scr.mid = [scr.x_mid, scr.y_mid];
