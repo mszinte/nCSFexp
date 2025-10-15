@@ -9,8 +9,8 @@ screenID = max(Screen('Screens'));  % external screen if present
 
 
 % Load the .mat files
-data1 = load('C:\Users\pstellmann\Documents\Experiments\nCSFexp\experiment_code\stim\screenshots\nCSFpsy/sfStim1_contStim12_noiseRand2_kappaNum14_ori1.mat');
-data2 = load('C:\Users\pstellmann\Documents\Experiments\nCSFexp\experiment_code\stim\screenshots\nCSFpsy/sfStim3_contStim12_noiseRand2_kappaNum14_ori1.mat');
+data1 = load('C:\Users\pstellmann\Documents\Experiments\nCSFexp\experiment_code\stim\screenshots\nCSFpsy/sfStim4_contStim10_noiseRand2_kappaNum10_ori1.mat');
+data2 = load('C:\Users\pstellmann\Documents\Experiments\nCSFexp\experiment_code\stim\screenshots\nCSFpsy/sfStim6_contStim10_noiseRand2_kappaNum10_ori1.mat');
 
 % Extract stimuli (change variable names if necessary)
 stim1 = data1.screen_stim;
