@@ -40,8 +40,8 @@ if const.room == 1
     scr.x_mid = (scr.scr_sizeX / 2.0);          
     scr.y_mid = (scr.scr_sizeY / 2.0);
     scr.mid = [scr.x_mid, scr.y_mid];
-    scr.disp_margin_top = 175;                  % not visible top part in pixel (using others/ruler_ver.png)
-    scr.disp_margin_bottom = 300;               % not visible bottom part in pixel (using others/ruler_ver.png)
+    scr.disp_margin_top = 125;                  % not visible top part in pixel (using others/ruler_ver.png)
+    scr.disp_margin_bottom = 480;               % not visible bottom part in pixel (using others/ruler_ver.png)
     
     % Set margin to 0 for demo
     if const.mkVideo == 1

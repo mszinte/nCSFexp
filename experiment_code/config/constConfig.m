@@ -64,7 +64,7 @@ const.rect_noise        =  [const.rect_center(1) - const.noise_size/2;...   % No
 
 % Apertures
 % ---------
-const.apt_rad_val = 6.5;                                                    % Aperture stimuli radius in dva
+const.apt_rad_val = 6;                                                    % Aperture stimuli radius in dva
 const.apt_rad = vaDeg2pix(const.apt_rad_val,scr);                           % Aperture stimuli radius in pixels
 const.rCosine_grain = 80;                                                   % Grain of the radius cosine steps
 const.aperture_blur = 0.01;                                                 % Ratio of the apperture that is blured following an raised cosine
