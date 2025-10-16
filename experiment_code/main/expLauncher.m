@@ -14,11 +14,10 @@
 
 % Procedure to start
 % ------------------
-% - turn on projector and propixx
-% - turn on computer
-% - turn on monitor
-% - Start session
-% - Launch code, pass instructions, it will wait for first TR
+% - Turn on the computer and log in
+% - Turn on the Datapixx 3, then the projector
+% - Open LabMaestro => double-click on Propix => set LED intensity to 50%
+% - Launch the code, give instructions, it will wait for the first TR
 
 % First settings
 % --------------
