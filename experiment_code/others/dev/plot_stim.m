@@ -4,7 +4,7 @@ Screen('Preference', 'VisualDebugLevel', 0);
 KbName('UnifyKeyNames');
 
 % Open the main screen
-screenID = max(Screen('Screens'));  % external screen if present
+screenID = 1;%max(Screen('Screens'));  % external screen if present
 [win, winRect] = PsychImaging('OpenWindow', screenID, [128, 128, 128]); % black background
 
 
