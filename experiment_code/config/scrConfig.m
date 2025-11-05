@@ -19,7 +19,7 @@ function [scr] = scrConfig(const)
 % Number of the experimental screen:
 scr.all = Screen('Screens');
 if const.room == 1
-    scr.scr_num = 1;
+    scr.scr_num = 2;
 elseif  const.room == 2
     scr.scr_num = 0;
 end
