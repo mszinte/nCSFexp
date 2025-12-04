@@ -1,0 +1,11 @@
+trial 1 trial_onset at 9645.578393
+trial 1 probe_onset at 9645.978724
+trial 1 trial_offset at 9647.079633
+trial 2 trial_onset at 9647.179716
+trial 2 probe_onset at 9647.580046
+trial 2 trial_offset at 9648.680955
+trial 3 trial_onset at 9648.781038
+trial 3 probe_onset at 9649.181368
+trial 3 trial_offset at 9650.282277
+trial 4 trial_onset at 9650.382360
+trial 4 probe_onset at 9650.782691
